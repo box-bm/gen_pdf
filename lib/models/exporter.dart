@@ -4,7 +4,7 @@ import 'package:gen_pdf/database/table_interface.dart';
 import 'package:gen_pdf/models/person.dart';
 import 'package:uuid/uuid.dart';
 
-class Exporter extends Person implements TableInterface<Exporter> {
+class Exporter extends Person<Exporter> implements TableInterface<Exporter> {
   Exporter({super.id = "", super.name = "", super.address = ""});
 
   factory Exporter.newByMap(Map<String, dynamic> values) {

@@ -1,3 +1,4 @@
+import 'package:gen_pdf/bloc_store.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/routes.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -8,7 +9,8 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return BlocStore(
+        child: MaterialApp(
       theme: ThemeData.from(
         colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromARGB(255, 109, 189, 154)),
@@ -22,6 +24,6 @@ class MainApp extends StatelessWidget {
       supportedLocales: FormBuilderLocalizations.supportedLocales,
       routes: routes,
       initialRoute: Home.route,
-    );
+    ));
   }
 }

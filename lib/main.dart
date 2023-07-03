@@ -24,10 +24,6 @@ void main() async {
     await flutter_acrylic.Window.hideWindowControls();
     await WindowManager.instance.ensureInitialized();
     windowManager.waitUntilReadyToShow().then((_) async {
-      await windowManager.setTitleBarStyle(
-        TitleBarStyle.hidden,
-        windowButtonVisibility: false,
-      );
       await windowManager.setMinimumSize(const Size(500, 600));
       await windowManager.show();
       await windowManager.setPreventClose(true);

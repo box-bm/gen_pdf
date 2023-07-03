@@ -1,6 +1,6 @@
 import 'package:gen_pdf/database/table.dart';
 
-class Person extends Table {
+class Person<T> extends Table<T> {
   late String id;
   late String name;
   late String address;

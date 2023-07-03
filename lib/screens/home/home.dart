@@ -59,18 +59,19 @@ class _HomeState extends State<Home> {
               label: "Consignadores")
         ],
       ),
-      body: PageView.builder(
-        onPageChanged: (value) {
-          setState(() {
-            currentPage = value;
-          });
-        },
-        allowImplicitScrolling: false,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: screens.length,
-        controller: _controller,
-        itemBuilder: (context, index) => screens[index],
-      ),
+      body: Builder(
+          builder: (context) => PageView.builder(
+                onPageChanged: (value) {
+                  setState(() {
+                    currentPage = value;
+                  });
+                },
+                allowImplicitScrolling: false,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: screens.length,
+                controller: _controller,
+                itemBuilder: (context, index) => screens[index],
+              )),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           var route = "";
@@ -81,7 +82,7 @@ class _HomeState extends State<Home> {
           } else if (currentPage == 2) {
             route = NewConsigneer.route;
           }
-          Navigator.pushNamed(context, route);
+          Navigator.restorablePushNamed(context, route);
         },
         icon: const Icon(Icons.add),
         label: const Text("Crear"),

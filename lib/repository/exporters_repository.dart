@@ -1,12 +1,19 @@
 import 'package:gen_pdf/models/exporter.dart';
 
 class ExporterRepository {
-  createExporter(Map<String, dynamic> values) async {
+  Future<Exporter> createExporter(Map<String, dynamic> values) async {
     Exporter exporter = Exporter.newByMap(values);
     await exporter.insert();
+    return exporter;
   }
 
-  getExporters() async {
+  Future<Exporter> updateExporter(Map<String, dynamic> values) async {
+    Exporter updatedExporter = Exporter().fromMap(values);
+    updatedExporter.update(values['id']);
+    return updatedExporter;
+  }
+
+  Future<List<Exporter>> getExporters() async {
     Exporter exporter = Exporter();
     return await exporter.getAll();
   }
