@@ -2,9 +2,18 @@ import 'package:gen_pdf/database/column.dart';
 import 'package:gen_pdf/database/reference.dart';
 import 'package:gen_pdf/database/table_interface.dart';
 import 'package:gen_pdf/models/person.dart';
+import 'package:uuid/uuid.dart';
 
 class Exporter extends Person implements TableInterface<Exporter> {
   Exporter({super.id = "", super.name = "", super.address = ""});
+
+  factory Exporter.newByMap(Map<String, dynamic> values) {
+    return Exporter(
+      id: const Uuid().v4(),
+      name: values['name'],
+      address: values['address'],
+    );
+  }
 
   Exporter.create({
     required super.id,
@@ -14,9 +23,22 @@ class Exporter extends Person implements TableInterface<Exporter> {
 
   @override
   List<Column> get columns => [
-        Column(name: 'id', columnType: SQLiteDataType.text),
-        Column(name: 'name', columnType: SQLiteDataType.text),
-        Column(name: 'address', columnType: SQLiteDataType.text),
+        Column(
+          name: 'id',
+          columnType: SQLiteDataType.text,
+          primaryKey: true,
+          notNull: true,
+        ),
+        Column(
+          name: 'name',
+          columnType: SQLiteDataType.text,
+          notNull: true,
+        ),
+        Column(
+          name: 'address',
+          columnType: SQLiteDataType.text,
+          notNull: true,
+        ),
       ];
 
   @override

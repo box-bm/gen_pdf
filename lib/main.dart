@@ -1,32 +1,39 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_pdf/app.dart';
 import 'package:gen_pdf/database/database_provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:window_manager/window_manager.dart';
 
+bool get isDesktop {
+  if (kIsWeb) return false;
+  return [
+    TargetPlatform.windows,
+    TargetPlatform.linux,
+    TargetPlatform.macOS,
+  ].contains(defaultTargetPlatform);
+}
+
 void main() async {
-  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    sqfliteFfiInit();
-  }
-
   WidgetsFlutterBinding.ensureInitialized();
-  await windowManager.ensureInitialized();
 
-  WindowOptions windowOptions = const WindowOptions(
-    minimumSize: Size(500, 700),
-    title: "Generador de facturas",
-  );
-
-  windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
-    await windowManager.setAsFrameless();
-    await windowManager.dock(side: DockSide.left, width: 400);
-    await windowManager.setTitleBarStyle(TitleBarStyle.hidden,
-        windowButtonVisibility: true);
-  });
+  if (isDesktop) {
+    sqfliteFfiInit();
+    await flutter_acrylic.Window.initialize();
+    await flutter_acrylic.Window.hideWindowControls();
+    await WindowManager.instance.ensureInitialized();
+    windowManager.waitUntilReadyToShow().then((_) async {
+      await windowManager.setTitleBarStyle(
+        TitleBarStyle.hidden,
+        windowButtonVisibility: false,
+      );
+      await windowManager.setMinimumSize(const Size(500, 600));
+      await windowManager.show();
+      await windowManager.setPreventClose(true);
+      await windowManager.setSkipTaskbar(false);
+    });
+  }
 
   await DatabaseProvider().createDatabase();
 

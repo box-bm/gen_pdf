@@ -21,10 +21,14 @@ class Consigneer extends Person implements TableInterface<Consigneer> {
 
   @override
   List<Column> get columns => [
-        Column(name: 'id', columnType: SQLiteDataType.text),
-        Column(name: 'name', columnType: SQLiteDataType.text),
-        Column(name: 'address', columnType: SQLiteDataType.text),
-        Column(name: 'nit', columnType: SQLiteDataType.text)
+        Column(
+            name: 'id',
+            columnType: SQLiteDataType.text,
+            primaryKey: true,
+            notNull: true),
+        Column(name: 'name', columnType: SQLiteDataType.text, notNull: true),
+        Column(name: 'address', columnType: SQLiteDataType.text, notNull: true),
+        Column(name: 'nit', columnType: SQLiteDataType.text, notNull: true)
       ];
 
   @override

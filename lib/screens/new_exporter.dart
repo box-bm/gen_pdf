@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gen_pdf/repository/exporters_repository.dart';
 import 'package:gen_pdf/widgets/exporter_form.dart';
 
 class NewExporter extends StatelessWidget {
@@ -7,15 +8,35 @@ class NewExporter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var initialValues =
+        (ModalRoute.of(context)?.settings.arguments) as Map<String, dynamic>?;
+    var isEditing = initialValues != null;
+
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Exportador"),
+          title: Text(isEditing ? "Modificar Exportador" : "Crear exportador"),
         ),
-        body: const SingleChildScrollView(
+        body: SingleChildScrollView(
             child: SafeArea(
-                minimum: EdgeInsets.fromLTRB(10, 12, 10, 20),
+                minimum: const EdgeInsets.fromLTRB(10, 12, 10, 20),
                 child: Column(
-                  children: [ExporterForm()],
+                  children: [
+                    ExporterForm(
+                      initialValues: initialValues,
+                      onSubmit: (values) async {
+                        if (isEditing) {
+                          print(values);
+                          return;
+                        }
+                        await ExporterRepository().createExporter(values);
+                        // ignore: use_build_context_synchronously
+                        Navigator.pop(context);
+                        // ignore: use_build_context_synchronously
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Creado")));
+                      },
+                    )
+                  ],
                 ))));
   }
 }
