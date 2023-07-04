@@ -9,9 +9,8 @@ class NewExporter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var initialValues =
-        (ModalRoute.of(context)?.settings.arguments) as Map<String, dynamic>?;
-    var isEditing = initialValues != null;
+    var isEditing =
+        (ModalRoute.of(context)?.settings.arguments) as bool? ?? false;
 
     return NavigationView(
       appBar: NavigationAppBar(
@@ -31,16 +30,13 @@ class NewExporter extends StatelessWidget {
           }
         },
         child: ScaffoldPage(
-            header: const PageHeader(
-                title: Text("Completa el formulario"),
-                leading: Icon(FluentIcons.contact)),
+            header: const PageHeader(title: Text("Completa el formulario")),
             content: SingleChildScrollView(
                 child: SafeArea(
                     minimum: const EdgeInsets.fromLTRB(10, 12, 10, 20),
                     child: Column(
                       children: [
                         ExporterForm(
-                          initialValues: initialValues,
                           onSubmit: (values) async {
                             if (isEditing) {
                               context

@@ -27,3 +27,11 @@ class Loadingconsigners extends ConsigneerState {
 class ErrorLoadingconsigners extends ConsigneerState {
   const ErrorLoadingconsigners({super.consigners});
 }
+
+class DeletingConsigner extends ConsigneerState {
+  const DeletingConsigner();
+}
+
+class DeletedConsigner extends ConsigneerState {
+  const DeletedConsigner();
+}

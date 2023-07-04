@@ -1,11 +1,12 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:gen_pdf/common.dart';
+import 'package:gen_pdf/cubit/form_cubit.dart' as form_cubit;
 import 'package:gen_pdf/widgets/person_form.dart';
 
 class ExporterForm extends StatefulWidget {
   final Function(Map<String, dynamic> values) onSubmit;
-  final Map<String, dynamic>? initialValues;
-  const ExporterForm({super.key, required this.onSubmit, this.initialValues});
+  const ExporterForm({super.key, required this.onSubmit});
 
   @override
   State<ExporterForm> createState() => _CreateBillFormState();
@@ -16,6 +17,7 @@ class _CreateBillFormState extends State<ExporterForm> {
 
   @override
   void initState() {
+    _formkey.currentState?.initState();
     super.initState();
   }
 
@@ -27,21 +29,23 @@ class _CreateBillFormState extends State<ExporterForm> {
 
   @override
   Widget build(BuildContext context) {
-    return FormBuilder(
-        key: _formkey,
-        initialValue: widget.initialValues ?? {},
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ...personForm,
-            Button(
-                onPressed: () {
-                  if (_formkey.currentState!.saveAndValidate()) {
-                    widget.onSubmit(_formkey.currentState!.value);
-                  }
-                },
-                child: const Text("Guardar"))
-          ],
-        ));
+    return BlocBuilder<form_cubit.FormCubit, form_cubit.FormState>(
+        builder: (context, state) => FormBuilder(
+            key: _formkey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ...personForm(state.values, context),
+                const SizedBox(height: 10),
+                Button(
+                    onPressed: () {
+                      if (_formkey.currentState!.saveAndValidate()) {
+                        context.read<form_cubit.FormCubit>().submit();
+                        widget.onSubmit(state.values);
+                      }
+                    },
+                    child: const Text("Guardar"))
+              ],
+            )));
   }
 }

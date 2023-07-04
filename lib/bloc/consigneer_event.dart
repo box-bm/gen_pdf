@@ -19,6 +19,18 @@ class EditConsigner extends ConsigneerEvent {
   const EditConsigner(this.values);
 }
 
+class DeleteConsigner extends ConsigneerEvent {
+  final String id;
+
+  const DeleteConsigner(this.id);
+}
+
+class DeleteConsigners extends ConsigneerEvent {
+  final List<String> ids;
+
+  const DeleteConsigners(this.ids);
+}
+
 class GetAllConsigners extends ConsigneerEvent {
   const GetAllConsigners();
 }

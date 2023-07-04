@@ -277,6 +277,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  nit_validator:
+    dependency: "direct main"
+    description:
+      name: nit_validator
+      sha256: "8ba29c998bfc78b0fa7c74533cc0af9e8ce0aa0188005120fdd3cc10e8e54b23"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   path:
     dependency: "direct main"
     description:

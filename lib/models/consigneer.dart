@@ -2,15 +2,27 @@ import 'package:gen_pdf/database/column.dart';
 import 'package:gen_pdf/database/reference.dart';
 import 'package:gen_pdf/database/table_interface.dart';
 import 'package:gen_pdf/models/person.dart';
+import 'package:uuid/uuid.dart';
 
-class Consigneer extends Person implements TableInterface<Consigneer> {
+class Consigneer extends Person<Consigneer>
+    implements TableInterface<Consigneer> {
   late String nit;
 
   Consigneer({
     super.id = "",
     super.name = "",
     super.address = "",
+    this.nit = "",
   });
+
+  factory Consigneer.newByMap(Map<String, dynamic> values) {
+    return Consigneer(
+      id: const Uuid().v4(),
+      name: values['name'],
+      address: values['address'],
+      nit: values['nit'],
+    );
+  }
 
   Consigneer.create({
     required super.id,
@@ -28,7 +40,7 @@ class Consigneer extends Person implements TableInterface<Consigneer> {
             notNull: true),
         Column(name: 'name', columnType: SQLiteDataType.text, notNull: true),
         Column(name: 'address', columnType: SQLiteDataType.text, notNull: true),
-        Column(name: 'nit', columnType: SQLiteDataType.text, notNull: true)
+        Column(name: 'nit', columnType: SQLiteDataType.text)
       ];
 
   @override
