@@ -24,5 +24,18 @@ class ExporterBloc extends Bloc<ExporterEvent, ExporterState> {
       emit(const ExporterSaved());
       add(const GetAllExporters());
     });
+    on<DeleteExporter>((event, emit) async {
+      await exporterRepository.deleteExporter(event.id);
+      emit(const DeletedExporter());
+      add(const GetAllExporters());
+    });
+    on<DeleteExporters>((event, emit) async {
+      emit(const DeletingExporter());
+      for (var id in event.ids) {
+        await exporterRepository.deleteExporter(id);
+      }
+      emit(const DeletedExporter());
+      add(const GetAllExporters());
+    });
   }
 }

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/widgets/person_form.dart';
 
 class ExporterForm extends StatefulWidget {
@@ -34,7 +34,7 @@ class _CreateBillFormState extends State<ExporterForm> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ...personForm,
-            ElevatedButton(
+            Button(
                 onPressed: () {
                   if (_formkey.currentState!.saveAndValidate()) {
                     widget.onSubmit(_formkey.currentState!.value);

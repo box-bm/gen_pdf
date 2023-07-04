@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_pdf/bloc/bills_bloc.dart';
 import 'package:gen_pdf/bloc/consigneer_bloc.dart';
 import 'package:gen_pdf/bloc/exporter_bloc.dart';
+import 'package:gen_pdf/common.dart';
 
 class BlocStore extends StatelessWidget {
   final Widget child;

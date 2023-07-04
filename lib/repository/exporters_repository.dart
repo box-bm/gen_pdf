@@ -13,6 +13,10 @@ class ExporterRepository {
     return updatedExporter;
   }
 
+  Future deleteExporter(String id) async {
+    await Exporter().delete(id);
+  }
+
   Future<List<Exporter>> getExporters() async {
     Exporter exporter = Exporter();
     return await exporter.getAll();

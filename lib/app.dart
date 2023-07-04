@@ -10,15 +10,21 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocStore(
-        child: MaterialApp(
-      theme: ThemeData.from(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 109, 189, 154)),
-        useMaterial3: true,
+        child: FluentApp(
+      theme: FluentThemeData(
+        accentColor: Colors.green,
+      ),
+      darkTheme: FluentThemeData(
+        brightness: Brightness.dark,
+        accentColor: Colors.green,
+        visualDensity: VisualDensity.standard,
+        focusTheme: FocusThemeData(
+          glowFactor: is10footScreen(context) ? 2.0 : 0.0,
+        ),
       ),
       localizationsDelegates: const [
         FormBuilderLocalizations.delegate,
-        ...GlobalMaterialLocalizations.delegates,
+        FluentLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: FormBuilderLocalizations.supportedLocales,

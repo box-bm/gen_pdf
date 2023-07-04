@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/widgets/consignee_form.dart';
 
 class NewConsigneer extends StatelessWidget {
@@ -7,11 +7,9 @@ class NewConsigneer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Consignatario"),
-        ),
-        body: const SingleChildScrollView(
+    return const ScaffoldPage(
+        header: Text("Consignatario"),
+        content: SingleChildScrollView(
             child: SafeArea(
                 minimum: EdgeInsets.fromLTRB(10, 12, 10, 20),
                 child: Column(

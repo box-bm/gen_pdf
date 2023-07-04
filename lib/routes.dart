@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/screens/new_bill.dart';
 import 'package:gen_pdf/screens/home/home.dart';
 import 'package:gen_pdf/screens/new_consigneer.dart';

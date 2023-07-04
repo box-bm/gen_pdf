@@ -27,3 +27,11 @@ class LoadingExporters extends ExporterState {
 class ErrorLoadingExporters extends ExporterState {
   const ErrorLoadingExporters({super.exporters});
 }
+
+class DeletingExporter extends ExporterState {
+  const DeletingExporter();
+}
+
+class DeletedExporter extends ExporterState {
+  const DeletedExporter();
+}

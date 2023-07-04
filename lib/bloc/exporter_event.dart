@@ -19,6 +19,18 @@ class EditExporter extends ExporterEvent {
   const EditExporter(this.values);
 }
 
+class DeleteExporter extends ExporterEvent {
+  final String id;
+
+  const DeleteExporter(this.id);
+}
+
+class DeleteExporters extends ExporterEvent {
+  final List<String> ids;
+
+  const DeleteExporters(this.ids);
+}
+
 class GetAllExporters extends ExporterEvent {
   const GetAllExporters();
 }
