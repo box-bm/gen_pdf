@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_pdf/bloc/exporter_bloc.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/widgets/exporter_form.dart';
+import 'package:window_manager/window_manager.dart';
 
 class NewExporter extends StatelessWidget {
   static String route = "newExporter";
@@ -14,7 +15,21 @@ class NewExporter extends StatelessWidget {
 
     return NavigationView(
       appBar: NavigationAppBar(
-          title: Text(isEditing ? "Modificar Exportador" : "Crear exportador")),
+          title: Text(isEditing ? "Modificar Exportador" : "Crear exportador"),
+          actions: DragToMoveArea(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              SizedBox(
+                width: 138,
+                height: 50,
+                child: WindowCaption(
+                  brightness: FluentTheme.of(context).brightness,
+                  backgroundColor: const Color(0x00000FFF),
+                ),
+              )
+            ],
+          ))),
       content: BlocListener<ExporterBloc, ExporterState>(
         listener: (context, state) {
           if (state is ExporterSaved) {

@@ -6,6 +6,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   flutter_acrylic
   printing
   screen_retriever
+  system_theme
   window_manager
 )
 

@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_pdf/bloc/consigneer_bloc.dart';
 import 'package:gen_pdf/bloc/exporter_bloc.dart';
 import 'package:gen_pdf/common.dart';
+import 'package:window_manager/window_manager.dart';
 
 import './bills.dart';
 import './consigneers.dart';
@@ -38,8 +38,22 @@ class _HomeState extends State<Home> {
       appBar: NavigationAppBar(
           title: Text(
             "Generador de facturas",
-            style: Theme.of(context).textTheme.titleLarge,
+            style: FluentTheme.of(context).typography.bodyLarge,
           ),
+          actions: DragToMoveArea(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              SizedBox(
+                width: 138,
+                height: 50,
+                child: WindowCaption(
+                  brightness: FluentTheme.of(context).brightness,
+                  backgroundColor: const Color(0x00000FFF),
+                ),
+              )
+            ],
+          )),
           automaticallyImplyLeading: false),
       pane: NavigationPane(
           selected: currentPage,
