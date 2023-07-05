@@ -36,17 +36,15 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return NavigationView(
       appBar: NavigationAppBar(
-          title: Text(
-            "Generador de facturas",
-            style: FluentTheme.of(context).typography.bodyLarge,
-          ),
+          title: const Text("Generador de facturas"),
+          height: 40,
           actions: DragToMoveArea(
               child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               SizedBox(
                 width: 138,
-                height: 50,
+                height: 30,
                 child: WindowCaption(
                   brightness: FluentTheme.of(context).brightness,
                   backgroundColor: const Color(0x00000FFF),

@@ -15,14 +15,15 @@ class NewConsigneer extends StatelessWidget {
 
     return NavigationView(
       appBar: NavigationAppBar(
-          title: Text(isEditing ? "Modificar Exportador" : "Crear exportador"),
+          height: 40,
+          title: Text(isEditing ? "Modificar Cliente" : "Crear cliente"),
           actions: DragToMoveArea(
               child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               SizedBox(
                 width: 138,
-                height: 50,
+                height: 30,
                 child: WindowCaption(
                   brightness: FluentTheme.of(context).brightness,
                   backgroundColor: const Color(0x00000FFF),

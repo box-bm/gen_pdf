@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_pdf/bloc/consigneer_bloc.dart';
 import 'package:gen_pdf/common.dart';
+import 'package:gen_pdf/cubit/form_cubit.dart';
 import 'package:gen_pdf/screens/new_consigneer.dart';
 import 'package:gen_pdf/widgets/consigner_list.dart';
 
@@ -47,6 +48,7 @@ class _ConsigneersState extends State<Consigneers> {
                   primaryItems: [
                     CommandBarButton(
                         onPressed: () {
+                          context.read<FormCubit>().resetForm();
                           Navigator.pushNamed(context, NewConsigneer.route);
                         },
                         icon: const Icon(FluentIcons.add),

@@ -7,6 +7,7 @@ class TextboxForm extends StatefulWidget {
   final String? placeholder;
   final String value;
   final String? Function(Object?)? validator;
+  final int? maxLines;
   final Function(Object?)? onInputChange;
   const TextboxForm({
     super.key,
@@ -16,6 +17,7 @@ class TextboxForm extends StatefulWidget {
     this.validator,
     required this.value,
     this.onInputChange,
+    this.maxLines = 1,
   });
 
   @override
@@ -67,6 +69,7 @@ class _TextboxFormState extends State<TextboxForm> {
         builder: (field) => InfoLabel(
               label: widget.label,
               child: TextBox(
+                maxLines: widget.maxLines,
                 controller: editingController,
                 placeholder: widget.placeholder,
                 expands: false,

@@ -15,6 +15,7 @@ class NewExporter extends StatelessWidget {
 
     return NavigationView(
       appBar: NavigationAppBar(
+          height: 40,
           title: Text(isEditing ? "Modificar Exportador" : "Crear exportador"),
           actions: DragToMoveArea(
               child: Row(
