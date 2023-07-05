@@ -80,7 +80,7 @@ class _HomeState extends State<Home> {
                 onTap: () {
                   context.read<ConsigneerBloc>().add(const GetAllConsigners());
                 },
-                title: const Text("Consignadores"),
+                title: const Text("Clientes"),
                 icon: const Icon(FluentIcons.a_a_d_logo),
                 body: const Consigneers()),
           ]),
