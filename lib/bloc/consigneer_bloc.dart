@@ -9,33 +9,48 @@ part 'consigneer_state.dart';
 class ConsigneerBloc extends Bloc<ConsigneerEvent, ConsigneerState> {
   ConsignerRepository consignerRepository = ConsignerRepository();
 
-  ConsigneerBloc() : super(const ConsigneerInitial()) {
+  ConsigneerBloc() : super(const ConsigneerInitial(searchValue: "")) {
+    on<Filter>((event, emit) {
+      emit(ConsignersLoaded(searchValue: event.value));
+      add(const GetAllConsigners());
+    });
     on<GetAllConsigners>((event, emit) async {
-      emit(const Loadingconsigners());
+      emit(Loadingconsigners(searchValue: state.searchValue));
+      var consigneers = await consignerRepository.getConsigners();
+
+      if (state.searchValue.isNotEmpty) {
+        var searchCriteria = state.searchValue.toLowerCase();
+        consigneers = consigneers
+            .where((element) =>
+                (element.nit ?? "").toLowerCase().contains(searchCriteria) ||
+                element.address.toLowerCase().contains(searchCriteria) ||
+                element.name.toLowerCase().contains(searchCriteria))
+            .toList();
+      }
       emit(ConsignersLoaded(
-          consigners: await consignerRepository.getConsigners()));
+          consigners: consigneers, searchValue: state.searchValue));
     });
     on<CreateConsigner>((event, emit) async {
       await consignerRepository.createconsigner(event.values);
-      emit(const ConsignerSaved());
+      emit(ConsignerSaved(searchValue: state.searchValue));
       add(const GetAllConsigners());
     });
     on<EditConsigner>((event, emit) async {
       await consignerRepository.updateConsigner(event.values);
-      emit(const ConsignerSaved());
+      emit(ConsignerSaved(searchValue: state.searchValue));
       add(const GetAllConsigners());
     });
     on<DeleteConsigner>((event, emit) async {
       await consignerRepository.deleteConsigner(event.id);
-      emit(const DeletingConsigner());
+      emit(DeletingConsigner(searchValue: state.searchValue));
       add(const GetAllConsigners());
     });
     on<DeleteConsigners>((event, emit) async {
-      emit(const DeletingConsigner());
+      emit(DeletingConsigner(searchValue: state.searchValue));
       for (var id in event.ids) {
         await consignerRepository.deleteConsigner(id);
       }
-      emit(const DeletedConsigner());
+      emit(DeletedConsigner(searchValue: state.searchValue));
       add(const GetAllConsigners());
     });
   }

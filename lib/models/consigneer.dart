@@ -6,13 +6,13 @@ import 'package:uuid/uuid.dart';
 
 class Consigneer extends Person<Consigneer>
     implements TableInterface<Consigneer> {
-  late String nit;
+  String? nit;
 
   Consigneer({
     super.id = "",
     super.name = "",
     super.address = "",
-    this.nit = "",
+    this.nit,
   });
 
   factory Consigneer.newByMap(Map<String, dynamic> values) {

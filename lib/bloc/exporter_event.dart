@@ -34,3 +34,9 @@ class DeleteExporters extends ExporterEvent {
 class GetAllExporters extends ExporterEvent {
   const GetAllExporters();
 }
+
+class Filter extends ExporterEvent {
+  final String value;
+
+  const Filter(this.value);
+}

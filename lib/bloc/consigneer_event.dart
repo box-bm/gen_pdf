@@ -34,3 +34,9 @@ class DeleteConsigners extends ConsigneerEvent {
 class GetAllConsigners extends ConsigneerEvent {
   const GetAllConsigners();
 }
+
+class Filter extends ConsigneerEvent {
+  final String value;
+
+  const Filter(this.value);
+}
