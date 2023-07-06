@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_acrylic/window_effect.dart';
 import 'package:gen_pdf/app.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/database/database_provider.dart';
@@ -31,6 +32,7 @@ void main() async {
     sqfliteFfiInit();
     await flutter_acrylic.Window.initialize();
     await flutter_acrylic.Window.hideWindowControls();
+    await flutter_acrylic.Window.setEffect(effect: WindowEffect.acrylic);
     await WindowManager.instance.ensureInitialized();
     windowManager.waitUntilReadyToShow().then((_) async {
       await windowManager.setTitleBarStyle(
