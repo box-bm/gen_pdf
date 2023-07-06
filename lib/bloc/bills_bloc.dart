@@ -6,8 +6,6 @@ part 'bills_state.dart';
 
 class BillsBloc extends Bloc<BillsEvent, BillsState> {
   BillsBloc() : super(BillsInitial()) {
-    on<BillsEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<BillsEvent>((event, emit) {});
   }
 }

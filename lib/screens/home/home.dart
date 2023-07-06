@@ -1,11 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gen_pdf/bloc/consigneer_bloc.dart';
+import 'package:gen_pdf/bloc/consigner_bloc.dart';
 import 'package:gen_pdf/bloc/exporter_bloc.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:window_manager/window_manager.dart';
 
 import './bills.dart';
-import './consigneers.dart';
+import './consigners.dart';
 import './exporters.dart';
 
 class Home extends StatefulWidget {
@@ -76,11 +76,11 @@ class _HomeState extends State<Home> {
                 body: const Exporters()),
             PaneItem(
                 onTap: () {
-                  context.read<ConsigneerBloc>().add(const GetAllConsigners());
+                  context.read<ConsignerBloc>().add(const GetAllConsigners());
                 },
                 title: const Text("Clientes"),
                 icon: const Icon(FluentIcons.a_a_d_logo),
-                body: const Consigneers()),
+                body: const Consigners()),
           ]),
     );
   }

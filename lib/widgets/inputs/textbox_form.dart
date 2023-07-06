@@ -1,14 +1,15 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:gen_pdf/common.dart';
+import 'package:gen_pdf/cubit/form_cubit.dart';
 
 class TextboxForm extends StatefulWidget {
   final String name;
   final String label;
   final String? placeholder;
-  final String value;
+  final String? value;
   final String? Function(Object?)? validator;
   final int? maxLines;
-  final Function(Object?)? onInputChange;
   const TextboxForm({
     super.key,
     required this.name,
@@ -16,7 +17,6 @@ class TextboxForm extends StatefulWidget {
     this.placeholder,
     this.validator,
     required this.value,
-    this.onInputChange,
     this.maxLines = 1,
   });
 
@@ -31,7 +31,7 @@ class _TextboxFormState extends State<TextboxForm> {
   void initState() {
     super.initState();
     editingController.value =
-        editingController.value.copyWith(text: widget.value);
+        editingController.value.copyWith(text: widget.value ?? "");
   }
 
   @override
@@ -45,18 +45,16 @@ class _TextboxFormState extends State<TextboxForm> {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget != widget) {
-      if (editingController.text != widget.value) {
+      if (editingController.text != (widget.value ?? "")) {
         Future.delayed(Duration.zero, () {
-          editingController.text = widget.value;
+          editingController.text = widget.value ?? "";
         });
       }
     }
   }
 
   void onChangeHandler(Object? value) {
-    if (widget.onInputChange != null) {
-      widget.onInputChange!(value);
-    }
+    context.read<FormCubit>().setValue(value, widget.name);
   }
 
   @override

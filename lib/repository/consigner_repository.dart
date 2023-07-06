@@ -1,24 +1,24 @@
-import 'package:gen_pdf/models/consigneer.dart';
+import 'package:gen_pdf/models/consigner.dart';
 
 class ConsignerRepository {
-  Future<Consigneer> createconsigner(Map<String, dynamic> values) async {
-    Consigneer consigneer = Consigneer.newByMap(values);
-    await consigneer.insert();
-    return consigneer;
+  Future<Consigner> createconsigner(Map<String, dynamic> values) async {
+    Consigner consigner = Consigner.newByMap(values);
+    await consigner.insert();
+    return consigner;
   }
 
-  Future<Consigneer> updateConsigner(Map<String, dynamic> values) async {
-    Consigneer updatedConsigner = Consigneer().fromMap(values);
+  Future<Consigner> updateConsigner(Map<String, dynamic> values) async {
+    Consigner updatedConsigner = Consigner().fromMap(values);
     updatedConsigner.update(values['id']);
     return updatedConsigner;
   }
 
   Future deleteConsigner(String id) async {
-    await Consigneer().delete(id);
+    await Consigner().delete(id);
   }
 
-  Future<List<Consigneer>> getConsigners() async {
-    Consigneer consigneer = Consigneer();
-    return await consigneer.getAll();
+  Future<List<Consigner>> getConsigners() async {
+    Consigner consigner = Consigner();
+    return await consigner.getAll();
   }
 }

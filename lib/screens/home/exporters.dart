@@ -3,7 +3,7 @@ import 'package:gen_pdf/bloc/exporter_bloc.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/cubit/form_cubit.dart';
 import 'package:gen_pdf/screens/new_exporter.dart';
-import 'package:gen_pdf/widgets/exporters_list.dart';
+import 'package:gen_pdf/widgets/exporter/exporters_list.dart';
 
 class Exporters extends StatefulWidget {
   const Exporters({super.key});

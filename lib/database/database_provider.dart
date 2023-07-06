@@ -2,12 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:gen_pdf/database/table.dart';
 import 'package:gen_pdf/models/bill.dart';
 import 'package:gen_pdf/models/bill_item.dart';
-import 'package:gen_pdf/models/consigneer.dart';
+import 'package:gen_pdf/models/consigner.dart';
 import 'package:gen_pdf/models/exporter.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-List<Table> tables = [Exporter(), Consigneer(), Bill(), BillItem()];
+List<Table> tables = [Exporter(), Consigner(), Bill(), BillItem()];
 
 class DatabaseProvider {
   static const String _databaseName = 'systempdf.db';

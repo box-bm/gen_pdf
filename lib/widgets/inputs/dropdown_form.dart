@@ -5,7 +5,7 @@ class DropdownForm extends StatefulWidget {
   final String name;
   final String label;
   final String? placeholder;
-  final String value;
+  final String? value;
   final List<AutoSuggestBoxItem<dynamic>> items;
   final String? Function(Object?)? validator;
   final Function(Object?)? onInputChange;
@@ -35,7 +35,7 @@ class _DropdownFormState extends State<DropdownForm> {
   }
 
   void changeValue() {
-    if (widget.items.isNotEmpty && widget.value.isNotEmpty) {
+    if (widget.items.isNotEmpty && (widget.value ?? "").isNotEmpty) {
       editingController.value = editingController.value.copyWith(
           text: widget.items
               .firstWhere((element) => element.value == widget.value)

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_pdf/bloc/bills_bloc.dart';
-import 'package:gen_pdf/bloc/consigneer_bloc.dart';
+import 'package:gen_pdf/bloc/consigner_bloc.dart';
 import 'package:gen_pdf/bloc/exporter_bloc.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/cubit/form_cubit.dart';
@@ -15,7 +15,7 @@ class BlocStore extends StatelessWidget {
       BlocProvider<FormCubit>(create: (context) => FormCubit()),
       BlocProvider<BillsBloc>(create: (context) => BillsBloc()),
       BlocProvider<ExporterBloc>(create: (context) => ExporterBloc()),
-      BlocProvider<ConsigneerBloc>(create: (context) => ConsigneerBloc()),
+      BlocProvider<ConsignerBloc>(create: (context) => ConsignerBloc()),
     ], child: child);
   }
 }

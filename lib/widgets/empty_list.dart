@@ -1,22 +1,23 @@
 import 'package:gen_pdf/common.dart';
 
 class EmptyList extends StatelessWidget {
-  const EmptyList({super.key});
+  final String message;
+  const EmptyList({super.key, this.message = "Aun no tienes registros"});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
+        const Icon(
           FluentIcons.backlog_board,
           size: 60,
         ),
         Text(
-          "Aun no tienes registros",
-          style: TextStyle(fontSize: 30),
+          message,
+          style: const TextStyle(fontSize: 30),
         )
       ],
     ));

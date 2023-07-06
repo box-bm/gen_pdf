@@ -1,26 +1,26 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:gen_pdf/models/consigneer.dart';
+import 'package:gen_pdf/models/consigner.dart';
 import 'package:gen_pdf/repository/consigner_repository.dart';
 
-part 'consigneer_event.dart';
-part 'consigneer_state.dart';
+part 'consigner_event.dart';
+part 'consigner_state.dart';
 
-class ConsigneerBloc extends Bloc<ConsigneerEvent, ConsigneerState> {
+class ConsignerBloc extends Bloc<ConsignerEvent, ConsignerState> {
   ConsignerRepository consignerRepository = ConsignerRepository();
 
-  ConsigneerBloc() : super(const ConsigneerInitial(searchValue: "")) {
+  ConsignerBloc() : super(const ConsignerInitial(searchValue: "")) {
     on<Filter>((event, emit) {
       emit(ConsignersLoaded(searchValue: event.value));
       add(const GetAllConsigners());
     });
     on<GetAllConsigners>((event, emit) async {
       emit(Loadingconsigners(searchValue: state.searchValue));
-      var consigneers = await consignerRepository.getConsigners();
+      var consigners = await consignerRepository.getConsigners();
 
       if (state.searchValue.isNotEmpty) {
         var searchCriteria = state.searchValue.toLowerCase();
-        consigneers = consigneers
+        consigners = consigners
             .where((element) =>
                 (element.nit ?? "").toLowerCase().contains(searchCriteria) ||
                 element.address.toLowerCase().contains(searchCriteria) ||
@@ -28,7 +28,7 @@ class ConsigneerBloc extends Bloc<ConsigneerEvent, ConsigneerState> {
             .toList();
       }
       emit(ConsignersLoaded(
-          consigners: consigneers, searchValue: state.searchValue));
+          consigners: consigners, searchValue: state.searchValue));
     });
     on<CreateConsigner>((event, emit) async {
       await consignerRepository.createconsigner(event.values);

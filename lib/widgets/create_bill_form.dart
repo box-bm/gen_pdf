@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:gen_pdf/bloc/consigneer_bloc.dart';
+import 'package:gen_pdf/bloc/consigner_bloc.dart';
 import 'package:gen_pdf/bloc/exporter_bloc.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/cubit/form_cubit.dart' as form_cubit;
@@ -23,7 +23,7 @@ class _CreateBillFormState extends State<CreateBillForm> {
   @override
   void initState() {
     context.read<ExporterBloc>().add(const GetAllExporters());
-    context.read<ConsigneerBloc>().add(const GetAllConsigners());
+    context.read<ConsignerBloc>().add(const GetAllConsigners());
     _formkey.currentState?.initState();
     super.initState();
   }
@@ -43,11 +43,9 @@ class _CreateBillFormState extends State<CreateBillForm> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextboxForm(
-                  onInputChange: (value) =>
-                      context.read<FormCubit>().setValue(value, 'billNumber'),
                   name: 'billNumber',
                   label: "Numero de factura",
-                  value: state.values['billNumber'] ?? "",
+                  value: state.values['billNumber'],
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(),
                   ])),
@@ -55,7 +53,7 @@ class _CreateBillFormState extends State<CreateBillForm> {
               DropdownForm(
                   label: "Exportador",
                   name: "exporterID",
-                  value: state.values['exporterID'] ?? "",
+                  value: state.values['exporterID'],
                   onInputChange: (value) =>
                       context.read<FormCubit>().setValue(value, 'exporterID'),
                   placeholder: "Busca y selecciona el exportador",
@@ -77,11 +75,11 @@ class _CreateBillFormState extends State<CreateBillForm> {
               const SizedBox(height: 10),
               DropdownForm(
                   label: "Cliente",
-                  name: "consigneerID",
-                  value: state.values['consigneerID'] ?? "",
+                  name: "consignerID",
+                  value: state.values['consignerID'],
                   placeholder: "Busca y selecciona el cliente",
                   onInputChange: (value) =>
-                      context.read<FormCubit>().setValue(value, 'consigneerID'),
+                      context.read<FormCubit>().setValue(value, 'consignerID'),
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(),
                   ]),
@@ -89,7 +87,7 @@ class _CreateBillFormState extends State<CreateBillForm> {
                     AutoSuggestBoxItem(value: 'new', label: 'Nuevo'),
                     AutoSuggestBoxItem(value: 'none', label: 'Ninguno'),
                     ...context
-                        .read<ConsigneerBloc>()
+                        .read<ConsignerBloc>()
                         .state
                         .consigners
                         .map((e) => AutoSuggestBoxItem(
@@ -104,29 +102,21 @@ class _CreateBillFormState extends State<CreateBillForm> {
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(),
                   ]),
-                  onInputChange: (value) => context
-                      .read<FormCubit>()
-                      .setValue(value, 'containerNumber'),
-                  value: state.values['containerNumber'] ?? ""),
+                  value: state.values['containerNumber']),
               const SizedBox(height: 10),
               TextboxForm(
-                  onInputChange: (value) =>
-                      context.read<FormCubit>().setValue(value, 'bl'),
                   name: 'bl',
                   label: "No. de BL",
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(),
                   ]),
-                  value: state.values['bl'] ?? ""),
+                  value: state.values['bl']),
               const SizedBox(height: 10),
               TextboxForm(
-                  onInputChange: (value) => context
-                      .read<FormCubit>()
-                      .setValue(value, 'termsAndConditions'),
                   name: 'termsAndConditions',
                   label: "Terminos y condiciones",
                   maxLines: null,
-                  value: state.values['termsAndConditions'] ?? ""),
+                  value: state.values['termsAndConditions']),
               const SizedBox(height: 10),
               Button(
                   onPressed: () {

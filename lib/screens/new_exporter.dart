@@ -1,7 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_pdf/bloc/exporter_bloc.dart';
 import 'package:gen_pdf/common.dart';
-import 'package:gen_pdf/widgets/exporter_form.dart';
+import 'package:gen_pdf/widgets/base_form.dart';
+import 'package:gen_pdf/widgets/exporter/form_inputs.dart';
 import 'package:window_manager/window_manager.dart';
 
 class NewExporter extends StatelessWidget {
@@ -52,7 +53,8 @@ class NewExporter extends StatelessWidget {
                     minimum: const EdgeInsets.fromLTRB(10, 12, 10, 20),
                     child: Column(
                       children: [
-                        ExporterForm(
+                        BaseForm(
+                          inputs: (values) => formInputs(values),
                           onSubmit: (values) async {
                             if (isEditing) {
                               context
