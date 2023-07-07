@@ -49,18 +49,13 @@ class NewBill extends StatelessWidget {
           },
           child: ScaffoldPage(
               header: const PageHeader(title: Text("Completa el formulario")),
-              content: SingleChildScrollView(
-                  child: SafeArea(
-                      minimum: const EdgeInsets.fromLTRB(10, 12, 10, 20),
-                      child: Column(
-                        children: [
-                          CreateBillForm(
-                            onSubmit: (Map<String, dynamic> values) {
-                              print(values);
-                            },
-                          )
-                        ],
-                      )))),
+              content: SafeArea(
+                  minimum: const EdgeInsets.fromLTRB(10, 12, 10, 20),
+                  child: CreateBillForm(
+                    onSubmit: (Map<String, dynamic> values) {
+                      print(values);
+                    },
+                  ))),
         ));
   }
 }

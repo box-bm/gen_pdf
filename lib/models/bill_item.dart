@@ -3,18 +3,41 @@ import 'package:gen_pdf/database/reference.dart';
 import 'package:gen_pdf/database/table.dart';
 import 'package:gen_pdf/database/table_interface.dart';
 import 'package:gen_pdf/models/bill.dart';
+import 'package:uuid/uuid.dart';
 
 class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
-  late String id;
-  late String billId;
-  late int numeration;
-  late String description;
-  late int quantity;
-  late String prs;
-  late double unitPrice;
-  late double total;
+  String id;
+  String billId;
+  String numeration;
+  String description;
+  int quantity;
+  String prs;
+  double unitPrice;
+  double total;
 
-  BillItem();
+  BillItem({
+    this.id = "",
+    this.billId = "",
+    this.numeration = "",
+    this.description = "",
+    this.quantity = 0,
+    this.prs = "",
+    this.unitPrice = 0,
+    this.total = 0,
+  });
+
+  factory BillItem.newByMap(Map<String, dynamic> values) {
+    return BillItem(
+      id: const Uuid().v4(),
+      billId: values["billId"] ?? "",
+      numeration: values["numeration"],
+      description: values["description"],
+      quantity: (values["quantity"] as num).toInt(),
+      prs: values["prs"],
+      unitPrice: (values["unitPrice"] as num).toDouble(),
+      total: (values["total"] as num).toDouble(),
+    );
+  }
 
   BillItem.create({
     required this.billId,
@@ -29,7 +52,7 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
 
   @override
   BillItem copyWith({
-    int? numeration,
+    String? numeration,
     String? billId,
     String? description,
     int? quantity,
@@ -83,10 +106,10 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
         Column(name: "billID", columnType: SQLiteDataType.text),
         Column(name: "numeration", columnType: SQLiteDataType.text),
         Column(name: "description", columnType: SQLiteDataType.text),
-        Column(name: "quantity", columnType: SQLiteDataType.text),
+        Column(name: "quantity", columnType: SQLiteDataType.integer),
         Column(name: "prs", columnType: SQLiteDataType.text),
-        Column(name: "unitPrice", columnType: SQLiteDataType.text),
-        Column(name: "total", columnType: SQLiteDataType.text),
+        Column(name: "unitPrice", columnType: SQLiteDataType.real),
+        Column(name: "total", columnType: SQLiteDataType.real),
       ];
 
   @override

@@ -22,7 +22,6 @@ class FormCubit extends Cubit<FormState> {
 
   void submit() {
     emit(Submitted(state.values));
-    resetForm();
   }
 
   void cancel() {
