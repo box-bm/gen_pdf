@@ -35,18 +35,17 @@ class NewBill extends StatelessWidget {
         ),
         content: BlocListener<BillsBloc, BillsState>(
           listener: (context, state) {
-            // if (state is ConsignerSaved) {
-            //   Navigator.pop(context);
-            //   displayInfoBar(
-            //     context,
-            //     builder: (context, close) => InfoBar(
-            //       title: Text(isEditing
-            //           ? "Consignatario modificado"
-            //           : "Consignatario creado"),
-            //       severity: InfoBarSeverity.success,
-            //     ),
-            //   );
-            // }
+            if (state is BillSaved) {
+              Navigator.pop(context);
+              displayInfoBar(
+                context,
+                builder: (context, close) => InfoBar(
+                  title:
+                      Text(isEditing ? "Factura modificada" : "Factura creada"),
+                  severity: InfoBarSeverity.success,
+                ),
+              );
+            }
           },
           child: ScaffoldPage(
               header: PageHeader(

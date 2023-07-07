@@ -30,6 +30,16 @@ class BillItemRepository {
     await BillItem().delete(id);
   }
 
+  Future deleteBillItemsByBillID(String id) async {
+    var billitem = BillItem();
+    var db = await billitem.databaseProvider.db;
+    var batch = db.batch();
+
+    batch.delete(billitem.tableName, where: "billId = ?", whereArgs: [id]);
+
+    await batch.commit();
+  }
+
   Future<List<BillItem>> getBillItems() async {
     BillItem bill = BillItem();
     return await bill.getAll();

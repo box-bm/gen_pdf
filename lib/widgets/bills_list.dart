@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gen_pdf/bloc/exporter_bloc.dart';
+import 'package:gen_pdf/bloc/bills_bloc.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/cubit/form_cubit.dart';
 import 'package:gen_pdf/screens/new_exporter.dart';
@@ -19,7 +19,7 @@ class _BillsListState extends State<BillsList> {
 
   @override
   void initState() {
-    textEditingController.text = context.read<ExporterBloc>().state.searchValue;
+    textEditingController.text = context.read<BillsBloc>().state.searchValue;
     super.initState();
   }
 
@@ -36,26 +36,26 @@ class _BillsListState extends State<BillsList> {
                 child: Icon(FluentIcons.search),
               ),
               onChanged: (value) =>
-                  context.read<ExporterBloc>().add(Filter(value)),
+                  context.read<BillsBloc>().add(Filter(value)),
               suffixMode: OverlayVisibilityMode.always,
               placeholder: "Buscar",
             )),
-        BlocBuilder<ExporterBloc, ExporterState>(builder: (context, state) {
-          if (state is LoadingExporters) {
+        BlocBuilder<BillsBloc, BillsState>(builder: (context, state) {
+          if (state is LoadingBills) {
             return const ProgressRing();
           }
-          if (state.exporters.isEmpty) {
+          if (state.bills.isEmpty) {
             return const EmptyList();
           }
 
           return Expanded(
               child: ListView.builder(
-                  itemCount: state.exporters.length,
+                  itemCount: state.bills.length,
                   itemBuilder: (context, index) => ListTile.selectable(
                         selected: widget.selecteds
-                            .contains(state.exporters.elementAt(index).id),
+                            .contains(state.bills.elementAt(index).id),
                         onSelectionChange: (value) => widget.onSelect(
-                            state.exporters.elementAt(index).id, value),
+                            state.bills.elementAt(index).id, value),
                         selectionMode: ListTileSelectionMode.multiple,
                         trailing: Row(children: [
                           IconButton(
@@ -63,10 +63,8 @@ class _BillsListState extends State<BillsList> {
                               onPressed: widget.selecteds.isNotEmpty
                                   ? null
                                   : () {
-                                      context.read<ExporterBloc>().add(
-                                          DeleteExporter(state.exporters
-                                              .elementAt(index)
-                                              .id));
+                                      context.read<BillsBloc>().add(DeleteBill(
+                                          state.bills.elementAt(index).id));
                                     }),
                           const SizedBox(width: 10),
                           IconButton(
@@ -74,18 +72,27 @@ class _BillsListState extends State<BillsList> {
                               onPressed: widget.selecteds.isNotEmpty
                                   ? null
                                   : () {
-                                      context.read<FormCubit>().setValues(state
-                                          .exporters
-                                          .elementAt(index)
-                                          .toMap());
+                                      context.read<FormCubit>().setValues(
+                                          state.bills.elementAt(index).toMap());
                                       Navigator.pushNamed(
                                           context, NewExporter.route,
                                           arguments: true);
                                     })
                         ]),
-                        title: Text(state.exporters.elementAt(index).name),
-                        subtitle:
-                            Text(state.exporters.elementAt(index).address),
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(state.bills.elementAt(index).billNumber),
+                            Text(
+                              state.bills.elementAt(index).consignerName,
+                              style: FluentTheme.of(context).typography.body,
+                            ),
+                            Text(
+                              state.bills.elementAt(index).bl,
+                              style: FluentTheme.of(context).typography.body,
+                            )
+                          ],
+                        ),
                       )));
         })
       ],

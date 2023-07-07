@@ -65,12 +65,15 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       add(const GetAllBills());
     });
     on<EditBill>((event, emit) async {
-      await billRepository.updateBill(event.values);
+      add(DeleteBill(event.values['id']));
+      add(CreateBill(event.values));
+
       emit(BillSaved(searchValue: state.searchValue));
       add(const GetAllBills());
     });
     on<DeleteBill>((event, emit) async {
       await billRepository.deleteBill(event.id);
+      await billItemRepository.deleteBillItemsByBillID(event.id);
       emit(DeletingBill(searchValue: state.searchValue));
       add(const GetAllBills());
     });
@@ -78,6 +81,7 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       emit(DeletingBill(searchValue: state.searchValue));
       for (var id in event.ids) {
         await billRepository.deleteBill(id);
+        await billItemRepository.deleteBillItemsByBillID(id);
       }
       emit(DeletedBill(searchValue: state.searchValue));
       add(const GetAllBills());

@@ -3,6 +3,7 @@ import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/cubit/form_cubit.dart';
 import 'package:gen_pdf/screens/new_bill.dart';
 import 'package:gen_pdf/utils/gen_test_pdf.dart';
+import 'package:gen_pdf/widgets/bills_list.dart';
 
 class Bills extends StatefulWidget {
   const Bills({super.key});
@@ -45,6 +46,20 @@ class _BillsState extends State<Bills> {
                       label: const Text("Pdf de prueba")),
                 ])),
         resizeToAvoidBottomInset: true,
-        content: const SafeArea(child: SizedBox()));
+        content: SafeArea(
+            child: BillsList(
+          selecteds: selecteds,
+          onSelect: (id, selected) {
+            if (selected) {
+              setState(() {
+                selecteds.add(id);
+              });
+            } else {
+              setState(() {
+                selecteds.remove(id);
+              });
+            }
+          },
+        )));
   }
 }

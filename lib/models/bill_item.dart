@@ -103,7 +103,7 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
   @override
   List<Column> get columns => [
         Column(name: "id", columnType: SQLiteDataType.text),
-        Column(name: "billID", columnType: SQLiteDataType.text),
+        Column(name: "billId", columnType: SQLiteDataType.text),
         Column(name: "numeration", columnType: SQLiteDataType.text),
         Column(name: "description", columnType: SQLiteDataType.text),
         Column(name: "quantity", columnType: SQLiteDataType.integer),
@@ -114,7 +114,7 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
 
   @override
   List<Reference> get references => [
-        Reference(table: Bill.tableName_, column: 'billID', remoteColumn: 'id'),
+        Reference(table: Bill.tableName_, column: 'billId', remoteColumn: 'id'),
       ];
 
   @override
