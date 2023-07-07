@@ -10,12 +10,10 @@ import 'package:gen_pdf/widgets/exporter/form_inputs.dart' as exporter_input;
 import 'package:gen_pdf/widgets/consigne/form_inputs.dart' as consigner_inputs;
 import 'package:gen_pdf/widgets/inputs/dropdown_form.dart';
 import 'package:gen_pdf/widgets/inputs/input_params.dart';
-import 'package:gen_pdf/widgets/inputs/submit_button_form.dart';
 import 'package:gen_pdf/widgets/inputs/textbox_form.dart';
 
 class CreateBillForm extends StatefulWidget {
-  final Function(Map<String, dynamic> values) onSubmit;
-  const CreateBillForm({super.key, required this.onSubmit});
+  const CreateBillForm({super.key});
 
   @override
   State<CreateBillForm> createState() => _CreateBillFormState();
@@ -202,18 +200,6 @@ class _CreateBillFormState extends State<CreateBillForm> {
               FormBuilderValidators.required(),
             ]),
             value: state.values['bl']),
-        const SizedBox(height: 10),
-        TextboxForm(
-            name: 'termsAndConditions',
-            label: "Terminos y condiciones",
-            maxLines: null,
-            value: state.values['termsAndConditions']),
-        const SizedBox(height: 10),
-        SubmitButtonForm(
-            formKey: _formkey,
-            onSubmit: () {
-              widget.onSubmit(state.values);
-            })
       ],
     );
   }

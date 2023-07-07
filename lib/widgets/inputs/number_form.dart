@@ -8,7 +8,7 @@ class NumberForm extends StatefulWidget {
   final String label;
   final String? placeholder;
   final num? value;
-  final String? Function(Object?)? validator;
+  final String? Function(num?)? validator;
   final Function(Object?)? onInputChange;
   const NumberForm({
     super.key,
@@ -67,6 +67,8 @@ class _NumberFormState extends State<NumberForm> {
                 value: value,
                 placeholder: widget.placeholder,
                 onChanged: (value) => field.didChange(value),
+                highlightColor: field.hasError ? Colors.red : null,
+                showCursor: true,
               ),
             ));
   }

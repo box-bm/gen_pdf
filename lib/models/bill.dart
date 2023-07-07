@@ -16,7 +16,6 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
 
   late int containerNumber;
   late String bl;
-  late String termsAndConditions;
   late List<BillItem> items;
   late double total;
 
@@ -34,7 +33,6 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     required this.consignerNIT,
     required this.containerNumber,
     required this.bl,
-    required this.termsAndConditions,
     this.total = 0,
   });
 
@@ -49,7 +47,6 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     String? consignerNIT,
     int? containerNumber,
     String? bl,
-    String? termsAndConditions,
     List<BillItem>? items,
     double? total,
   }) {
@@ -65,7 +62,6 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       consignerNIT: consignerNIT ?? this.consignerNIT,
       containerNumber: containerNumber ?? this.containerNumber,
       bl: bl ?? this.bl,
-      termsAndConditions: termsAndConditions ?? this.termsAndConditions,
       total: total ?? this.total,
     );
   }
@@ -84,7 +80,6 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       consignerNIT: map['consignerNIT'],
       containerNumber: map['containerNumber'],
       bl: map['bl'],
-      termsAndConditions: map['termsAndConditions'],
     );
   }
 
@@ -101,7 +96,6 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       "consignerNIT": consignerNIT,
       "containerNumber": containerNumber,
       "bl": bl,
-      "termsAndConditions": termsAndConditions,
       "total": total,
     };
   }
@@ -160,11 +154,6 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
         ),
         Column(
           name: 'bl',
-          columnType: SQLiteDataType.text,
-          notNull: true,
-        ),
-        Column(
-          name: 'termsAndConditions',
           columnType: SQLiteDataType.text,
           notNull: true,
         ),

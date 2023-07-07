@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/cubit/form_cubit.dart' as form_cubit;
 import 'package:gen_pdf/widgets/inputs/number_form.dart';
@@ -33,19 +34,37 @@ class _NewItemFormState extends State<NewItemForm> {
                     style: FluentTheme.of(context).typography.title),
                 const SizedBox(height: 15),
                 TextboxForm(
-                    name: "newItem.numeration",
-                    label: "Numeracion",
-                    value: state.values["newItem.numeration"]),
+                  name: "newItem.numeration",
+                  label: "Numeracion",
+                  value: state.values["newItem.numeration"],
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                  ]),
+                ),
                 const SizedBox(height: 10),
                 TextboxForm(
-                    name: "newItem.description",
-                    label: "Descripcion",
-                    value: state.values["newItem.description"]),
+                  name: "newItem.description",
+                  label: "Descripcion",
+                  value: state.values["newItem.description"],
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                  ]),
+                ),
                 const SizedBox(height: 10),
                 NumberForm(
-                    name: "newItem.quantity",
-                    label: "Cantidad",
-                    value: state.values["newItem.quantity"]),
+                  name: "newItem.quantity",
+                  label: "Cantidad",
+                  value: state.values["newItem.quantity"],
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    (value) {
+                      if ((value ?? 0) < 0) {
+                        return "Debe ser una cantidad mayor a 0";
+                      }
+                      return null;
+                    }
+                  ]),
+                ),
                 const SizedBox(height: 10),
                 TextboxForm(
                     name: "newItem.prs",
@@ -53,9 +72,13 @@ class _NewItemFormState extends State<NewItemForm> {
                     value: state.values["newItem.prs"]),
                 const SizedBox(height: 10),
                 NumberForm(
-                    name: "newItem.unitPrice",
-                    label: "Precio Unitario",
-                    value: state.values["newItem.unitPrice"]),
+                  name: "newItem.unitPrice",
+                  label: "Precio Unitario",
+                  value: state.values["newItem.unitPrice"],
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                  ]),
+                ),
                 const SizedBox(height: 10),
                 SubmitButtonForm(
                   formKey: _key,
@@ -82,6 +105,10 @@ class _NewItemFormState extends State<NewItemForm> {
 
                     for (var element in values) {
                       mapValues.addAll(element);
+                    }
+
+                    if (!mapValues.containsKey('prs')) {
+                      mapValues.addAll({'prs': ""});
                     }
 
                     mapValues.addAll({

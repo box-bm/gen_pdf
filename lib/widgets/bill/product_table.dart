@@ -1,4 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_pdf/common.dart';
+import 'package:gen_pdf/cubit/form_cubit.dart' as form_cubit;
 import 'package:gen_pdf/models/bill_item.dart';
 import 'package:gen_pdf/widgets/bill/new_item_form.dart';
 
@@ -27,6 +29,9 @@ class _ProductTableState extends State<ProductTable> {
     setState(() {
       this.items = items;
     });
+
+    context.read<form_cubit.FormCubit>().setValue(
+        items.isEmpty ? [] : items.map((e) => e.toMap()).toList(), "items");
   }
 
   @override
@@ -35,10 +40,28 @@ class _ProductTableState extends State<ProductTable> {
       children: [
         PageHeader(
             padding: 0,
-            title: Text(
-              "Productos",
-              style: FluentTheme.of(context).typography.bodyLarge,
-            ),
+            title: BlocBuilder<form_cubit.FormCubit, form_cubit.FormState>(
+                builder: (context, state) {
+              var items = (state.values['items'] as List<dynamic>? ?? []);
+
+              double total = items.isEmpty
+                  ? 0
+                  : items
+                      .map((e) => e['total'])
+                      .toList()
+                      .reduce((value, element) => value + element);
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text("Productos"),
+                  Text(
+                    "Total: \$${total.toStringAsFixed(2)}",
+                    style: FluentTheme.of(context).typography.bodyLarge,
+                  )
+                ],
+              );
+            }),
             commandBar: CommandBar(
                 mainAxisAlignment: MainAxisAlignment.end,
                 primaryItems: [
@@ -49,9 +72,17 @@ class _ProductTableState extends State<ProductTable> {
                             builder: (context) => NewItemForm(
                                   onSubmit: (values) {
                                     var newElement = BillItem.newByMap(values);
+                                    var newList = [...items, newElement];
                                     setState(() {
-                                      items = [...items, newElement];
+                                      items = newList;
                                     });
+                                    context
+                                        .read<form_cubit.FormCubit>()
+                                        .setValue(
+                                            newList
+                                                .map((e) => e.toMap())
+                                                .toList(),
+                                            "items");
                                     Navigator.pop(context);
                                   },
                                 ));
@@ -98,7 +129,7 @@ class _ProductTableState extends State<ProductTable> {
                     ),
                     Container(
                         padding: const EdgeInsets.all(4),
-                        child: Text("Total",
+                        child: Text("Sub total",
                             style:
                                 FluentTheme.of(context).typography.bodyStrong)),
                     Container(
@@ -123,10 +154,11 @@ class _ProductTableState extends State<ProductTable> {
                                 child: Text(e.prs)),
                             Container(
                                 padding: const EdgeInsets.all(4),
-                                child: Text(e.unitPrice.toStringAsFixed(2))),
+                                child: Text(
+                                    "\$${e.unitPrice.toStringAsFixed(2)}")),
                             Container(
                                 padding: const EdgeInsets.all(4),
-                                child: Text(e.total.toStringAsFixed(2))),
+                                child: Text("\$${e.total.toStringAsFixed(2)}")),
                             Container(
                                 padding: const EdgeInsets.all(4),
                                 child: Row(
