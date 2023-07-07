@@ -1,5 +1,7 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:gen_pdf/common.dart';
+import 'package:gen_pdf/cubit/form_cubit.dart';
 
 class DropdownForm extends StatefulWidget {
   final String name;
@@ -63,6 +65,7 @@ class _DropdownFormState extends State<DropdownForm> {
   }
 
   void onChangeHandler(Object? value) {
+    context.read<FormCubit>().setValue(value, widget.name);
     if (widget.onInputChange != null) {
       widget.onInputChange!(value);
     }
@@ -78,6 +81,8 @@ class _DropdownFormState extends State<DropdownForm> {
       builder: (field) => InfoLabel(
           label: widget.label,
           child: AutoSuggestBox(
+              onChanged: (text, reason) =>
+                  text.isEmpty ? onChangeHandler('') : null,
               controller: editingController,
               onSelected: (value) => field.didChange(value.value),
               placeholder: widget.placeholder,

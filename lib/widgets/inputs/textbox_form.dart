@@ -10,10 +10,13 @@ class TextboxForm extends StatefulWidget {
   final String? value;
   final String? Function(Object?)? validator;
   final int? maxLines;
+  final bool disabled;
+
   const TextboxForm({
     super.key,
     required this.name,
     required this.label,
+    this.disabled = false,
     this.placeholder,
     this.validator,
     required this.value,
@@ -71,6 +74,7 @@ class _TextboxFormState extends State<TextboxForm> {
                 controller: editingController,
                 placeholder: widget.placeholder,
                 expands: false,
+                enabled: !widget.disabled,
                 onChanged: field.didChange,
                 onSubmitted: (_) => field.save(),
                 unfocusedColor: field.hasError ? Colors.red : null,

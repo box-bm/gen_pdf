@@ -72,14 +72,14 @@ class _HomeState extends State<Home> {
                   context.read<ExporterBloc>().add(const GetAllExporters());
                 },
                 title: const Text("Exportadores"),
-                icon: const Icon(FluentIcons.contact),
+                icon: const Icon(FluentIcons.people),
                 body: const Exporters()),
             PaneItem(
                 onTap: () {
                   context.read<ConsignerBloc>().add(const GetAllConsigners());
                 },
                 title: const Text("Clientes"),
-                icon: const Icon(FluentIcons.a_a_d_logo),
+                icon: const Icon(FluentIcons.contact),
                 body: const Consigners()),
           ]),
     );

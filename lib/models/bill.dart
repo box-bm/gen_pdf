@@ -10,7 +10,6 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   late int billNumber;
   late String exporterName;
   late String exporterAddress;
-
   late String consignerName;
   late String consignerAddress;
   late String consignerNIT;

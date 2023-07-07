@@ -7,6 +7,7 @@ import 'package:nit_validator/nit_validator.dart';
 
 List<Widget> formInputs(
   Map<String, dynamic> values, {
+  bool disabled = false,
   InputParams nameParams = const InputParams(name: 'name', label: 'Nombre'),
   InputParams addressParams =
       const InputParams(name: "address", label: "Direccion"),
@@ -15,11 +16,13 @@ List<Widget> formInputs(
     [
       ...personForm(
         values,
+        disabled: disabled,
         nameParams: nameParams,
         addressParams: addressParams,
       ),
       const SizedBox(height: 10),
       TextboxForm(
+          disabled: disabled,
           value: values[nitParams.name],
           name: nitParams.name,
           label: nitParams.label,
