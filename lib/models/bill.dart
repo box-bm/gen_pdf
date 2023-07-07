@@ -3,27 +3,56 @@ import 'package:gen_pdf/database/reference.dart';
 import 'package:gen_pdf/database/table.dart';
 import 'package:gen_pdf/database/table_interface.dart';
 import 'package:gen_pdf/models/bill_item.dart';
+import 'package:uuid/uuid.dart';
 
 class Bill extends Table<Bill> implements TableInterface<Bill> {
-  late String id;
-  late DateTime date;
-  late int billNumber;
-  late String exporterName;
-  late String exporterAddress;
-  late String consignerName;
-  late String consignerAddress;
-  late String consignerNIT;
+  String id;
+  DateTime? date;
+  String billNumber;
+  String exporterName;
+  String exporterAddress;
+  String consignerName;
+  String consignerAddress;
+  String consignerNIT;
+  String containerNumber;
+  String bl;
+  List<BillItem> items;
+  double total;
 
-  late int containerNumber;
-  late String bl;
-  late List<BillItem> items;
-  late double total;
+  Bill({
+    this.id = "",
+    this.date,
+    this.billNumber = "",
+    this.exporterName = "",
+    this.exporterAddress = "",
+    this.consignerName = "",
+    this.consignerAddress = "",
+    this.consignerNIT = "",
+    this.containerNumber = "",
+    this.bl = "",
+    this.items = const [],
+    this.total = 0,
+  });
 
-  Bill();
+  factory Bill.newByMap(Map<String, dynamic> values) {
+    return Bill(
+      id: const Uuid().v4(),
+      date: DateTime.now(),
+      billNumber: values['billNumber'],
+      exporterName: values['exporterName'],
+      exporterAddress: values['exporterAddress'],
+      consignerName: values['consignerName'],
+      consignerAddress: values['consignerAddress'],
+      consignerNIT: values['consignerNIT'],
+      containerNumber: values['containerNumber'],
+      bl: values['bl'],
+      total: values['total'],
+    );
+  }
 
   Bill.create({
     required this.id,
-    required this.items,
+    this.items = const [],
     required this.date,
     required this.billNumber,
     required this.exporterName,
@@ -39,13 +68,13 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   @override
   Bill copyWith({
     DateTime? date,
-    int? billNumber,
+    String? billNumber,
     String? exporterName,
     String? exporterAddress,
     String? consignerName,
     String? consignerAddress,
     String? consignerNIT,
-    int? containerNumber,
+    String? containerNumber,
     String? bl,
     List<BillItem>? items,
     double? total,
@@ -70,8 +99,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   Bill fromMap(Map<String, dynamic> map) {
     return Bill.create(
       id: map['id'],
-      items: [],
-      date: map['date'],
+      date: DateTime.tryParse(map['date'] ?? DateTime.now().toIso8601String()),
       billNumber: map['billNumber'],
       exporterName: map['exporterName'],
       exporterAddress: map['exporterAddress'],
@@ -87,7 +115,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   Map<String, dynamic> toMap() {
     return {
       "id": id,
-      "date": date,
+      "date": (date ?? DateTime.now()).toIso8601String(),
       "billNumber": billNumber,
       "exporterName": exporterName,
       "exporterAddress": exporterAddress,
@@ -120,7 +148,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
         ),
         Column(
           name: 'billNumber',
-          columnType: SQLiteDataType.integer,
+          columnType: SQLiteDataType.text,
           notNull: true,
         ),
         Column(
@@ -149,7 +177,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
         ),
         Column(
           name: 'containerNumber',
-          columnType: SQLiteDataType.integer,
+          columnType: SQLiteDataType.text,
           notNull: true,
         ),
         Column(

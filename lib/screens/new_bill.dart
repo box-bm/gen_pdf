@@ -83,6 +83,7 @@ class NewBill extends StatelessWidget {
                                             "Agregue al menos un elemento")));
                                 return;
                               }
+                              context.read<BillsBloc>().add(CreateBill(data));
                             },
                             icon: const Icon(FluentIcons.save),
                             label: const Text("Guardar Factura"))
