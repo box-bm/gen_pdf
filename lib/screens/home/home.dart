@@ -1,7 +1,3 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gen_pdf/bloc/bills_bloc.dart';
-import 'package:gen_pdf/bloc/consigner_bloc.dart';
-import 'package:gen_pdf/bloc/exporter_bloc.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -64,23 +60,14 @@ class _HomeState extends State<Home> {
           displayMode: PaneDisplayMode.auto,
           items: [
             PaneItem(
-                onTap: () {
-                  context.read<BillsBloc>().add(const GetAllBills());
-                },
                 title: const Text("Facturas"),
                 icon: const Icon(FluentIcons.bill),
                 body: const Bills()),
             PaneItem(
-                onTap: () {
-                  context.read<ExporterBloc>().add(const GetAllExporters());
-                },
                 title: const Text("Exportadores"),
                 icon: const Icon(FluentIcons.people),
                 body: const Exporters()),
             PaneItem(
-                onTap: () {
-                  context.read<ConsignerBloc>().add(const GetAllConsigners());
-                },
                 title: const Text("Clientes"),
                 icon: const Icon(FluentIcons.contact),
                 body: const Consigners()),

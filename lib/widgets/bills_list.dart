@@ -68,6 +68,15 @@ class _BillsListState extends State<BillsList> {
                                     }),
                           const SizedBox(width: 10),
                           IconButton(
+                              icon: const Icon(FluentIcons.pdf),
+                              onPressed: widget.selecteds.isNotEmpty
+                                  ? null
+                                  : () {
+                                      context.read<BillsBloc>().add(PrintBill(
+                                          state.bills.elementAt(index).id));
+                                    }),
+                          const SizedBox(width: 10),
+                          IconButton(
                               icon: const Icon(FluentIcons.edit),
                               onPressed: widget.selecteds.isNotEmpty
                                   ? null

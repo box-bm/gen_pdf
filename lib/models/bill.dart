@@ -98,17 +98,18 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   @override
   Bill fromMap(Map<String, dynamic> map) {
     return Bill.create(
-      id: map['id'],
-      date: DateTime.tryParse(map['date'] ?? DateTime.now().toIso8601String()),
-      billNumber: map['billNumber'],
-      exporterName: map['exporterName'],
-      exporterAddress: map['exporterAddress'],
-      consignerName: map['consignerName'],
-      consignerAddress: map['consignerAddress'],
-      consignerNIT: map['consignerNIT'],
-      containerNumber: map['containerNumber'],
-      bl: map['bl'],
-    );
+        id: map['id'],
+        date:
+            DateTime.tryParse(map['date'] ?? DateTime.now().toIso8601String()),
+        billNumber: map['billNumber'],
+        exporterName: map['exporterName'],
+        exporterAddress: map['exporterAddress'],
+        consignerName: map['consignerName'],
+        consignerAddress: map['consignerAddress'],
+        consignerNIT: map['consignerNIT'],
+        containerNumber: map['containerNumber'],
+        bl: map['bl'],
+        total: map['total']);
   }
 
   @override

@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:gen_pdf/models/bill.dart';
 import 'package:gen_pdf/utils/file_picker.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
-Future<void> genTestPDF() async {
+Future<void> genPDF(Bill bill) async {
   final pdf = Document();
 
   var logo = MemoryImage(
@@ -69,7 +70,7 @@ Future<void> genTestPDF() async {
                                           CrossAxisAlignment.stretch,
                                       children: [
                                         Text("Fecha", style: boldText),
-                                        Text(DateTime.now().toIso8601String())
+                                        Text(bill.date.toString())
                                       ]))),
                           Expanded(
                               child: Container(
@@ -81,7 +82,7 @@ Future<void> genTestPDF() async {
                                           CrossAxisAlignment.stretch,
                                       children: [
                                         Text("No", style: boldText),
-                                        Text("123")
+                                        Text(bill.billNumber)
                                       ])))
                         ]),
                         Container(
@@ -91,15 +92,15 @@ Future<void> genTestPDF() async {
                                   flex: 2,
                                   child: Container(
                                       padding: const EdgeInsets.all(4),
-                                      child:
-                                          Text("Exportador: Test exportador"))),
+                                      child: Text(
+                                          "Exportador: ${bill.exporterName}"))),
                               Expanded(
                                   child: Container(
                                       decoration:
                                           BoxDecoration(border: contentBorder),
                                       padding: const EdgeInsets.all(4),
                                       child: Text(
-                                          "Consignatario: Test consignatario"))),
+                                          "Consignatario: ${bill.consignerName}"))),
                             ])),
                         Container(
                             decoration: BoxDecoration(border: contentBorder),
@@ -113,7 +114,7 @@ Future<void> genTestPDF() async {
                                               CrossAxisAlignment.stretch,
                                           children: [
                                             Text("Direccion", style: boldText),
-                                            Text("Test direccion")
+                                            Text(bill.exporterAddress)
                                           ]))),
                               Expanded(
                                   child: Container(
@@ -127,14 +128,14 @@ Future<void> genTestPDF() async {
                                                 padding:
                                                     const EdgeInsets.all(4),
                                                 child: Text(
-                                                    "Direccion: Test Direccion",
-                                                    style: boldText)),
+                                                    "Direccion: ${bill.consignerAddress}")),
                                             Container(
                                                 decoration: BoxDecoration(
                                                     border: contentBorder),
                                                 padding:
                                                     const EdgeInsets.all(4),
-                                                child: Text("Nit: test NIT"))
+                                                child: Text(
+                                                    "Nit: ${bill.consignerNIT.isEmpty ? "-" : bill.consignerNIT}"))
                                           ]))),
                             ])),
                         Container(
@@ -146,13 +147,14 @@ Future<void> genTestPDF() async {
                                       decoration:
                                           BoxDecoration(border: contentBorder),
                                       padding: const EdgeInsets.all(4),
-                                      child: Text("No. Contenedor"))),
+                                      child: Text(
+                                          "No. Contenedor: ${bill.containerNumber}"))),
                               Expanded(
                                   child: Container(
                                       decoration:
                                           BoxDecoration(border: contentBorder),
                                       padding: const EdgeInsets.all(4),
-                                      child: Text("No. B/L"))),
+                                      child: Text("No. B/L: ${bill.bl}"))),
                             ])),
                         Container(
                             decoration: BoxDecoration(border: contentBorder),
@@ -160,87 +162,221 @@ Future<void> genTestPDF() async {
                               Expanded(
                                   child: Container(
                                       constraints:
-                                          const BoxConstraints(minHeight: 90),
+                                          const BoxConstraints(minHeight: 70),
                                       padding: const EdgeInsets.all(4),
-                                      child: Text("No. Total de piezas"))),
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            Text("No. Total de piezas"),
+                                            Center(
+                                                child: Text(
+                                                    bill.items
+                                                        .map((e) => e.quantity)
+                                                        .reduce(
+                                                            (value, element) =>
+                                                                value + element)
+                                                        .toString(),
+                                                    textAlign: TextAlign.center,
+                                                    style: Theme.of(context)
+                                                        .header2))
+                                          ]))),
                               Expanded(
                                   child: Container(
                                       constraints:
-                                          const BoxConstraints(minHeight: 90),
+                                          const BoxConstraints(minHeight: 70),
                                       decoration: const BoxDecoration(
                                           border: Border.symmetric(
                                               vertical: BorderSide())),
                                       padding: const EdgeInsets.all(4),
-                                      child: Text("Terminos y condiciones"))),
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            Text("Terminos y condiciones"),
+                                            SizedBox(height: 10),
+                                            Text(
+                                                "*FACTORES DE BALANCES/OUTLET ",
+                                                style: Theme.of(context)
+                                                    .defaultTextStyle
+                                                    .copyWith(fontSize: 10)),
+                                            Text("**CIF POR PUERTO QUETZAL ",
+                                                style: Theme.of(context)
+                                                    .defaultTextStyle
+                                                    .copyWith(fontSize: 10)),
+                                            Text("***90 DÍAS DE CREDITO",
+                                                style: Theme.of(context)
+                                                    .defaultTextStyle
+                                                    .copyWith(fontSize: 10)),
+                                          ]))),
                             ])),
                         Table(
                             border: TableBorder.all(),
                             defaultVerticalAlignment:
                                 TableCellVerticalAlignment.middle,
                             columnWidths: {
-                              0: const FlexColumnWidth(1),
-                              1: const FlexColumnWidth(2),
+                              0: const FixedColumnWidth(55),
+                              1: const FlexColumnWidth(3),
                               2: const FlexColumnWidth(1),
-                              3: const FlexColumnWidth(1),
-                              4: const FlexColumnWidth(1),
-                              5: const FlexColumnWidth(1),
+                              3: const FixedColumnWidth(55),
+                              4: const FlexColumnWidth(2),
+                              5: const FlexColumnWidth(2),
                             },
                             children: [
                               TableRow(children: [
-                                Text('Numeracion', textAlign: TextAlign.center),
-                                Text('Descripcion',
-                                    textAlign: TextAlign.center),
-                                Text('Cantidad', textAlign: TextAlign.center),
-                                Text('PRS', textAlign: TextAlign.center),
-                                Text('Precio Unitario',
-                                    textAlign: TextAlign.center),
-                                Text('Monto total',
-                                    textAlign: TextAlign.center),
+                                Container(
+                                    padding: const EdgeInsets.all(2),
+                                    child: Text('Numeracion',
+                                        textAlign: TextAlign.center)),
+                                Container(
+                                    padding: const EdgeInsets.all(2),
+                                    child: Text('Descripcion',
+                                        textAlign: TextAlign.center)),
+                                Container(
+                                    padding: const EdgeInsets.all(2),
+                                    child: Text('Cantidad',
+                                        textAlign: TextAlign.center)),
+                                Container(
+                                    padding: const EdgeInsets.all(2),
+                                    child: Text('PRS',
+                                        textAlign: TextAlign.center)),
+                                Container(
+                                    padding: const EdgeInsets.all(2),
+                                    child: Text('Precio Unitario',
+                                        textAlign: TextAlign.center)),
+                                Container(
+                                    padding: const EdgeInsets.all(2),
+                                    child: Text('Monto total',
+                                        textAlign: TextAlign.center)),
+                              ]),
+                              ...bill.items
+                                  .map(
+                                    (e) => TableRow(children: [
+                                      Container(
+                                          padding: const EdgeInsets.all(2),
+                                          child: Text(e.numeration,
+                                              textAlign: TextAlign.center)),
+                                      Container(
+                                          padding: const EdgeInsets.all(2),
+                                          child: Text(e.description,
+                                              textAlign: TextAlign.center)),
+                                      Container(
+                                          padding: const EdgeInsets.all(2),
+                                          child: Text(
+                                              e.quantity.toStringAsFixed(0),
+                                              textAlign: TextAlign.center)),
+                                      Container(
+                                          padding: const EdgeInsets.all(2),
+                                          child: Text(e.prs ?? "",
+                                              textAlign: TextAlign.center)),
+                                      Container(
+                                          padding: const EdgeInsets.all(2),
+                                          child: Text(
+                                              "\$ ${e.unitPrice.toStringAsFixed(2)}",
+                                              textAlign: TextAlign.right)),
+                                      Container(
+                                          padding: const EdgeInsets.all(2),
+                                          child: Text(
+                                              "\$ ${e.total.toStringAsFixed(2)}",
+                                              textAlign: TextAlign.right)),
+                                    ]),
+                                  )
+                                  .toList(),
+                            ]),
+                        Table(
+                            defaultVerticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            columnWidths: {
+                              0: const FixedColumnWidth(55),
+                              1: const FlexColumnWidth(3),
+                              2: const FlexColumnWidth(1),
+                              3: const FixedColumnWidth(55),
+                              4: const FlexColumnWidth(2),
+                              5: const FlexColumnWidth(2),
+                            },
+                            children: [
+                              TableRow(children: [
+                                SizedBox(),
+                                SizedBox(),
+                                SizedBox(),
+                                SizedBox(),
+                                Container(
+                                    decoration:
+                                        BoxDecoration(border: Border.all()),
+                                    padding: const EdgeInsets.all(2),
+                                    child: Text("Total", style: boldText)),
+                                Container(
+                                    decoration:
+                                        BoxDecoration(border: Border.all()),
+                                    padding: const EdgeInsets.all(2),
+                                    child: Text(
+                                        "\$ ${bill.total.toStringAsFixed(2)}",
+                                        textAlign: TextAlign.right)),
                               ]),
                               TableRow(children: [
-                                Text('', textAlign: TextAlign.center),
-                                Text('', textAlign: TextAlign.center),
-                                Text('', textAlign: TextAlign.center),
-                                Text('', textAlign: TextAlign.center),
-                                Text('', textAlign: TextAlign.center),
-                                Text('\$0.00', textAlign: TextAlign.right),
+                                SizedBox(),
+                                SizedBox(),
+                                SizedBox(),
+                                SizedBox(),
+                                Container(
+                                    decoration:
+                                        BoxDecoration(border: Border.all()),
+                                    padding: const EdgeInsets.all(2),
+                                    child: Text("Valor FOB", style: boldText)),
+                                Container(
+                                    decoration:
+                                        BoxDecoration(border: Border.all()),
+                                    padding: const EdgeInsets.all(2),
+                                    child: Text("\$ - ",
+                                        textAlign: TextAlign.right)),
                               ]),
                               TableRow(children: [
-                                Text('', textAlign: TextAlign.center),
-                                Text('', textAlign: TextAlign.center),
-                                Text('', textAlign: TextAlign.center),
-                                Text('', textAlign: TextAlign.center),
-                                Text('', textAlign: TextAlign.center),
-                                Text('\$0.00', textAlign: TextAlign.right),
+                                SizedBox(),
+                                SizedBox(),
+                                SizedBox(),
+                                SizedBox(),
+                                Container(
+                                    decoration:
+                                        BoxDecoration(border: Border.all()),
+                                    padding: const EdgeInsets.all(2),
+                                    child: Text("Transporte")),
+                                Container(
+                                    decoration:
+                                        BoxDecoration(border: Border.all()),
+                                    padding: const EdgeInsets.all(2),
+                                    child: Text("\$ - ",
+                                        textAlign: TextAlign.right)),
                               ]),
                               TableRow(children: [
-                                Text('', textAlign: TextAlign.center),
-                                Text('', textAlign: TextAlign.center),
-                                Text('', textAlign: TextAlign.center),
-                                Text('', textAlign: TextAlign.center),
-                                Text('', textAlign: TextAlign.center),
-                                Text('\$0.00', textAlign: TextAlign.right),
+                                SizedBox(),
+                                SizedBox(),
+                                SizedBox(),
+                                SizedBox(),
+                                Container(
+                                    decoration:
+                                        BoxDecoration(border: Border.all()),
+                                    padding: const EdgeInsets.all(2),
+                                    child: Text("Seguro")),
+                                Container(
+                                    decoration:
+                                        BoxDecoration(border: Border.all()),
+                                    padding: const EdgeInsets.all(2),
+                                    child: Text("\$ 20.00 ",
+                                        textAlign: TextAlign.right)),
                               ]),
-                              TableRow(children: [
-                                Text('', textAlign: TextAlign.center),
-                                Text('', textAlign: TextAlign.center),
-                                Text('', textAlign: TextAlign.center),
-                                Text('', textAlign: TextAlign.center),
-                                Text('', textAlign: TextAlign.center),
-                                Text('\$0.00', textAlign: TextAlign.right),
-                              ])
                             ])
                       ]))),
           Watermark(
+              fit: BoxFit.scaleDown,
               child: Opacity(
-                  opacity: 0.1, child: Image(logo, height: 150, width: 150))),
+                  opacity: 0.1, child: Image(logo, height: 200, width: 200))),
         ]);
       }));
 
   FileManager manager = FileManager();
 
-  final filePath =
-      await manager.saveFile(fileName: "Test.pdf", allowedExtensions: ['pdf']);
+  final filePath = await manager
+      .saveFile(fileName: "${bill.id}.pdf", allowedExtensions: ['pdf']);
 
   if (filePath == null) {
     return;

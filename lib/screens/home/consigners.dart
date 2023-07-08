@@ -16,6 +16,12 @@ class _ConsignersState extends State<Consigners> {
   List<String> selecteds = [];
 
   @override
+  void initState() {
+    context.read<ConsignerBloc>().add(const GetAllConsigners());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocListener<ConsignerBloc, ConsignerState>(
       listener: (context, state) {

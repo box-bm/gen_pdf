@@ -40,3 +40,15 @@ class Filter extends BillsEvent {
 
   const Filter(this.value);
 }
+
+class PrintBill extends BillsEvent {
+  final String id;
+
+  const PrintBill(this.id);
+}
+
+class PrintBills extends BillsEvent {
+  final List<String> ids;
+
+  const PrintBills(this.ids);
+}

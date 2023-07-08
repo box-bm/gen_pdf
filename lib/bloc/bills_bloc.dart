@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gen_pdf/models/bill.dart';
+import 'package:gen_pdf/models/bill_item.dart';
 import 'package:gen_pdf/repository/bill_item_repository.dart';
 import 'package:gen_pdf/repository/bill_repository.dart';
+import 'package:gen_pdf/utils/gen_test_pdf.dart';
 
 part 'bills_event.dart';
 part 'bills_state.dart';
@@ -85,6 +87,24 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       }
       emit(DeletedBill(searchValue: state.searchValue));
       add(const GetAllBills());
+    });
+    on<PrintBill>((event, emit) async {
+      Bill bill = await billRepository.getByID(event.id);
+      List<BillItem> items =
+          await billItemRepository.getAllBillItemsByBillID(event.id);
+      bill.items = items;
+
+      await genPDF(bill);
+    });
+    on<PrintBills>((event, emit) async {
+      for (var id in event.ids) {
+        Bill bill = await billRepository.getByID(id);
+        List<BillItem> items =
+            await billItemRepository.getAllBillItemsByBillID(id);
+
+        bill.items = items;
+        await genPDF(bill);
+      }
     });
   }
 }

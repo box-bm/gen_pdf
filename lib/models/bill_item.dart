@@ -11,7 +11,7 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
   String numeration;
   String description;
   int quantity;
-  String prs;
+  String? prs;
   double unitPrice;
   double total;
 
@@ -80,7 +80,7 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
       numeration: map['numeration'],
       description: map['description'],
       quantity: map['quantity'],
-      prs: map['prs'],
+      prs: map['prs'] ?? "",
       unitPrice: map['unitPrice'],
       total: map['total'],
     );
@@ -102,14 +102,22 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
 
   @override
   List<Column> get columns => [
-        Column(name: "id", columnType: SQLiteDataType.text),
+        Column(name: "id", columnType: SQLiteDataType.text, primaryKey: true),
         Column(name: "billId", columnType: SQLiteDataType.text),
-        Column(name: "numeration", columnType: SQLiteDataType.text),
-        Column(name: "description", columnType: SQLiteDataType.text),
-        Column(name: "quantity", columnType: SQLiteDataType.integer),
+        Column(
+            name: "numeration", columnType: SQLiteDataType.text, notNull: true),
+        Column(
+            name: "description",
+            columnType: SQLiteDataType.text,
+            notNull: true),
+        Column(
+            name: "quantity",
+            columnType: SQLiteDataType.integer,
+            notNull: true),
         Column(name: "prs", columnType: SQLiteDataType.text),
-        Column(name: "unitPrice", columnType: SQLiteDataType.real),
-        Column(name: "total", columnType: SQLiteDataType.real),
+        Column(
+            name: "unitPrice", columnType: SQLiteDataType.real, notNull: true),
+        Column(name: "total", columnType: SQLiteDataType.real, notNull: true),
       ];
 
   @override

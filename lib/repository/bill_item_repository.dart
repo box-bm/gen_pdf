@@ -44,4 +44,9 @@ class BillItemRepository {
     BillItem bill = BillItem();
     return await bill.getAll();
   }
+
+  Future<List<BillItem>> getAllBillItemsByBillID(String id) async {
+    var items = await getBillItems();
+    return items.where((element) => element.billId == id).toList();
+  }
 }

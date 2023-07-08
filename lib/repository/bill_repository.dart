@@ -21,4 +21,8 @@ class BillRepository {
     Bill bill = Bill();
     return await bill.getAll();
   }
+
+  Future<Bill> getByID(String id) async {
+    return await Bill().getByID(id);
+  }
 }

@@ -16,6 +16,12 @@ class _ExportersState extends State<Exporters> {
   List<String> selecteds = [];
 
   @override
+  void initState() {
+    context.read<ExporterBloc>().add(const GetAllExporters());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocListener<ExporterBloc, ExporterState>(
       listener: (context, state) {

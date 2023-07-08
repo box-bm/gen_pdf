@@ -151,7 +151,7 @@ class _ProductTableState extends State<ProductTable> {
                                 child: Text(e.quantity.toString())),
                             Container(
                                 padding: const EdgeInsets.all(4),
-                                child: Text(e.prs)),
+                                child: Text(e.prs ?? "")),
                             Container(
                                 padding: const EdgeInsets.all(4),
                                 child: Text(
