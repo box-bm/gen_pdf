@@ -43,7 +43,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       exporterAddress: values['exporterAddress'],
       consignerName: values['consignerName'],
       consignerAddress: values['consignerAddress'],
-      consignerNIT: values['consignerNIT'],
+      consignerNIT: values['consignerNIT'] ?? "",
       containerNumber: values['containerNumber'],
       bl: values['bl'],
       total: values['total'],
