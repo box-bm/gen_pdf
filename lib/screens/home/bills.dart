@@ -4,6 +4,7 @@ import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/cubit/form_cubit.dart';
 import 'package:gen_pdf/models/bill.dart';
 import 'package:gen_pdf/screens/new_bill.dart';
+import 'package:gen_pdf/screens/preview_pdf.dart';
 import 'package:gen_pdf/utils/gen_test_pdf.dart';
 import 'package:gen_pdf/widgets/bills_list.dart';
 
@@ -25,61 +26,72 @@ class _BillsState extends State<Bills> {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldPage(
-        header: PageHeader(
-            title: const Text("Facturas"),
-            commandBar: CommandBar(
-                mainAxisAlignment: MainAxisAlignment.end,
-                primaryItems: [
-                  CommandBarButton(
-                      onPressed: () {
-                        context.read<FormCubit>().resetForm();
-                        Navigator.pushNamed(context, NewBill.route);
-                      },
-                      icon: const Icon(FluentIcons.add),
-                      label: const Text("Crear")),
-                  CommandBarButton(
-                      onPressed: selecteds.isEmpty
-                          ? null
-                          : () {
-                              context
-                                  .read<BillsBloc>()
-                                  .add(DeleteBills(selecteds));
-                            },
-                      icon: const Icon(FluentIcons.delete),
-                      label: const Text("Eliminar")),
-                  CommandBarButton(
-                      onPressed: selecteds.isEmpty
-                          ? null
-                          : () {
-                              context
-                                  .read<BillsBloc>()
-                                  .add(PrintBills(selecteds));
-                            },
-                      icon: const Icon(FluentIcons.pdf),
-                      label: const Text("Generar PDFs")),
-                  CommandBarButton(
-                      onPressed: () {
-                        genPDF(Bill(date: DateTime.now()));
-                      },
-                      icon: const Icon(FluentIcons.pdf),
-                      label: const Text("Pdf de prueba")),
-                ])),
-        resizeToAvoidBottomInset: true,
-        content: SafeArea(
-            child: BillsList(
-          selecteds: selecteds,
-          onSelect: (id, selected) {
-            if (selected) {
-              setState(() {
-                selecteds.add(id);
-              });
-            } else {
-              setState(() {
-                selecteds.remove(id);
-              });
-            }
-          },
-        )));
+    return BlocListener<BillsBloc, BillsState>(
+        listener: (context, state) {
+          if (state is PrintReady) {
+            Navigator.push(
+                context,
+                FluentPageRoute(
+                  builder: (context) =>
+                      PreviewBill(document: state.document, id: state.id),
+                ));
+          }
+        },
+        child: ScaffoldPage(
+            header: PageHeader(
+                title: const Text("Facturas"),
+                commandBar: CommandBar(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    primaryItems: [
+                      CommandBarButton(
+                          onPressed: () {
+                            context.read<FormCubit>().resetForm();
+                            Navigator.pushNamed(context, NewBill.route);
+                          },
+                          icon: const Icon(FluentIcons.add),
+                          label: const Text("Crear")),
+                      CommandBarButton(
+                          onPressed: selecteds.isEmpty
+                              ? null
+                              : () {
+                                  context
+                                      .read<BillsBloc>()
+                                      .add(DeleteBills(selecteds));
+                                },
+                          icon: const Icon(FluentIcons.delete),
+                          label: const Text("Eliminar")),
+                      CommandBarButton(
+                          onPressed: selecteds.isEmpty
+                              ? null
+                              : () {
+                                  context
+                                      .read<BillsBloc>()
+                                      .add(PrintBills(selecteds));
+                                },
+                          icon: const Icon(FluentIcons.pdf),
+                          label: const Text("Generar PDFs")),
+                      CommandBarButton(
+                          onPressed: () {
+                            genPDF(Bill(date: DateTime.now()));
+                          },
+                          icon: const Icon(FluentIcons.pdf),
+                          label: const Text("Pdf de prueba")),
+                    ])),
+            resizeToAvoidBottomInset: true,
+            content: SafeArea(
+                child: BillsList(
+              selecteds: selecteds,
+              onSelect: (id, selected) {
+                if (selected) {
+                  setState(() {
+                    selecteds.add(id);
+                  });
+                } else {
+                  setState(() {
+                    selecteds.remove(id);
+                  });
+                }
+              },
+            ))));
   }
 }

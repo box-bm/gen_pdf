@@ -1,8 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_pdf/bloc/bills_bloc.dart';
 import 'package:gen_pdf/common.dart';
-import 'package:gen_pdf/cubit/form_cubit.dart';
-import 'package:gen_pdf/screens/new_exporter.dart';
 import 'package:gen_pdf/widgets/empty_list.dart';
 
 class BillsList extends StatefulWidget {
@@ -68,32 +66,21 @@ class _BillsListState extends State<BillsList> {
                                     }),
                           const SizedBox(width: 10),
                           IconButton(
-                              icon: const Icon(FluentIcons.pdf),
+                              icon: const Icon(FluentIcons.preview),
                               onPressed: widget.selecteds.isNotEmpty
                                   ? null
                                   : () {
-                                      context.read<BillsBloc>().add(PrintBill(
+                                      context.read<BillsBloc>().add(PreviewPDF(
                                           state.bills.elementAt(index).id));
                                     }),
-                          const SizedBox(width: 10),
-                          IconButton(
-                              icon: const Icon(FluentIcons.edit),
-                              onPressed: widget.selecteds.isNotEmpty
-                                  ? null
-                                  : () {
-                                      context.read<FormCubit>().setValues(
-                                          state.bills.elementAt(index).toMap());
-                                      Navigator.pushNamed(
-                                          context, NewExporter.route,
-                                          arguments: true);
-                                    })
                         ]),
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Text(state.bills.elementAt(index).billNumber),
                             Text(
-                              state.bills.elementAt(index).consignerName,
+                                "Fact. ${state.bills.elementAt(index).billNumber}"),
+                            Text(
+                              "Cliente: ${state.bills.elementAt(index).consignerName}",
                               style: FluentTheme.of(context).typography.body,
                             ),
                             Text(

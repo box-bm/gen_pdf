@@ -5,7 +5,7 @@ import 'package:gen_pdf/utils/file_picker.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
-Future<void> genPDF(Bill bill) async {
+Future<Document> genPDF(Bill bill) async {
   final pdf = Document();
 
   var logo = MemoryImage(
@@ -373,15 +373,19 @@ Future<void> genPDF(Bill bill) async {
         ]);
       }));
 
+  return pdf;
+}
+
+Future savePDF(Document document, {String defaultName = ""}) async {
   FileManager manager = FileManager();
 
   final filePath = await manager
-      .saveFile(fileName: "${bill.id}.pdf", allowedExtensions: ['pdf']);
+      .saveFile(fileName: "$defaultName.pdf", allowedExtensions: ['.pdf']);
 
   if (filePath == null) {
     return;
   }
 
-  final file = File(filePath);
-  await file.writeAsBytes(await pdf.save());
+  File file = File(filePath);
+  await file.writeAsBytes(await document.save());
 }

@@ -5,6 +5,7 @@ import 'package:gen_pdf/models/bill_item.dart';
 import 'package:gen_pdf/repository/bill_item_repository.dart';
 import 'package:gen_pdf/repository/bill_repository.dart';
 import 'package:gen_pdf/utils/gen_test_pdf.dart';
+import 'package:pdf/widgets.dart';
 
 part 'bills_event.dart';
 part 'bills_state.dart';
@@ -94,7 +95,20 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
           await billItemRepository.getAllBillItemsByBillID(event.id);
       bill.items = items;
 
-      await genPDF(bill);
+      var doc = await genPDF(bill);
+      await savePDF(doc, defaultName: event.id);
+    });
+
+    on<PreviewPDF>((event, emit) async {
+      Bill bill = await billRepository.getByID(event.id);
+      List<BillItem> items =
+          await billItemRepository.getAllBillItemsByBillID(event.id);
+      bill.items = items;
+
+      var doc = await genPDF(bill);
+      emit(PrintReady(doc, event.id,
+          searchValue: state.searchValue, bills: state.bills));
+      emit(BillsLoaded(searchValue: state.searchValue, bills: state.bills));
     });
     on<PrintBills>((event, emit) async {
       for (var id in event.ids) {

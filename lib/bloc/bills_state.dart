@@ -36,3 +36,10 @@ class DeletingBill extends BillsState {
 class DeletedBill extends BillsState {
   const DeletedBill({required super.searchValue});
 }
+
+class PrintReady extends BillsState {
+  final Document document;
+  final String id;
+  const PrintReady(this.document, this.id,
+      {required super.searchValue, super.bills});
+}

@@ -1,4 +1,5 @@
 import 'package:file_picker/file_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 class FileManager {
   Future<String?> saveFile({
@@ -12,6 +13,19 @@ class FileManager {
         allowedExtensions: allowedExtensions,
         type: FileType.any);
     return outputFile;
+  }
+
+  Future<String> saveTempFile({
+    String fileName = "archivo.txt",
+  }) async {
+    var tempDirectory = (await getTempDirectory()) ?? "";
+
+    return "$tempDirectory/$fileName";
+  }
+
+  Future<String?> getTempDirectory() async {
+    var dir = await getTemporaryDirectory();
+    return dir.path;
   }
 
   Future<FilePickerResult?> choseFile({

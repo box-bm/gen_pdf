@@ -47,6 +47,12 @@ class PrintBill extends BillsEvent {
   const PrintBill(this.id);
 }
 
+class PreviewPDF extends BillsEvent {
+  final String id;
+
+  const PreviewPDF(this.id);
+}
+
 class PrintBills extends BillsEvent {
   final List<String> ids;
 
