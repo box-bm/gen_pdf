@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_pdf/bloc/bills_bloc.dart';
 import 'package:gen_pdf/common.dart';
+import 'package:gen_pdf/utils/formatter.dart';
 import 'package:gen_pdf/widgets/empty_list.dart';
 
 class BillsList extends StatefulWidget {
@@ -84,9 +85,13 @@ class _BillsListState extends State<BillsList> {
                               style: FluentTheme.of(context).typography.body,
                             ),
                             Text(
-                              state.bills.elementAt(index).bl,
+                              "Contenedor: ${state.bills.elementAt(index).containerNumber}",
                               style: FluentTheme.of(context).typography.body,
-                            )
+                            ),
+                            Text(
+                              "Fecha: ${formatter.format(state.bills.elementAt(index).date ?? DateTime.now())}",
+                              style: FluentTheme.of(context).typography.body,
+                            ),
                           ],
                         ),
                       )));

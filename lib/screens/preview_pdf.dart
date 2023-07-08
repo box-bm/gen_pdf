@@ -3,6 +3,7 @@ import 'package:gen_pdf/bloc/bills_bloc.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
+import 'package:window_manager/window_manager.dart';
 
 class PreviewBill extends StatelessWidget {
   final pw.Document document;
@@ -17,7 +18,23 @@ class PreviewBill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NavigationView(
-      appBar: const NavigationAppBar(title: Text("Vista previa de pdf")),
+      appBar: NavigationAppBar(
+        title: const Text("Vista previa de pdf"),
+        actions: DragToMoveArea(
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            SizedBox(
+              width: 138,
+              height: 30,
+              child: WindowCaption(
+                brightness: FluentTheme.of(context).brightness,
+                backgroundColor: const Color(0x00000FFF),
+              ),
+            )
+          ],
+        )),
+      ),
       content: ScaffoldPage(
         content: PdfPreview(
           allowPrinting: true,

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:gen_pdf/models/bill.dart';
 import 'package:gen_pdf/utils/file_picker.dart';
+import 'package:gen_pdf/utils/formatter.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
@@ -70,7 +71,8 @@ Future<Document> genPDF(Bill bill) async {
                                           CrossAxisAlignment.stretch,
                                       children: [
                                         Text("Fecha", style: boldText),
-                                        Text(bill.date.toString())
+                                        Text(formatter.format(
+                                            bill.date ?? DateTime.now()))
                                       ]))),
                           Expanded(
                               child: Container(
