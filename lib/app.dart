@@ -28,26 +28,28 @@ class _AppState extends State<App> with WindowListener {
   @override
   Widget build(BuildContext context) {
     return BlocStore(
-        child: FluentApp(
-      theme: FluentThemeData(
-        brightness: Brightness.light,
-        accentColor: Colors.green,
-        visualDensity: VisualDensity.standard,
-        focusTheme: FocusThemeData(
-          glowFactor: is10footScreen(context) ? 2.0 : 0.0,
-        ),
-      ),
-      darkTheme: FluentThemeData(
-        brightness: Brightness.dark,
-        accentColor: Colors.green,
-        visualDensity: VisualDensity.standard,
-        focusTheme: FocusThemeData(
-          glowFactor: is10footScreen(context) ? 2.0 : 0.0,
-        ),
-      ),
+        child: MaterialApp(
+      themeMode: ThemeMode.light,
+      theme: ThemeData.from(
+              useMaterial3: true,
+              colorScheme: ColorScheme.fromSeed(
+                  seedColor: const Color.fromARGB(255, 89, 168, 199)))
+          .copyWith(
+              inputDecorationTheme:
+                  const InputDecorationTheme(border: OutlineInputBorder())),
+      darkTheme: ThemeData.from(
+              useMaterial3: true,
+              colorScheme: ColorScheme.fromSeed(
+                  brightness: Brightness.dark,
+                  seedColor: const Color.fromARGB(255, 89, 144, 166)))
+          .copyWith(
+              inputDecorationTheme:
+                  const InputDecorationTheme(border: OutlineInputBorder())),
       localizationsDelegates: const [
         FormBuilderLocalizations.delegate,
-        FluentLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: FormBuilderLocalizations.supportedLocales,
