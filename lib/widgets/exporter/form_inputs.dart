@@ -2,18 +2,17 @@ import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/widgets/inputs/input_params.dart';
 import 'package:gen_pdf/widgets/person_form.dart';
 
-List<Widget> formInputs(
-  Map<String, dynamic> values, {
+List<Widget> formInputs({
   bool disabled = false,
-  InputParams nameParams = const InputParams(name: "name", label: "Nombre"),
-  InputParams addressParams =
-      const InputParams(name: "address", label: "Direccion"),
+  InputParams nameParams = const InputParams(
+      name: "name",
+      label: "Nombre",
+      placeholder: "Ingresa el nombre del exportador"),
+  InputParams addressParams = const InputParams(
+      name: "address", label: "Direccion", placeholder: "Ingresa la direccion"),
 }) =>
-    [
-      ...personForm(
-        values,
-        disabled: disabled,
-        nameParams: nameParams,
-        addressParams: addressParams,
-      )
-    ];
+    personForm(
+      disabled: disabled,
+      nameParams: nameParams,
+      addressParams: addressParams,
+    );

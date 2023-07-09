@@ -1,36 +1,35 @@
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/widgets/inputs/input_params.dart';
-import 'package:gen_pdf/widgets/inputs/textbox_form.dart';
 
-List<Widget> personForm(
-  Map<String, dynamic> values, {
+List<Widget> personForm({
   bool disabled = false,
-  InputParams nameParams = const InputParams(
-    name: 'name',
-    label: 'Nombre',
-  ),
-  InputParams addressParams = const InputParams(
-    name: "Direccion",
-    label: "address",
-  ),
+  required InputParams nameParams,
+  required InputParams addressParams,
 }) =>
     [
-      TextboxForm(
-          disabled: disabled,
-          value: values[nameParams.name],
+      FormBuilderTextField(
           name: nameParams.name,
-          label: nameParams.label,
+          enabled: !disabled,
           validator: FormBuilderValidators.compose([
             FormBuilderValidators.required(),
-          ])),
+          ]),
+          decoration: InputDecoration(
+            hintText: nameParams.placeholder,
+            labelText: nameParams.label,
+            enabled: !disabled,
+          )),
       const SizedBox(height: 10),
-      TextboxForm(
-          disabled: disabled,
-          value: values[addressParams.name],
+      FormBuilderTextField(
           name: addressParams.name,
-          label: addressParams.label,
+          enabled: !disabled,
           validator: FormBuilderValidators.compose([
             FormBuilderValidators.required(),
-          ])),
+          ]),
+          decoration: InputDecoration(
+            hintText: addressParams.placeholder,
+            labelText: addressParams.label,
+            enabled: !disabled,
+          )),
     ];

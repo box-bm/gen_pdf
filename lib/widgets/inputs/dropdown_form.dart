@@ -8,7 +8,7 @@ class DropdownForm extends StatefulWidget {
   final String label;
   final String? placeholder;
   final String? value;
-  final List<AutoSuggestBoxItem<dynamic>> items;
+  final List<DropdownMenuItem<dynamic>> items;
   final String? Function(Object?)? validator;
   final Function(Object?)? onInputChange;
 
@@ -28,42 +28,6 @@ class DropdownForm extends StatefulWidget {
 }
 
 class _DropdownFormState extends State<DropdownForm> {
-  TextEditingController editingController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    changeValue();
-  }
-
-  void changeValue() {
-    if (widget.items.isNotEmpty && (widget.value ?? "").isNotEmpty) {
-      editingController.value = editingController.value.copyWith(
-          text: widget.items
-              .firstWhere((element) => element.value == widget.value)
-              .label);
-    }
-  }
-
-  @override
-  void dispose() {
-    editingController.dispose();
-    super.dispose();
-  }
-
-  @override
-  void didUpdateWidget(DropdownForm oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget != widget) {
-      if (editingController.value.text != widget.value) {
-        Future.delayed(Duration.zero, () {
-          changeValue();
-        });
-      }
-    }
-  }
-
   void onChangeHandler(Object? value) {
     context.read<FormCubit>().setValue(value, widget.name);
     if (widget.onInputChange != null) {
@@ -77,16 +41,11 @@ class _DropdownFormState extends State<DropdownForm> {
       name: widget.name,
       validator: widget.validator,
       onChanged: onChangeHandler,
-      initialValue: editingController.text,
-      builder: (field) => InfoLabel(
-          label: widget.label,
-          child: AutoSuggestBox(
-              onChanged: (text, reason) =>
-                  text.isEmpty ? onChangeHandler('') : null,
-              controller: editingController,
-              onSelected: (value) => field.didChange(value.value),
-              placeholder: widget.placeholder,
-              items: widget.items)),
+      initialValue: widget.value,
+      builder: (field) => DropdownButton(
+          onChanged: (value) => field.didChange(value.toString()),
+          value: widget.value,
+          items: widget.items),
     );
   }
 }

@@ -37,142 +37,122 @@ class _ProductTableState extends State<ProductTable> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        PageHeader(
-            padding: 0,
-            title: BlocBuilder<form_cubit.FormCubit, form_cubit.FormState>(
-                builder: (context, state) {
-              var items = (state.values['items'] as List<dynamic>? ?? []);
+        Row(children: [
+          BlocBuilder<form_cubit.FormCubit, form_cubit.FormState>(
+              builder: (context, state) {
+            var items = (state.values['items'] as List<dynamic>? ?? []);
 
-              double total = items.isEmpty
-                  ? 0
-                  : items
-                      .map((e) => e['total'])
-                      .toList()
-                      .reduce((value, element) => value + element);
+            double total = items.isEmpty
+                ? 0
+                : items
+                    .map((e) => e['total'])
+                    .toList()
+                    .reduce((value, element) => value + element);
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Text("Productos"),
-                  Text(
-                    "Total: \$${total.toStringAsFixed(2)}",
-                    style: FluentTheme.of(context).typography.bodyLarge,
-                  )
-                ],
-              );
-            }),
-            commandBar: CommandBar(
-                mainAxisAlignment: MainAxisAlignment.end,
-                primaryItems: [
-                  CommandBarButton(
-                      onPressed: () {
-                        showBottomSheet(
-                            context: context,
-                            builder: (context) => NewItemForm(
-                                  onSubmit: (values) {
-                                    var newElement = BillItem.newByMap(values);
-                                    var newList = [...items, newElement];
-                                    setState(() {
-                                      items = newList;
-                                    });
-                                    context
-                                        .read<form_cubit.FormCubit>()
-                                        .setValue(
-                                            newList
-                                                .map((e) => e.toMap())
-                                                .toList(),
-                                            "items");
-                                    Navigator.pop(context);
-                                  },
-                                ));
-                      },
-                      icon: const Icon(FluentIcons.add),
-                      label: const Text("Agregar"))
-                ])),
-        Card(
-            child: Table(
-                columnWidths: const {
-                  0: FixedColumnWidth(100),
-                  6: FixedColumnWidth(50)
-                },
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                border: const TableBorder(
-                    horizontalInside:
-                        BorderSide(color: Color.fromARGB(24, 253, 253, 253))),
-                children: [
-                  TableRow(children: [
-                    Container(
-                      padding: const EdgeInsets.all(4),
-                      child: Text("Numeracion",
-                          style: FluentTheme.of(context).typography.bodyStrong),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(4),
-                      child: Text("Descripcion",
-                          style: FluentTheme.of(context).typography.bodyStrong),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(4),
-                      child: Text("Cantidad",
-                          style: FluentTheme.of(context).typography.bodyStrong),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(4),
-                      child: Text("PRS",
-                          style: FluentTheme.of(context).typography.bodyStrong),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(4),
-                      child: Text("Precio unitario",
-                          style: FluentTheme.of(context).typography.bodyStrong),
-                    ),
-                    Container(
-                        padding: const EdgeInsets.all(4),
-                        child: Text("Sub total",
-                            style:
-                                FluentTheme.of(context).typography.bodyStrong)),
-                    Container(
-                        padding: const EdgeInsets.all(4),
-                        child: Text("",
-                            style:
-                                FluentTheme.of(context).typography.bodyStrong)),
-                  ]),
-                  ...items
-                      .map((e) => TableRow(children: [
-                            Container(
-                                padding: const EdgeInsets.all(4),
-                                child: Text(e.numeration)),
-                            Container(
-                                padding: const EdgeInsets.all(4),
-                                child: Text(e.description)),
-                            Container(
-                                padding: const EdgeInsets.all(4),
-                                child: Text(e.quantity.toString())),
-                            Container(
-                                padding: const EdgeInsets.all(4),
-                                child: Text(e.prs ?? "")),
-                            Container(
-                                padding: const EdgeInsets.all(4),
-                                child: Text(
-                                    "\$${e.unitPrice.toStringAsFixed(2)}")),
-                            Container(
-                                padding: const EdgeInsets.all(4),
-                                child: Text("\$${e.total.toStringAsFixed(2)}")),
-                            Container(
-                                padding: const EdgeInsets.all(4),
-                                child: Row(
-                                  children: [
-                                    IconButton(
-                                        icon: const Icon(FluentIcons.delete),
-                                        onPressed: () {
-                                          removeElement(e.id);
-                                        })
-                                  ],
-                                )),
-                          ]))
-                      .toList()
-                ]))
+            return Expanded(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text("Productos"),
+                Text(
+                  "Total: \$${total.toStringAsFixed(2)}",
+                  style: Theme.of(context).textTheme.titleLarge,
+                )
+              ],
+            ));
+          }),
+          ElevatedButton.icon(
+              onPressed: () {
+                showBottomSheet(
+                    context: context,
+                    builder: (context) => NewItemForm(
+                          onSubmit: (values) {
+                            var newElement = BillItem.newByMap(values);
+                            var newList = [...items, newElement];
+                            setState(() {
+                              items = newList;
+                            });
+                            context.read<form_cubit.FormCubit>().setValue(
+                                newList.map((e) => e.toMap()).toList(),
+                                "items");
+                            Navigator.pop(context);
+                          },
+                        ));
+              },
+              icon: const Icon(Icons.add),
+              label: const Text("Agregar"))
+        ]),
+        Table(
+            columnWidths: const {
+              0: FixedColumnWidth(100),
+              6: FixedColumnWidth(50)
+            },
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            border: const TableBorder(
+                horizontalInside:
+                    BorderSide(color: Color.fromARGB(24, 253, 253, 253))),
+            children: [
+              TableRow(children: [
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  child: const Text("Numeracion"),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  child: const Text("Descripcion"),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  child: const Text("Cantidad"),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  child: const Text("PRS"),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  child: const Text("Precio unitario"),
+                ),
+                Container(
+                    padding: const EdgeInsets.all(4),
+                    child: const Text("Sub total")),
+              ]),
+              ...items
+                  .map((e) => TableRow(children: [
+                        Container(
+                            padding: const EdgeInsets.all(4),
+                            child: Text(e.numeration)),
+                        Container(
+                            padding: const EdgeInsets.all(4),
+                            child: Text(e.description)),
+                        Container(
+                            padding: const EdgeInsets.all(4),
+                            child: Text(e.quantity.toString())),
+                        Container(
+                            padding: const EdgeInsets.all(4),
+                            child: Text(e.prs ?? "")),
+                        Container(
+                            padding: const EdgeInsets.all(4),
+                            child: Text("\$${e.unitPrice.toStringAsFixed(2)}")),
+                        Container(
+                            padding: const EdgeInsets.all(4),
+                            child: Text("\$${e.total.toStringAsFixed(2)}")),
+                        Container(
+                            padding: const EdgeInsets.all(4),
+                            child: Row(
+                              children: [
+                                IconButton(
+                                    icon: const Icon(Icons.delete),
+                                    onPressed: () {
+                                      removeElement(e.id);
+                                    })
+                              ],
+                            )),
+                      ]))
+                  .toList()
+            ])
       ],
     );
   }

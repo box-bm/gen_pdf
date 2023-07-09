@@ -62,23 +62,17 @@ class _TextboxFormState extends State<TextboxForm> {
 
   @override
   Widget build(BuildContext context) {
-    return FormBuilderField(
-        name: widget.name,
-        validator: widget.validator,
-        onChanged: onChangeHandler,
-        initialValue: editingController.text,
-        builder: (field) => InfoLabel(
-              label: widget.label,
-              child: TextBox(
-                maxLines: widget.maxLines,
-                controller: editingController,
-                placeholder: widget.placeholder,
-                expands: false,
-                enabled: !widget.disabled,
-                onChanged: field.didChange,
-                onSubmitted: (_) => field.save(),
-                unfocusedColor: field.hasError ? Colors.red : null,
-              ),
-            ));
+    return FormBuilderTextField(
+      name: widget.name,
+      validator: widget.validator,
+      onChanged: onChangeHandler,
+      decoration: InputDecoration(
+        hintMaxLines: widget.maxLines,
+        hintText: widget.placeholder,
+        labelText: widget.label,
+        enabled: !widget.disabled,
+      ),
+      controller: editingController,
+    );
   }
 }

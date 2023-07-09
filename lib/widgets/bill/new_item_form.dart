@@ -31,7 +31,7 @@ class _NewItemFormState extends State<NewItemForm> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text("Nuevo elemento",
-                    style: FluentTheme.of(context).typography.title),
+                    style: Theme.of(context).textTheme.titleMedium),
                 const SizedBox(height: 15),
                 TextboxForm(
                   name: "newItem.numeration",

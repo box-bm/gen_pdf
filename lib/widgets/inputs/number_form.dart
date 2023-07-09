@@ -55,21 +55,12 @@ class _NumberFormState extends State<NumberForm> {
 
   @override
   Widget build(BuildContext context) {
-    return FormBuilderField(
-        name: widget.name,
-        validator: widget.validator,
-        onChanged: onChangeHandler,
-        initialValue: widget.value,
-        builder: (field) => InfoLabel(
-              label: widget.label,
-              child: NumberBox(
-                mode: SpinButtonPlacementMode.inline,
-                value: value,
-                placeholder: widget.placeholder,
-                onChanged: (value) => field.didChange(value),
-                highlightColor: field.hasError ? Colors.red : null,
-                showCursor: true,
-              ),
-            ));
+    return FormBuilderTextField(
+      name: widget.name,
+      decoration: InputDecoration(
+        labelText: widget.label,
+        hintText: widget.placeholder,
+      ),
+    );
   }
 }

@@ -1,37 +1,46 @@
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/widgets/inputs/input_params.dart';
-import 'package:gen_pdf/widgets/inputs/textbox_form.dart';
 import 'package:gen_pdf/widgets/person_form.dart';
 import 'package:nit_validator/nit_validator.dart';
 
-List<Widget> formInputs(
-  Map<String, dynamic> values, {
+List<Widget> formInputs({
   bool disabled = false,
-  InputParams nameParams = const InputParams(name: 'name', label: 'Nombre'),
-  InputParams addressParams =
-      const InputParams(name: "address", label: "Direccion"),
-  InputParams nitParams = const InputParams(name: "nit", label: "NIT"),
+  InputParams nameParams = const InputParams(
+      name: 'name',
+      label: 'Nombre',
+      placeholder: "Ingresa el nombre del cliente"),
+  InputParams addressParams = const InputParams(
+      name: "address",
+      label: "Direccion",
+      placeholder: "Ingresa el nombre de la direccion"),
+  InputParams nitParams = const InputParams(
+      name: "nit", label: "NIT", placeholder: "Ingresa el NIT del cliente"),
 }) =>
     [
       ...personForm(
-        values,
         disabled: disabled,
         nameParams: nameParams,
         addressParams: addressParams,
       ),
       const SizedBox(height: 10),
-      TextboxForm(
-          disabled: disabled,
-          value: values[nitParams.name],
+      FormBuilderTextField(
           name: nitParams.name,
-          label: nitParams.label,
+          enabled: !disabled,
           validator: FormBuilderValidators.compose([
             (value) {
-              if (!validateNIT(value) && value.toString().isNotEmpty) {
-                return "Debe ser un nit valido";
+              if (value != null) {
+                if (!validateNIT(value) && value.isNotEmpty) {
+                  return "Debe ser un nit valido";
+                }
               }
               return null;
             }
-          ]))
+          ]),
+          decoration: InputDecoration(
+            hintText: nitParams.placeholder,
+            labelText: nitParams.label,
+            enabled: !disabled,
+          ))
     ];

@@ -9,7 +9,6 @@ import 'package:gen_pdf/widgets/bill/product_table.dart';
 import 'package:gen_pdf/widgets/exporter/form_inputs.dart' as exporter_input;
 import 'package:gen_pdf/widgets/consigne/form_inputs.dart' as consigner_inputs;
 import 'package:gen_pdf/widgets/inputs/dropdown_form.dart';
-import 'package:gen_pdf/widgets/inputs/input_params.dart';
 import 'package:gen_pdf/widgets/inputs/textbox_form.dart';
 
 class CreateBillForm extends StatefulWidget {
@@ -74,7 +73,7 @@ class _CreateBillFormState extends State<CreateBillForm> {
         BlocBuilder<ExporterBloc, ExporterState>(
             builder: (context, exporterState) {
           if (state is LoadingExporters) {
-            return const ProgressBar();
+            return const CircularProgressIndicator.adaptive();
           }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -102,22 +101,17 @@ class _CreateBillFormState extends State<CreateBillForm> {
                     FormBuilderValidators.required(),
                   ]),
                   items: [
-                    AutoSuggestBoxItem(value: 'new', label: 'Nuevo'),
+                    const DropdownMenuItem(value: 'new', child: Text("Nuevo")),
                     ...exporterState.exporters
                         .map((e) =>
-                            AutoSuggestBoxItem(value: e.id, label: e.name))
+                            DropdownMenuItem(value: e.id, child: Text(e.name)))
                         .toList()
                   ]),
               const SizedBox(height: 10),
-              ...exporter_input.formInputs(state.values,
+              ...exporter_input.formInputs(
                   disabled:
                       (state.values['exporterID'] ?? "").toString().isEmpty ||
-                          (state.values['exporterID'] ?? "") != "new",
-                  nameParams: const InputParams(
-                      name: 'exporterName', label: 'Nombre de exportador'),
-                  addressParams: const InputParams(
-                      name: 'exporterAddress',
-                      label: 'Direccion de exportador'))
+                          (state.values['exporterID'] ?? "") != "new")
             ],
           );
         }),
@@ -125,7 +119,7 @@ class _CreateBillFormState extends State<CreateBillForm> {
         BlocBuilder<ConsignerBloc, ConsignerState>(
           builder: (context, consignerState) {
             if (state is Loadingconsigners) {
-              return const ProgressBar();
+              return const CircularProgressIndicator.adaptive();
             }
 
             return Column(
@@ -155,31 +149,19 @@ class _CreateBillFormState extends State<CreateBillForm> {
                       FormBuilderValidators.required(),
                     ]),
                     items: [
-                      AutoSuggestBoxItem(value: 'new', label: 'Nuevo'),
+                      const DropdownMenuItem(
+                          value: 'new', child: Text('Nuevo')),
                       ...consignerState.consigners
-                          .map((e) =>
-                              AutoSuggestBoxItem(value: e.id, label: e.name))
+                          .map((e) => DropdownMenuItem(
+                              value: e.id, child: Text(e.name)))
                           .toList()
                     ]),
                 const SizedBox(height: 10),
                 ...consigner_inputs.formInputs(
-                  state.values,
-                  disabled:
-                      (state.values['consignerID'] ?? "").toString().isEmpty ||
-                          (state.values['consignerID'] ?? "") != "new",
-                  nameParams: const InputParams(
-                    name: 'consignerName',
-                    label: 'Nombre de cliente',
-                  ),
-                  addressParams: const InputParams(
-                    name: 'consignerAddress',
-                    label: 'Direccion de cliente',
-                  ),
-                  nitParams: const InputParams(
-                    name: 'consignerNIT',
-                    label: 'Nit de cliente',
-                  ),
-                )
+                    disabled: (state.values['consignerID'] ?? "")
+                            .toString()
+                            .isEmpty ||
+                        (state.values['consignerID'] ?? "") != "new")
               ],
             );
           },
