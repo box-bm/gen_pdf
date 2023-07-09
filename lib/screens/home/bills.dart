@@ -1,89 +1,86 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_pdf/bloc/bills_bloc.dart';
 import 'package:gen_pdf/common.dart';
-import 'package:gen_pdf/cubit/form_cubit.dart';
 import 'package:gen_pdf/screens/new_bill.dart';
 import 'package:gen_pdf/screens/preview_pdf.dart';
-import 'package:gen_pdf/widgets/bills_list.dart';
+import 'package:gen_pdf/widgets/base_home_screen.dart';
 
-class Bills extends StatefulWidget {
+class Bills extends StatelessWidget {
   const Bills({super.key});
 
   @override
-  State<Bills> createState() => _BillsState();
-}
-
-class _BillsState extends State<Bills> {
-  List<String> selecteds = [];
-
-  @override
-  void initState() {
-    context.read<BillsBloc>().add(const GetAllBills());
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocListener<BillsBloc, BillsState>(
+    return BlocConsumer<BillsBloc, BillsState>(
         listener: (context, state) {
           if (state is PrintReady) {
             Navigator.push(
                 context,
-                FluentPageRoute(
+                MaterialPageRoute(
                   builder: (context) =>
                       PreviewBill(document: state.document, id: state.id),
                 ));
           }
         },
-        child: ScaffoldPage(
-            header: PageHeader(
-                title: const Text("Facturas"),
-                commandBar: CommandBar(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    primaryItems: [
-                      CommandBarButton(
+        builder: (context, state) => BaseHomeScreen(
+            title: "Facturas",
+            actions: (ids) => [
+                  TextButton.icon(
+                      onPressed: ids.isEmpty
+                          ? null
+                          : () {
+                              context.read<BillsBloc>().add(DeleteBills(ids));
+                            },
+                      icon: const Icon(Icons.delete),
+                      label: const Text("Eliminar")),
+                  TextButton.icon(
+                      onPressed: ids.isEmpty
+                          ? null
+                          : () {
+                              context.read<BillsBloc>().add(PrintBills(ids));
+                            },
+                      icon: const Icon(Icons.document_scanner),
+                      label: const Text("Generar PDFs")),
+                ],
+            onInit: () => context.read<BillsBloc>().add(const GetAllBills()),
+            itemCount: state.bills.length,
+            itemBuilder: (index, selecteds, select) => Card(
+                borderOnForeground: true,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  child: Row(
+                    children: [
+                      Checkbox(
+                          value: selecteds
+                              .contains(state.bills.elementAt(index).id),
+                          onChanged: (value) {
+                            select(state.bills.elementAt(index).id);
+                          }),
+                      Expanded(child: Text(state.bills.elementAt(index).bl)),
+                      IconButton(
                           onPressed: () {
-                            context.read<FormCubit>().resetForm();
-                            Navigator.pushNamed(context, NewBill.route);
+                            context.read<BillsBloc>().add(
+                                DeleteBill(state.bills.elementAt(index).id));
                           },
-                          icon: const Icon(FluentIcons.add),
-                          label: const Text("Crear")),
-                      CommandBarButton(
-                          onPressed: selecteds.isEmpty
-                              ? null
-                              : () {
-                                  context
-                                      .read<BillsBloc>()
-                                      .add(DeleteBills(selecteds));
-                                },
-                          icon: const Icon(FluentIcons.delete),
-                          label: const Text("Eliminar")),
-                      CommandBarButton(
-                          onPressed: selecteds.isEmpty
-                              ? null
-                              : () {
-                                  context
-                                      .read<BillsBloc>()
-                                      .add(PrintBills(selecteds));
-                                },
-                          icon: const Icon(FluentIcons.pdf),
-                          label: const Text("Generar PDFs")),
-                    ])),
-            resizeToAvoidBottomInset: true,
-            content: SafeArea(
-                child: BillsList(
-              selecteds: selecteds,
-              onSelect: (id, selected) {
-                if (selected) {
-                  setState(() {
-                    selecteds.add(id);
-                  });
-                } else {
-                  setState(() {
-                    selecteds.remove(id);
-                  });
-                }
-              },
-            ))));
+                          icon: const Icon(Icons.delete)),
+                      IconButton(
+                          onPressed: () {
+                            context.read<BillsBloc>().add(
+                                PrintBill(state.bills.elementAt(index).id));
+                          },
+                          icon: const Icon(Icons.delete)),
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, NewBill.route,
+                                arguments:
+                                    state.bills.elementAt(index).toMap());
+                          },
+                          icon: const Icon(Icons.edit))
+                    ],
+                  ),
+                )),
+            onChangedFilter: (searchValue) =>
+                context.read<BillsBloc>().add(Filter(searchValue)),
+            isLoading: state is LoadingBills));
   }
 }

@@ -3,7 +3,6 @@ import 'package:gen_pdf/bloc/exporter_bloc.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/widgets/base_form.dart';
 import 'package:gen_pdf/widgets/exporter/form_inputs.dart';
-import 'package:window_manager/window_manager.dart';
 
 class NewExporter extends StatelessWidget {
   static String route = "newExporter";
@@ -11,66 +10,48 @@ class NewExporter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var isEditing =
-        (ModalRoute.of(context)?.settings.arguments) as bool? ?? false;
+    var initialValues =
+        (ModalRoute.of(context)?.settings.arguments) as Map<String, dynamic>?;
 
-    return NavigationView(
-      appBar: NavigationAppBar(
-          height: 40,
-          title: Text(isEditing ? "Modificar Exportador" : "Crear exportador"),
-          actions: DragToMoveArea(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              SizedBox(
-                width: 138,
-                height: 50,
-                child: WindowCaption(
-                  brightness: FluentTheme.of(context).brightness,
-                  backgroundColor: const Color(0x00000FFF),
-                ),
-              )
-            ],
-          ))),
-      content: BlocListener<ExporterBloc, ExporterState>(
-        listener: (context, state) {
-          if (state is ExporterSaved) {
-            Navigator.pop(context);
-            displayInfoBar(
-              context,
-              builder: (context, close) => InfoBar(
-                title: Text(
-                    isEditing ? "Exportador modificado" : "Exportador creado"),
-                severity: InfoBarSeverity.success,
-              ),
-            );
-          }
-        },
-        child: ScaffoldPage(
-            header: const PageHeader(title: Text("Completa el formulario")),
-            content: SingleChildScrollView(
-                child: SafeArea(
-                    minimum: const EdgeInsets.fromLTRB(10, 12, 10, 20),
-                    child: Column(
-                      children: [
-                        BaseForm(
-                          inputs: (values) => formInputs(values),
-                          onSubmit: (values) async {
-                            if (isEditing) {
-                              context
-                                  .read<ExporterBloc>()
-                                  .add(EditExporter(values));
-                              return;
-                            } else {
-                              context
-                                  .read<ExporterBloc>()
-                                  .add(CreateExporter(values));
-                            }
-                          },
-                        )
-                      ],
-                    )))),
-      ),
-    );
+    var isEditing = initialValues != null;
+
+    return Scaffold(
+        appBar: AppBar(
+            title:
+                Text(isEditing ? "Modificar Exportador" : "Crear exportador")),
+        body: BlocListener<ExporterBloc, ExporterState>(
+            listener: (context, state) {
+              if (state is ExporterSaved) {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: SnackBar(
+                  content: Text(isEditing
+                      ? "Exportador modificado"
+                      : "Exportador creado"),
+                )));
+              }
+            },
+            child: SafeArea(
+                minimum: const EdgeInsets.fromLTRB(10, 12, 10, 20),
+                child: Column(
+                  children: [
+                    BaseForm(
+                      initialValues: initialValues,
+                      inputs: formInputs(),
+                      onSubmit: (values) async {
+                        if (isEditing) {
+                          context
+                              .read<ExporterBloc>()
+                              .add(EditExporter(values));
+                          return;
+                        } else {
+                          context
+                              .read<ExporterBloc>()
+                              .add(CreateExporter(values));
+                        }
+                      },
+                    )
+                  ],
+                ))));
   }
 }

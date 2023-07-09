@@ -1,10 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_acrylic/window_effect.dart';
 import 'package:gen_pdf/app.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/database/database_provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -30,14 +28,11 @@ void main() async {
 
   if (isDesktop) {
     sqfliteFfiInit();
-    await flutter_acrylic.Window.initialize();
-    await flutter_acrylic.Window.hideWindowControls();
-    await flutter_acrylic.Window.setEffect(effect: WindowEffect.acrylic);
     await WindowManager.instance.ensureInitialized();
     windowManager.waitUntilReadyToShow().then((_) async {
       await windowManager.setTitleBarStyle(
         TitleBarStyle.hidden,
-        windowButtonVisibility: false,
+        windowButtonVisibility: true,
       );
       await windowManager.setMinimumSize(const Size(1000, 300));
       await windowManager.show();
