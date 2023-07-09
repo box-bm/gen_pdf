@@ -7,13 +7,13 @@ class BillItemRepository {
     return bill;
   }
 
-  Future createBillItems(List<Map<String, dynamic>> values) async {
+  Future createBillItems(List<dynamic> values) async {
     var billitem = BillItem();
     var db = await billitem.databaseProvider.db;
     var batch = db.batch();
 
     for (var item in values) {
-      BillItem bill = BillItem.newByMap(item);
+      BillItem bill = billitem.fromMap(item);
       batch.insert(billitem.tableName, bill.toMap());
     }
 

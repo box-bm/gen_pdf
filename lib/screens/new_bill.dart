@@ -1,22 +1,61 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:gen_pdf/bloc/bills_bloc.dart';
+import 'package:gen_pdf/bloc/consigner_bloc.dart';
+import 'package:gen_pdf/bloc/exporter_bloc.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/widgets/bill/create_bill_form.dart';
 
-class NewBill extends StatelessWidget {
+class NewBill extends StatefulWidget {
   static String route = "newBill";
   const NewBill({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    var isEditing =
-        (ModalRoute.of(context)?.settings.arguments) as bool? ?? false;
+  State<NewBill> createState() => _NewBillState();
+}
 
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(isEditing ? "Modificar Factura" : "Creando Factura"),
-        ),
-        body: BlocListener<BillsBloc, BillsState>(
+class _NewBillState extends State<NewBill> {
+  final _formkey = GlobalKey<FormBuilderState>();
+
+  @override
+  void initState() {
+    context.read<ExporterBloc>().add(const GetAllExporters());
+    context.read<ConsignerBloc>().add(const GetAllConsigners());
+    _formkey.currentState?.initState();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var values =
+        (ModalRoute.of(context)?.settings.arguments) as Map<String, dynamic>?;
+
+    var isEditing = values != null;
+
+    bool validateForm() {
+      return _formkey.currentState!.saveAndValidate();
+    }
+
+    return FormBuilder(
+        key: _formkey,
+        initialValue: values ?? {},
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(isEditing ? "Modificar Factura" : "Creando Factura"),
+            actions: [
+              TextButton.icon(
+                  onPressed: () {
+                    if (validateForm()) {
+                      context
+                          .read<BillsBloc>()
+                          .add(CreateBill(_formkey.currentState!.value));
+                    }
+                  },
+                  icon: const Icon(Icons.save_as_outlined),
+                  label: const Text("Guardar"))
+            ],
+          ),
+          body: BlocListener<BillsBloc, BillsState>(
             listener: (context, state) {
               if (state is BillSaved) {
                 Navigator.pop(context);
@@ -28,8 +67,18 @@ class NewBill extends StatelessWidget {
                 );
               }
             },
-            child: const SafeArea(
-                minimum: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                child: CreateBillForm())));
+            child: SafeArea(child: CreateBillForm(formkey: _formkey)),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButton: FloatingActionButton.extended(
+              onPressed: () {
+                if (validateForm()) {
+                  context
+                      .read<BillsBloc>()
+                      .add(CreateBill(_formkey.currentState!.value));
+                }
+              },
+              label: const Text("Guardar")),
+        ));
   }
 }

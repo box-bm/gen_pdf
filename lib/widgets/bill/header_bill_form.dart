@@ -4,7 +4,6 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gen_pdf/bloc/consigner_bloc.dart';
 import 'package:gen_pdf/bloc/exporter_bloc.dart';
 import 'package:gen_pdf/common.dart';
-import 'package:gen_pdf/widgets/inputs/dropdown_form.dart';
 import 'package:gen_pdf/widgets/inputs/input_params.dart';
 
 import '../exporter/form_inputs.dart' as expoter_form;
@@ -34,14 +33,16 @@ class HeaderBillForm extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              DropdownForm(
-                  label: "Exportador",
+              FormBuilderDropdown(
+                  decoration: const InputDecoration(
+                    labelText: "Exportador",
+                    hintText: "Busca y selecciona el exportador",
+                  ),
                   name: "exporterID",
-                  placeholder: "Busca y selecciona el exportador",
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(),
                   ]),
-                  onInputChange: (value) {
+                  onChanged: (value) {
                     if (value != null &&
                         value != "new" &&
                         value.toString().isNotEmpty) {
@@ -85,11 +86,13 @@ class HeaderBillForm extends StatelessWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                DropdownForm(
-                    label: "Cliente",
+                FormBuilderDropdown<String>(
+                    decoration: const InputDecoration(
+                      labelText: "Cliente",
+                      hintText: "Busca y selecciona el cliente",
+                    ),
                     name: "consignerID",
-                    placeholder: "Busca y selecciona el cliente",
-                    onInputChange: (value) {
+                    onChanged: (value) {
                       if (value != null &&
                           value != "new" &&
                           value.toString().isNotEmpty) {

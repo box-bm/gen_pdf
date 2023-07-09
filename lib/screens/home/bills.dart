@@ -66,9 +66,9 @@ class Bills extends StatelessWidget {
                       IconButton(
                           onPressed: () {
                             context.read<BillsBloc>().add(
-                                PrintBill(state.bills.elementAt(index).id));
+                                PreviewPDF(state.bills.elementAt(index).id));
                           },
-                          icon: const Icon(Icons.delete)),
+                          icon: const Icon(Icons.print)),
                       IconButton(
                           onPressed: () {
                             Navigator.pushNamed(context, NewBill.route,

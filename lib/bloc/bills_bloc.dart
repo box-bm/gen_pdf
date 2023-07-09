@@ -59,7 +59,7 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
 
       var bill = await billRepository.createBill(values);
 
-      for (var item in values['items'] as List<Map<String, dynamic>>) {
+      for (var item in values['items']) {
         item['billId'] = bill.id;
       }
       await billItemRepository.createBillItems(values['items']);
