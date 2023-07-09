@@ -32,10 +32,10 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
       billId: values["billId"] ?? "",
       numeration: values["numeration"],
       description: values["description"],
-      quantity: (values["quantity"] as num).toInt(),
+      quantity: int.parse(values["quantity"]),
       prs: values["prs"],
-      unitPrice: (values["unitPrice"] as num).toDouble(),
-      total: (values["total"] as num).toDouble(),
+      unitPrice: double.parse(values["unitPrice"]),
+      total: values["total"],
     );
   }
 

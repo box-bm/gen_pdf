@@ -1,6 +1,4 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_pdf/common.dart';
-import 'package:gen_pdf/cubit/form_cubit.dart';
 import 'package:gen_pdf/screens/new_bill.dart';
 import 'package:gen_pdf/screens/new_consigner.dart';
 import 'package:gen_pdf/screens/new_exporter.dart';
@@ -82,7 +80,6 @@ class _HomeState extends State<Home> {
                 Navigator.pushNamed(context, NewConsigner.route);
                 break;
             }
-            context.read<FormCubit>().resetForm();
           },
           label: const Text("Crear")),
     );

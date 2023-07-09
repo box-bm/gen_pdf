@@ -29,7 +29,6 @@ class _AppState extends State<App> with WindowListener {
   Widget build(BuildContext context) {
     return BlocStore(
         child: MaterialApp(
-      themeMode: ThemeMode.light,
       theme: ThemeData.from(
               useMaterial3: true,
               colorScheme: ColorScheme.fromSeed(

@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_pdf/bloc/bills_bloc.dart';
 import 'package:gen_pdf/common.dart';
-import 'package:gen_pdf/cubit/form_cubit.dart';
 import 'package:gen_pdf/widgets/bill/create_bill_form.dart';
 
 class NewBill extends StatelessWidget {
@@ -29,41 +28,8 @@ class NewBill extends StatelessWidget {
                 );
               }
             },
-            child: SafeArea(
-                child: Column(children: [
-              Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                ElevatedButton.icon(
-                    onPressed: () {
-                      var data = context.read<FormCubit>().state.values;
-                      for (var item in [
-                        'billNumber',
-                        'exporterName',
-                        'exporterAddress',
-                        'consignerName',
-                        'consignerAddress',
-                        'containerNumber',
-                        'bl'
-                      ]) {
-                        if (!data.keys.contains(item)) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content:
-                                      Text("Debe completar el formulario")));
-                          return;
-                        }
-                      }
-                      if ((data['items'] as List? ?? []).isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text("Agregue al menos un elemento")));
-                        return;
-                      }
-                      context.read<BillsBloc>().add(CreateBill(data));
-                    },
-                    icon: const Icon(Icons.save),
-                    label: const Text("Guardar Factura"))
-              ]),
-              const Expanded(child: CreateBillForm()),
-            ]))));
+            child: const SafeArea(
+                minimum: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                child: CreateBillForm())));
   }
 }

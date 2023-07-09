@@ -1,13 +1,10 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:gen_pdf/common.dart';
-import 'package:gen_pdf/cubit/form_cubit.dart';
 
 class DropdownForm extends StatefulWidget {
   final String name;
   final String label;
   final String? placeholder;
-  final String? value;
   final List<DropdownMenuItem<dynamic>> items;
   final String? Function(Object?)? validator;
   final Function(Object?)? onInputChange;
@@ -18,7 +15,6 @@ class DropdownForm extends StatefulWidget {
     required this.label,
     this.placeholder,
     this.validator,
-    required this.value,
     this.onInputChange,
     required this.items,
   });
@@ -29,10 +25,7 @@ class DropdownForm extends StatefulWidget {
 
 class _DropdownFormState extends State<DropdownForm> {
   void onChangeHandler(Object? value) {
-    context.read<FormCubit>().setValue(value, widget.name);
-    if (widget.onInputChange != null) {
-      widget.onInputChange!(value);
-    }
+    widget.onInputChange!(value);
   }
 
   @override
@@ -41,10 +34,11 @@ class _DropdownFormState extends State<DropdownForm> {
       name: widget.name,
       validator: widget.validator,
       onChanged: onChangeHandler,
-      initialValue: widget.value,
       builder: (field) => DropdownButton(
+          isExpanded: true,
+          hint: widget.placeholder != null ? Text(widget.placeholder!) : null,
           onChanged: (value) => field.didChange(value.toString()),
-          value: widget.value,
+          value: field.value,
           items: widget.items),
     );
   }

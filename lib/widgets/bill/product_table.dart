@@ -1,37 +1,17 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:gen_pdf/common.dart';
-import 'package:gen_pdf/cubit/form_cubit.dart' as form_cubit;
 import 'package:gen_pdf/models/bill_item.dart';
 import 'package:gen_pdf/widgets/bill/new_item_form.dart';
 
-class ProductTable extends StatefulWidget {
-  final List<BillItem> initialItems;
-  const ProductTable({super.key, this.initialItems = const []});
-
-  @override
-  State<ProductTable> createState() => _ProductTableState();
-}
-
-class _ProductTableState extends State<ProductTable> {
-  List<BillItem> items = [];
-
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      items = widget.initialItems;
-    });
-  }
+class ProductTable extends StatelessWidget {
+  final GlobalKey<FormBuilderState> formKey;
+  const ProductTable({super.key, required this.formKey});
 
   void removeElement(String id) {
-    var items = this.items.where((element) => element.id != id).toList();
+    var field = formKey.currentState?.fields['items'];
+    var items = field?.value.where((element) => element.id != id).toList();
 
-    setState(() {
-      this.items = items;
-    });
-
-    context.read<form_cubit.FormCubit>().setValue(
-        items.isEmpty ? [] : items.map((e) => e.toMap()).toList(), "items");
+    field?.didChange(items);
   }
 
   @override
@@ -40,119 +20,134 @@ class _ProductTableState extends State<ProductTable> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(children: [
-          BlocBuilder<form_cubit.FormCubit, form_cubit.FormState>(
-              builder: (context, state) {
-            var items = (state.values['items'] as List<dynamic>? ?? []);
-
-            double total = items.isEmpty
-                ? 0
-                : items
-                    .map((e) => e['total'])
-                    .toList()
-                    .reduce((value, element) => value + element);
-
-            return Expanded(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text("Productos"),
-                Text(
-                  "Total: \$${total.toStringAsFixed(2)}",
-                  style: Theme.of(context).textTheme.titleLarge,
-                )
-              ],
-            ));
-          }),
+          Expanded(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Text("Productos"),
+              Text(
+                "Total: \$${205.toStringAsFixed(2)}",
+                style: Theme.of(context).textTheme.titleLarge,
+              )
+            ],
+          )),
           ElevatedButton.icon(
               onPressed: () {
-                showBottomSheet(
+                showModalBottomSheet(
                     context: context,
-                    builder: (context) => NewItemForm(
+                    enableDrag: true,
+                    useSafeArea: true,
+                    isDismissible: true,
+                    isScrollControlled: true,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.surfaceVariant,
+                    constraints: const BoxConstraints(
+                        minWidth: 200,
+                        maxWidth: 600,
+                        maxHeight: 1000,
+                        minHeight: 300),
+                    showDragHandle: true,
+                    builder: (context) => SafeArea(
+                        minimum: const EdgeInsets.fromLTRB(12, 10, 12, 20),
+                        child: NewItemForm(
                           onSubmit: (values) {
                             var newElement = BillItem.newByMap(values);
-                            var newList = [...items, newElement];
-                            setState(() {
-                              items = newList;
-                            });
-                            context.read<form_cubit.FormCubit>().setValue(
-                                newList.map((e) => e.toMap()).toList(),
-                                "items");
+
+                            var items = {
+                              ...formKey.currentState?.value['items']
+                                      as List<Map<String, dynamic>>? ??
+                                  []
+                            };
+
+                            formKey.currentState?.fields['items']
+                                ?.didChange([...items, newElement.toMap()]);
                             Navigator.pop(context);
                           },
-                        ));
+                        )));
               },
               icon: const Icon(Icons.add),
               label: const Text("Agregar"))
         ]),
-        Table(
-            columnWidths: const {
-              0: FixedColumnWidth(100),
-              6: FixedColumnWidth(50)
-            },
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            border: const TableBorder(
-                horizontalInside:
-                    BorderSide(color: Color.fromARGB(24, 253, 253, 253))),
-            children: [
-              TableRow(children: [
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  child: const Text("Numeracion"),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  child: const Text("Descripcion"),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  child: const Text("Cantidad"),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  child: const Text("PRS"),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  child: const Text("Precio unitario"),
-                ),
-                Container(
-                    padding: const EdgeInsets.all(4),
-                    child: const Text("Sub total")),
-              ]),
-              ...items
-                  .map((e) => TableRow(children: [
+        Card(
+          child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              child: FormBuilderField(
+                name: 'items',
+                builder: (field) => Table(
+                    columnWidths: const {
+                      0: FixedColumnWidth(100),
+                      6: FixedColumnWidth(50)
+                    },
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                    border: const TableBorder(
+                        horizontalInside: BorderSide(
+                            color: Color.fromARGB(24, 253, 253, 253))),
+                    children: [
+                      TableRow(children: [
+                        Container(
+                          padding: const EdgeInsets.all(4),
+                          child: const Text("Numeracion"),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(4),
+                          child: const Text("Descripcion"),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(4),
+                          child: const Text("Cantidad"),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(4),
+                          child: const Text("PRS"),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(4),
+                          child: const Text("Precio unitario"),
+                        ),
                         Container(
                             padding: const EdgeInsets.all(4),
-                            child: Text(e.numeration)),
-                        Container(
-                            padding: const EdgeInsets.all(4),
-                            child: Text(e.description)),
-                        Container(
-                            padding: const EdgeInsets.all(4),
-                            child: Text(e.quantity.toString())),
-                        Container(
-                            padding: const EdgeInsets.all(4),
-                            child: Text(e.prs ?? "")),
-                        Container(
-                            padding: const EdgeInsets.all(4),
-                            child: Text("\$${e.unitPrice.toStringAsFixed(2)}")),
-                        Container(
-                            padding: const EdgeInsets.all(4),
-                            child: Text("\$${e.total.toStringAsFixed(2)}")),
-                        Container(
-                            padding: const EdgeInsets.all(4),
-                            child: Row(
-                              children: [
-                                IconButton(
-                                    icon: const Icon(Icons.delete),
-                                    onPressed: () {
-                                      removeElement(e.id);
-                                    })
-                              ],
-                            )),
-                      ]))
-                  .toList()
-            ])
+                            child: const Text("Sub total")),
+                        const SizedBox(),
+                      ]),
+                      ...(field.value as List<dynamic>? ?? []).map((e) {
+                        BillItem item = BillItem().fromMap(e);
+                        return TableRow(children: [
+                          Container(
+                              padding: const EdgeInsets.all(4),
+                              child: Text(item.numeration)),
+                          Container(
+                              padding: const EdgeInsets.all(4),
+                              child: Text(item.description)),
+                          Container(
+                              padding: const EdgeInsets.all(4),
+                              child: Text(item.quantity.toString())),
+                          Container(
+                              padding: const EdgeInsets.all(4),
+                              child: Text(item.prs ?? "")),
+                          Container(
+                              padding: const EdgeInsets.all(4),
+                              child: Text(
+                                  "\$${item.unitPrice.toStringAsFixed(2)}")),
+                          Container(
+                              padding: const EdgeInsets.all(4),
+                              child:
+                                  Text("\$${item.total.toStringAsFixed(2)}")),
+                          Container(
+                              padding: const EdgeInsets.all(4),
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                      icon: const Icon(Icons.delete),
+                                      onPressed: () {
+                                        removeElement(item.id);
+                                      })
+                                ],
+                              )),
+                        ]);
+                      }).toList()
+                    ]),
+              )),
+        )
       ],
     );
   }
