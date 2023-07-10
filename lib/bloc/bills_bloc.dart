@@ -43,6 +43,12 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
                 element.exporterName.toLowerCase().contains(searchCriteria))
             .toList();
       }
+
+      for (var bill in bills) {
+        var items = await billItemRepository.getAllBillItemsByBillID(bill.id);
+        bill.items = items;
+      }
+
       emit(BillsLoaded(bills: bills, searchValue: state.searchValue));
     });
     on<CreateBill>((event, emit) async {

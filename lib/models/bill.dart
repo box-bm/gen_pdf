@@ -9,8 +9,10 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   String id;
   DateTime? date;
   String billNumber;
+  String exporterID;
   String exporterName;
   String exporterAddress;
+  String consignerID;
   String consignerName;
   String consignerAddress;
   String consignerNIT;
@@ -23,8 +25,10 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     this.id = "",
     this.date,
     this.billNumber = "",
+    this.exporterID = "",
     this.exporterName = "",
     this.exporterAddress = "",
+    this.consignerID = "",
     this.consignerName = "",
     this.consignerAddress = "",
     this.consignerNIT = "",
@@ -37,10 +41,12 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   factory Bill.newByMap(Map<String, dynamic> values) {
     return Bill(
       id: const Uuid().v4(),
-      date: DateTime.now(),
+      date: values['date'],
       billNumber: values['billNumber'],
+      exporterID: values['exporterID'],
       exporterName: values['exporterName'],
       exporterAddress: values['exporterAddress'],
+      consignerID: values['consignerID'],
       consignerName: values['consignerName'],
       consignerAddress: values['consignerAddress'],
       consignerNIT: values['consignerNIT'] ?? "",
@@ -52,16 +58,18 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
 
   Bill.create({
     required this.id,
-    this.items = const [],
     required this.date,
     required this.billNumber,
+    required this.exporterID,
     required this.exporterName,
     required this.exporterAddress,
+    required this.consignerID,
     required this.consignerName,
     required this.consignerAddress,
     required this.consignerNIT,
     required this.containerNumber,
     required this.bl,
+    this.items = const [],
     this.total = 0,
   });
 
@@ -69,8 +77,10 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   Bill copyWith({
     DateTime? date,
     String? billNumber,
+    String? exporterID,
     String? exporterName,
     String? exporterAddress,
+    String? consignerID,
     String? consignerName,
     String? consignerAddress,
     String? consignerNIT,
@@ -84,8 +94,10 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       items: items ?? this.items,
       date: date ?? this.date,
       billNumber: billNumber ?? this.billNumber,
+      exporterID: exporterID ?? this.exporterID,
       exporterName: exporterName ?? this.exporterName,
       exporterAddress: exporterAddress ?? this.exporterAddress,
+      consignerID: consignerID ?? this.consignerID,
       consignerName: consignerName ?? this.consignerName,
       consignerAddress: consignerAddress ?? this.consignerAddress,
       consignerNIT: consignerNIT ?? this.consignerNIT,
@@ -102,8 +114,10 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
         date:
             DateTime.tryParse(map['date'] ?? DateTime.now().toIso8601String()),
         billNumber: map['billNumber'],
+        exporterID: map['exporterID'],
         exporterName: map['exporterName'],
         exporterAddress: map['exporterAddress'],
+        consignerID: map['consignerID'],
         consignerName: map['consignerName'],
         consignerAddress: map['consignerAddress'],
         consignerNIT: map['consignerNIT'],
@@ -118,14 +132,35 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       "id": id,
       "date": (date ?? DateTime.now()).toIso8601String(),
       "billNumber": billNumber,
+      "exporterID": exporterID,
       "exporterName": exporterName,
       "exporterAddress": exporterAddress,
+      "consignerID": consignerID,
       "consignerName": consignerName,
       "consignerAddress": consignerAddress,
       "consignerNIT": consignerNIT,
       "containerNumber": containerNumber,
       "bl": bl,
       "total": total,
+    };
+  }
+
+  Map<String, dynamic> toListAsMap() {
+    return {
+      "id": id,
+      "date": (date ?? DateTime.now()).toIso8601String(),
+      "billNumber": billNumber,
+      "exporterID": exporterID,
+      "exporterName": exporterName,
+      "exporterAddress": exporterAddress,
+      "consignerID": consignerID,
+      "consignerName": consignerName,
+      "consignerAddress": consignerAddress,
+      "consignerNIT": consignerNIT,
+      "containerNumber": containerNumber,
+      "bl": bl,
+      "total": total,
+      "items": items.map((e) => e.toMap()).toList()
     };
   }
 
@@ -153,12 +188,22 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
           notNull: true,
         ),
         Column(
+          name: 'exporterID',
+          columnType: SQLiteDataType.text,
+          notNull: true,
+        ),
+        Column(
           name: 'exporterName',
           columnType: SQLiteDataType.text,
           notNull: true,
         ),
         Column(
           name: 'exporterAddress',
+          columnType: SQLiteDataType.text,
+          notNull: true,
+        ),
+        Column(
+          name: 'consignerID',
           columnType: SQLiteDataType.text,
           notNull: true,
         ),

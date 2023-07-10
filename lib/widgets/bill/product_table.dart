@@ -1,4 +1,5 @@
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/models/bill_item.dart';
 import 'package:gen_pdf/widgets/bill/new_item_form.dart';
@@ -18,6 +19,13 @@ class ProductTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return FormBuilderField(
         name: 'items',
+        validator: FormBuilderValidators.compose([
+          FormBuilderValidators.required(),
+          (values) {
+            print(values);
+            return null;
+          }
+        ]),
         builder: (field) {
           var items = field.value as List<dynamic>? ?? [];
           double total = items.isEmpty

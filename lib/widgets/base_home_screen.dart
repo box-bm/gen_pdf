@@ -1,4 +1,5 @@
 import 'package:gen_pdf/common.dart';
+import 'package:gen_pdf/utils/device.dart';
 import 'package:gen_pdf/widgets/empty_list.dart';
 
 class BaseHomeScreen extends StatefulWidget {
@@ -71,20 +72,7 @@ class _BaseHomeScreenState extends State<BaseHomeScreen> {
             actions: widget.actions == null
                 ? null
                 : [
-                    TextField(
-                        controller: textEditingController,
-                        decoration: InputDecoration(
-                            prefixIcon: const Icon(Icons.search),
-                            hintText: "Buscar",
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide.none),
-                            filled: true,
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 14),
-                            constraints: const BoxConstraints(
-                                maxWidth: 300, maxHeight: 40)),
-                        onChanged: handleSearch),
+                    isDesktop ? searchWidget() : const SizedBox.shrink(),
                     ...widget.actions!(selecteds),
                   ]),
         body: SafeArea(
@@ -107,9 +95,32 @@ class _BaseHomeScreenState extends State<BaseHomeScreen> {
       return const EmptyList();
     }
 
-    return ListView.builder(
-        itemCount: widget.itemCount,
-        itemBuilder: (context, index) =>
-            widget.itemBuilder(index, selecteds, select));
+    return Column(
+      children: [
+        isMobile ? searchWidget() : const SizedBox(),
+        Expanded(
+            child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                itemCount: widget.itemCount,
+                itemBuilder: (context, index) =>
+                    widget.itemBuilder(index, selecteds, select)))
+      ],
+    );
+  }
+
+  Widget searchWidget() {
+    return TextField(
+        controller: textEditingController,
+        decoration: InputDecoration(
+            prefixIcon: const Icon(Icons.search),
+            hintText: "Buscar",
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none),
+            filled: true,
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+            constraints: const BoxConstraints(maxWidth: 300, maxHeight: 40)),
+        onChanged: handleSearch);
   }
 }

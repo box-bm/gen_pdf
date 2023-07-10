@@ -73,7 +73,7 @@ class Bills extends StatelessWidget {
                           onPressed: () {
                             Navigator.pushNamed(context, NewBill.route,
                                 arguments:
-                                    state.bills.elementAt(index).toMap());
+                                    state.bills.elementAt(index).toListAsMap());
                           },
                           icon: const Icon(Icons.edit))
                     ],

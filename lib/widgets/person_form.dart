@@ -12,9 +12,8 @@ List<Widget> personForm({
       FormBuilderTextField(
           name: nameParams.name,
           enabled: !disabled,
-          validator: FormBuilderValidators.compose([
-            FormBuilderValidators.required(),
-          ]),
+          validator:
+              FormBuilderValidators.compose([FormBuilderValidators.required()]),
           decoration: InputDecoration(
             hintText: nameParams.placeholder,
             labelText: nameParams.label,
@@ -24,9 +23,8 @@ List<Widget> personForm({
       FormBuilderTextField(
           name: addressParams.name,
           enabled: !disabled,
-          validator: FormBuilderValidators.compose([
-            FormBuilderValidators.required(),
-          ]),
+          validator:
+              FormBuilderValidators.compose([FormBuilderValidators.required()]),
           decoration: InputDecoration(
             hintText: addressParams.placeholder,
             labelText: addressParams.label,

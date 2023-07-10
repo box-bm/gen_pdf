@@ -34,7 +34,16 @@ class _NewBillState extends State<NewBill> {
     var isEditing = values != null;
 
     bool validateForm() {
-      return _formkey.currentState!.saveAndValidate();
+      var valid = _formkey.currentState!.saveAndValidate();
+      var errors = _formkey.currentState?.errors;
+
+      if (errors != null) {
+        if (errors.containsKey('items')) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Agregar al menos un articulo")));
+        }
+      }
+      return valid;
     }
 
     return FormBuilder(
@@ -47,19 +56,7 @@ class _NewBillState extends State<NewBill> {
             leadingWidth: AppBarUtils.appbarSpace?.left,
             toolbarHeight: AppBarUtils.appbarHeight,
             flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
-            actions: [
-              TextButton.icon(
-                  onPressed: () {
-                    if (validateForm()) {
-                      context
-                          .read<BillsBloc>()
-                          .add(CreateBill(_formkey.currentState!.value));
-                    }
-                  },
-                  icon: const Icon(Icons.save_as_outlined),
-                  label: const Text("Guardar")),
-              SizedBox(width: AppBarUtils.appbarSpace?.right)
-            ],
+            centerTitle: false,
           ),
           body: BlocListener<BillsBloc, BillsState>(
             listener: (context, state) {
@@ -84,6 +81,7 @@ class _NewBillState extends State<NewBill> {
                       .add(CreateBill(_formkey.currentState!.value));
                 }
               },
+              icon: const Icon(Icons.save_as_outlined),
               label: const Text("Guardar")),
         ));
   }

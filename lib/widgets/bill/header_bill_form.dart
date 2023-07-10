@@ -34,6 +34,7 @@ class HeaderBillForm extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               FormBuilderDropdown(
+                  initialValue: 'new',
                   decoration: const InputDecoration(
                     labelText: "Exportador",
                     hintText: "Busca y selecciona el exportador",
@@ -77,6 +78,8 @@ class HeaderBillForm extends StatelessWidget {
           );
         }),
         const SizedBox(height: 10),
+        const Divider(),
+        const SizedBox(height: 10),
         BlocBuilder<ConsignerBloc, ConsignerState>(
           builder: (context, state) {
             if (state is Loadingconsigners) {
@@ -87,6 +90,7 @@ class HeaderBillForm extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 FormBuilderDropdown<String>(
+                    initialValue: 'new',
                     decoration: const InputDecoration(
                       labelText: "Cliente",
                       hintText: "Busca y selecciona el cliente",
@@ -136,6 +140,8 @@ class HeaderBillForm extends StatelessWidget {
             );
           },
         ),
+        const SizedBox(height: 10),
+        const Divider(),
         const SizedBox(height: 10),
         FormBuilderTextField(
           name: 'containerNumber',
