@@ -92,63 +92,110 @@ class ProductTable extends StatelessWidget {
                   child: Table(
                       columnWidths: const {
                         0: FixedColumnWidth(100),
+                        1: FlexColumnWidth(2),
+                        2: FixedColumnWidth(80),
+                        3: FixedColumnWidth(80),
+                        4: FlexColumnWidth(1),
+                        5: FlexColumnWidth(1),
                         6: FixedColumnWidth(50)
                       },
                       defaultVerticalAlignment:
                           TableCellVerticalAlignment.middle,
-                      border: const TableBorder(
+                      border: TableBorder(
+                          verticalInside: BorderSide(
+                              color:
+                                  Theme.of(context).colorScheme.onBackground),
                           horizontalInside: BorderSide(
-                              color: Color.fromARGB(24, 253, 253, 253))),
+                              color:
+                                  Theme.of(context).colorScheme.onBackground)),
                       children: [
                         TableRow(children: [
                           Container(
-                            padding: const EdgeInsets.all(4),
-                            child: const Text("Numeracion"),
+                            padding: const EdgeInsets.all(6),
+                            child: Text("Numeracion",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center),
                           ),
                           Container(
-                            padding: const EdgeInsets.all(4),
-                            child: const Text("Descripcion"),
+                            padding: const EdgeInsets.all(6),
+                            child: Text("Descripcion",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center),
                           ),
                           Container(
-                            padding: const EdgeInsets.all(4),
-                            child: const Text("Cantidad"),
+                            padding: const EdgeInsets.all(6),
+                            child: Text("Cantidad",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center),
                           ),
                           Container(
-                            padding: const EdgeInsets.all(4),
-                            child: const Text("PRS"),
+                            padding: const EdgeInsets.all(6),
+                            child: Text("PRS",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center),
                           ),
                           Container(
-                            padding: const EdgeInsets.all(4),
-                            child: const Text("Precio unitario"),
+                            padding: const EdgeInsets.all(6),
+                            child: Text("Precio unitario",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center),
                           ),
                           Container(
-                              padding: const EdgeInsets.all(4),
-                              child: const Text("Sub total")),
+                              padding: const EdgeInsets.all(6),
+                              child: Text("Sub total",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center)),
                           const SizedBox(),
                         ]),
                         ...(items).map((e) {
                           BillItem item = BillItem().fromMap(e);
                           return TableRow(children: [
                             Container(
-                                padding: const EdgeInsets.all(4),
-                                child: Text(item.numeration)),
+                                padding: const EdgeInsets.all(6),
+                                child: Text(item.numeration,
+                                    textAlign: TextAlign.center)),
                             Container(
-                                padding: const EdgeInsets.all(4),
-                                child: Text(item.description)),
+                                padding: const EdgeInsets.all(6),
+                                child: Text(item.description,
+                                    textAlign: TextAlign.center)),
                             Container(
-                                padding: const EdgeInsets.all(4),
-                                child: Text(item.quantity.toString())),
+                                padding: const EdgeInsets.all(6),
+                                child: Text(item.quantity.toString(),
+                                    textAlign: TextAlign.center)),
                             Container(
-                                padding: const EdgeInsets.all(4),
-                                child: Text(item.prs ?? "")),
+                                padding: const EdgeInsets.all(6),
+                                child: Text(item.prs ?? "",
+                                    textAlign: TextAlign.center)),
+                            Container(
+                                padding: const EdgeInsets.all(6),
+                                child: Text(
+                                  "\$${item.unitPrice.toStringAsFixed(2)}",
+                                  textAlign: TextAlign.end,
+                                )),
                             Container(
                                 padding: const EdgeInsets.all(4),
                                 child: Text(
-                                    "\$${item.unitPrice.toStringAsFixed(2)}")),
-                            Container(
-                                padding: const EdgeInsets.all(4),
-                                child:
-                                    Text("\$${item.total.toStringAsFixed(2)}")),
+                                  "\$${item.total.toStringAsFixed(2)}",
+                                  textAlign: TextAlign.end,
+                                )),
                             Container(
                                 padding: const EdgeInsets.all(4),
                                 child: Row(
