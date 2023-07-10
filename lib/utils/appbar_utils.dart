@@ -11,7 +11,7 @@ class AppBarSpacing {
 
 class AppBarUtils {
   static double? get appbarHeight {
-    if (isMac) return 50;
+    if (isMac) return 90;
     if (isWindows) return 40;
     return null;
   }

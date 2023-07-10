@@ -20,7 +20,6 @@ class PreviewBill extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           leading: AppBarUtils.leadingWidget,
-          leadingWidth: AppBarUtils.appbarSpace?.left,
           toolbarHeight: AppBarUtils.appbarHeight,
           flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
           centerTitle: false,
@@ -31,6 +30,7 @@ class PreviewBill extends StatelessWidget {
           canChangeOrientation: false,
           canChangePageFormat: false,
           canDebug: false,
+          loadingWidget: const CircularProgressIndicator.adaptive(),
           actions: [
             IconButton(
                 icon: const Icon(Icons.save),

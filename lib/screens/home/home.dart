@@ -47,6 +47,8 @@ class _HomeState extends State<Home> {
           itemCount: pages.length,
           itemBuilder: (context, index) => pages.elementAt(index).content),
       bottomNavigationBar: BottomNavigationBar(
+          mouseCursor: MaterialStateMouseCursor.textable,
+          type: BottomNavigationBarType.fixed,
           landscapeLayout: isDesktop
               ? BottomNavigationBarLandscapeLayout.linear
               : BottomNavigationBarLandscapeLayout.centered,
