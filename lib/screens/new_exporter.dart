@@ -20,7 +20,6 @@ class NewExporter extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
             leading: AppBarUtils.leadingWidget,
-            leadingWidth: AppBarUtils.appbarSpace?.left,
             toolbarHeight: AppBarUtils.appbarHeight,
             flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
             title:

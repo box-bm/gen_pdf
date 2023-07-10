@@ -21,7 +21,6 @@ class NewConsigner extends StatelessWidget {
         leading: AppBarUtils.leadingWidget,
         title: Text(isEditing ? "Modificar Cliente" : "Crear cliente"),
         centerTitle: false,
-        leadingWidth: AppBarUtils.appbarSpace?.left,
         toolbarHeight: AppBarUtils.appbarHeight,
         flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
       ),
