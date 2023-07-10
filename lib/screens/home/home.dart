@@ -3,7 +3,6 @@ import 'package:gen_pdf/screens/new_bill.dart';
 import 'package:gen_pdf/screens/new_consigner.dart';
 import 'package:gen_pdf/screens/new_exporter.dart';
 import 'package:gen_pdf/utils/appbar_utils.dart';
-import 'package:window_manager/window_manager.dart';
 
 import './bills.dart';
 import './consigners.dart';
@@ -40,7 +39,7 @@ class _HomeState extends State<Home> {
           leading: const SizedBox(),
           leadingWidth: AppBarUtils.appbarSpace?.left,
           toolbarHeight: AppBarUtils.appbarHeight,
-          flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace),
+          flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace(context)),
       body: PageView.builder(
           controller: _controller,
           physics: const NeverScrollableScrollPhysics(),

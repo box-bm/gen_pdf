@@ -21,7 +21,7 @@ class NewExporter extends StatelessWidget {
         appBar: AppBar(
             leadingWidth: AppBarUtils.appbarSpace?.left,
             toolbarHeight: AppBarUtils.appbarHeight,
-            flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
+            flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace(context),
             title:
                 Text(isEditing ? "Modificar Exportador" : "Crear exportador")),
         body: BlocListener<ExporterBloc, ExporterState>(

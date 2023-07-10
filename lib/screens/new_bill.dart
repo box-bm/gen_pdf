@@ -45,7 +45,7 @@ class _NewBillState extends State<NewBill> {
             title: Text(isEditing ? "Modificar Factura" : "Creando Factura"),
             leadingWidth: AppBarUtils.appbarSpace?.left,
             toolbarHeight: AppBarUtils.appbarHeight,
-            flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
+            flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace(context),
             actions: [
               TextButton.icon(
                   onPressed: () {

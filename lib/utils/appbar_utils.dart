@@ -22,9 +22,11 @@ class AppBarUtils {
     return null;
   }
 
-  static Widget? get platformAppBarFlexibleSpace {
+  static Widget? platformAppBarFlexibleSpace(BuildContext context) {
     if (isWindows) {
-      return const WindowCaption();
+      return WindowCaption(
+        brightness: Theme.of(context).brightness,
+      );
     }
 
     return null;

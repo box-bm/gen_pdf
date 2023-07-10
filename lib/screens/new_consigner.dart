@@ -22,7 +22,7 @@ class NewConsigner extends StatelessWidget {
         centerTitle: false,
         leadingWidth: AppBarUtils.appbarSpace?.left,
         toolbarHeight: AppBarUtils.appbarHeight,
-        flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
+        flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace(context),
       ),
       body: BlocListener<ConsignerBloc, ConsignerState>(
         listener: (context, state) {
