@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_pdf/bloc/consigner_bloc.dart';
 import 'package:gen_pdf/common.dart';
+import 'package:gen_pdf/utils/appbar_utils.dart';
 import 'package:gen_pdf/widgets/base_form.dart';
 import 'package:gen_pdf/widgets/consigne/form_inputs.dart';
 
@@ -19,6 +20,9 @@ class NewConsigner extends StatelessWidget {
       appBar: AppBar(
         title: Text(isEditing ? "Modificar Cliente" : "Crear cliente"),
         centerTitle: false,
+        leadingWidth: AppBarUtils.appbarSpace?.left,
+        toolbarHeight: AppBarUtils.appbarHeight,
+        flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
       ),
       body: BlocListener<ConsignerBloc, ConsignerState>(
         listener: (context, state) {

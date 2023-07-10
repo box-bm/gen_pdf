@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_pdf/bloc/bills_bloc.dart';
 import 'package:gen_pdf/common.dart';
+import 'package:gen_pdf/utils/appbar_utils.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
@@ -17,7 +18,11 @@ class PreviewBill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Vista previa de pdf")),
+      appBar: AppBar(
+          leadingWidth: AppBarUtils.appbarSpace?.left,
+          toolbarHeight: AppBarUtils.appbarHeight,
+          flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
+          title: const Text("Vista previa de pdf")),
       body: SafeArea(
         child: PdfPreview(
           allowPrinting: true,

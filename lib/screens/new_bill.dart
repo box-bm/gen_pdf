@@ -4,6 +4,7 @@ import 'package:gen_pdf/bloc/bills_bloc.dart';
 import 'package:gen_pdf/bloc/consigner_bloc.dart';
 import 'package:gen_pdf/bloc/exporter_bloc.dart';
 import 'package:gen_pdf/common.dart';
+import 'package:gen_pdf/utils/appbar_utils.dart';
 import 'package:gen_pdf/widgets/bill/create_bill_form.dart';
 
 class NewBill extends StatefulWidget {
@@ -42,6 +43,9 @@ class _NewBillState extends State<NewBill> {
         child: Scaffold(
           appBar: AppBar(
             title: Text(isEditing ? "Modificar Factura" : "Creando Factura"),
+            leadingWidth: AppBarUtils.appbarSpace?.left,
+            toolbarHeight: AppBarUtils.appbarHeight,
+            flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
             actions: [
               TextButton.icon(
                   onPressed: () {
@@ -52,7 +56,8 @@ class _NewBillState extends State<NewBill> {
                     }
                   },
                   icon: const Icon(Icons.save_as_outlined),
-                  label: const Text("Guardar"))
+                  label: const Text("Guardar")),
+              SizedBox(width: AppBarUtils.appbarSpace?.right)
             ],
           ),
           body: BlocListener<BillsBloc, BillsState>(

@@ -2,6 +2,8 @@ import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/screens/new_bill.dart';
 import 'package:gen_pdf/screens/new_consigner.dart';
 import 'package:gen_pdf/screens/new_exporter.dart';
+import 'package:gen_pdf/utils/appbar_utils.dart';
+import 'package:window_manager/window_manager.dart';
 
 import './bills.dart';
 import './consigners.dart';
@@ -34,7 +36,11 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(toolbarHeight: 30),
+      appBar: AppBar(
+          leading: const SizedBox(),
+          leadingWidth: AppBarUtils.appbarSpace?.left,
+          toolbarHeight: AppBarUtils.appbarHeight,
+          flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace),
       body: PageView.builder(
           controller: _controller,
           physics: const NeverScrollableScrollPhysics(),

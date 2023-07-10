@@ -4,6 +4,8 @@ import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/widgets/base_form.dart';
 import 'package:gen_pdf/widgets/exporter/form_inputs.dart';
 
+import '../utils/appbar_utils.dart';
+
 class NewExporter extends StatelessWidget {
   static String route = "newExporter";
   const NewExporter({super.key});
@@ -17,6 +19,9 @@ class NewExporter extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
+            leadingWidth: AppBarUtils.appbarSpace?.left,
+            toolbarHeight: AppBarUtils.appbarHeight,
+            flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
             title:
                 Text(isEditing ? "Modificar Exportador" : "Crear exportador")),
         body: BlocListener<ExporterBloc, ExporterState>(
