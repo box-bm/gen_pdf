@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gen_pdf/models/bill.dart';
 import 'package:gen_pdf/models/bill_item.dart';
 import 'package:gen_pdf/repository/bill_item_repository.dart';
 import 'package:gen_pdf/repository/bill_repository.dart';
+import 'package:gen_pdf/utils/file_picker.dart';
 import 'package:gen_pdf/utils/gen_test_pdf.dart';
 import 'package:pdf/widgets.dart';
 
@@ -117,14 +120,28 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       emit(BillsLoaded(searchValue: state.searchValue, bills: state.bills));
     });
     on<PrintBills>((event, emit) async {
-      for (var id in event.ids) {
-        Bill bill = await billRepository.getByID(id);
-        List<BillItem> items =
-            await billItemRepository.getAllBillItemsByBillID(id);
+      var folder = await FileManager().chooseDirectoryPath(
+          dialogTitle: "Seleccione la ubicacion para guardar");
 
-        bill.items = items;
-        await genPDF(bill);
+      if (folder != null) {
+        List<Future> savedBills = [];
+
+        for (var id in event.ids) {
+          Bill bill = await billRepository.getByID(id);
+          List<BillItem> items =
+              await billItemRepository.getAllBillItemsByBillID(id);
+
+          bill.items = items;
+          savedBills.add(genFile(bill, folder));
+        }
+        await Future.wait(savedBills);
       }
     });
   }
+}
+
+Future<void> genFile(Bill bill, String folder) async {
+  var doc = await genPDF(bill);
+  File file = File("$folder/${bill.id}.pdf");
+  await file.writeAsBytes(await doc.save());
 }

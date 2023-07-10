@@ -71,7 +71,7 @@ Future<Document> genPDF(Bill bill) async {
                                           CrossAxisAlignment.stretch,
                                       children: [
                                         Text("Fecha", style: boldText),
-                                        Text(formatter.format(
+                                        Text(dateFormat.format(
                                             bill.date ?? DateTime.now()))
                                       ]))),
                           Expanded(
@@ -265,7 +265,7 @@ Future<Document> genPDF(Bill bill) async {
                                       Container(
                                           padding: const EdgeInsets.all(2),
                                           child: Text(
-                                              e.quantity.toStringAsFixed(0),
+                                              moneyFormat.format(e.quantity),
                                               textAlign: TextAlign.center)),
                                       Container(
                                           padding: const EdgeInsets.all(2),
@@ -274,12 +274,12 @@ Future<Document> genPDF(Bill bill) async {
                                       Container(
                                           padding: const EdgeInsets.all(2),
                                           child: Text(
-                                              "\$ ${e.unitPrice.toStringAsFixed(2)}",
+                                              moneyFormat.format(e.unitPrice),
                                               textAlign: TextAlign.right)),
                                       Container(
                                           padding: const EdgeInsets.all(2),
                                           child: Text(
-                                              "\$ ${e.total.toStringAsFixed(2)}",
+                                              moneyFormat.format(e.total),
                                               textAlign: TextAlign.right)),
                                     ]),
                                   )

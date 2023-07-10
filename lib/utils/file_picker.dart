@@ -28,6 +28,12 @@ class FileManager {
     return dir.path;
   }
 
+  Future<String?> chooseDirectoryPath({
+    String dialogTitle = "Selecciones donde guardar el archivo",
+  }) async {
+    return await FilePicker.platform.getDirectoryPath(dialogTitle: dialogTitle);
+  }
+
   Future<FilePickerResult?> choseFile({
     String dialogTitle = "Selecciones donde guardar el archivo",
     List<String> allowedExtensions = const ['txt'],

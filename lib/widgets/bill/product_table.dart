@@ -2,6 +2,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/models/bill_item.dart';
+import 'package:gen_pdf/utils/formatter.dart';
 import 'package:gen_pdf/widgets/bill/new_item_form.dart';
 
 class ProductTable extends StatelessWidget {
@@ -21,10 +22,6 @@ class ProductTable extends StatelessWidget {
         name: 'items',
         validator: FormBuilderValidators.compose([
           FormBuilderValidators.required(),
-          (values) {
-            print(values);
-            return null;
-          }
         ]),
         builder: (field) {
           var items = field.value as List<dynamic>? ?? [];
@@ -44,7 +41,7 @@ class ProductTable extends StatelessWidget {
                     children: [
                       const Text("Productos"),
                       Text(
-                        "Total: \$${total.toStringAsFixed(2)}",
+                        moneyFormat.format(total),
                         style: Theme.of(context).textTheme.titleLarge,
                       )
                     ],
@@ -187,13 +184,13 @@ class ProductTable extends StatelessWidget {
                             Container(
                                 padding: const EdgeInsets.all(6),
                                 child: Text(
-                                  "\$${item.unitPrice.toStringAsFixed(2)}",
+                                  moneyFormat.format(item.unitPrice),
                                   textAlign: TextAlign.end,
                                 )),
                             Container(
                                 padding: const EdgeInsets.all(4),
                                 child: Text(
-                                  "\$${item.total.toStringAsFixed(2)}",
+                                  moneyFormat.format(item.total),
                                   textAlign: TextAlign.end,
                                 )),
                             Container(
