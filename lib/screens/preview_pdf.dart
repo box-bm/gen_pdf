@@ -19,9 +19,11 @@ class PreviewBill extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          leading: AppBarUtils.leadingWidget,
           leadingWidth: AppBarUtils.appbarSpace?.left,
           toolbarHeight: AppBarUtils.appbarHeight,
-          flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace(context),
+          flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
+          centerTitle: false,
           title: const Text("Vista previa de pdf")),
       body: SafeArea(
         child: PdfPreview(

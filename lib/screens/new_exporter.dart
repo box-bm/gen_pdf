@@ -19,9 +19,10 @@ class NewExporter extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
+            leading: AppBarUtils.leadingWidget,
             leadingWidth: AppBarUtils.appbarSpace?.left,
             toolbarHeight: AppBarUtils.appbarHeight,
-            flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace(context),
+            flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
             title:
                 Text(isEditing ? "Modificar Exportador" : "Crear exportador")),
         body: BlocListener<ExporterBloc, ExporterState>(

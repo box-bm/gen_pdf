@@ -11,25 +11,53 @@ class AppBarSpacing {
 
 class AppBarUtils {
   static double? get appbarHeight {
-    if (isMac) return 16;
+    if (isMac) return 50;
     if (isWindows) return 40;
     return null;
   }
 
   static AppBarSpacing? get appbarSpace {
-    if (isMac) return AppBarSpacing(500, 0);
+    if (isMac) return AppBarSpacing(120, 10);
     if (isWindows) return AppBarSpacing(50, 138);
     return null;
   }
 
-  static Widget? platformAppBarFlexibleSpace(BuildContext context) {
+  static Widget? get platformAppBarFlexibleSpace {
     if (isWindows) {
-      return WindowCaption(
-        brightness: Theme.of(context).brightness,
-        backgroundColor: Colors.transparent,
-      );
+      return Builder(
+          builder: (context) => WindowCaption(
+              brightness: Theme.of(context).brightness,
+              backgroundColor: Colors.transparent));
     }
 
     return null;
+  }
+
+  static IconData get leadingIcon {
+    if (isIos || isMac) {
+      return Icons.arrow_back_ios_new;
+    }
+
+    if (isWindows) {
+      return Icons.arrow_back_sharp;
+    }
+
+    return Icons.arrow_back;
+  }
+
+  static Widget get leadingWidget {
+    return Builder(
+      builder: (context) => Visibility(
+          visible: Navigator.canPop(context),
+          maintainSize: false,
+          child: Align(
+              alignment: Alignment.centerRight,
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(leadingIcon),
+              ))),
+    );
   }
 }

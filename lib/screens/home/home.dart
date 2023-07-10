@@ -3,6 +3,7 @@ import 'package:gen_pdf/screens/new_bill.dart';
 import 'package:gen_pdf/screens/new_consigner.dart';
 import 'package:gen_pdf/screens/new_exporter.dart';
 import 'package:gen_pdf/utils/appbar_utils.dart';
+import 'package:gen_pdf/utils/device.dart';
 
 import './bills.dart';
 import './consigners.dart';
@@ -38,15 +39,17 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
           leading: const SizedBox(),
           leadingWidth: AppBarUtils.appbarSpace?.left,
-          toolbarHeight: AppBarUtils.appbarHeight,
-          flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace(context)),
+          toolbarHeight: isMac ? 20 : AppBarUtils.appbarHeight,
+          flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace),
       body: PageView.builder(
           controller: _controller,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: pages.length,
           itemBuilder: (context, index) => pages.elementAt(index).content),
       bottomNavigationBar: BottomNavigationBar(
-          landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
+          landscapeLayout: isDesktop
+              ? BottomNavigationBarLandscapeLayout.linear
+              : BottomNavigationBarLandscapeLayout.centered,
           currentIndex: currentPage,
           onTap: (value) {
             _controller.jumpToPage(value);

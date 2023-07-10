@@ -42,10 +42,11 @@ class _NewBillState extends State<NewBill> {
         initialValue: values ?? {},
         child: Scaffold(
           appBar: AppBar(
+            leading: AppBarUtils.leadingWidget,
             title: Text(isEditing ? "Modificar Factura" : "Creando Factura"),
             leadingWidth: AppBarUtils.appbarSpace?.left,
             toolbarHeight: AppBarUtils.appbarHeight,
-            flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace(context),
+            flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
             actions: [
               TextButton.icon(
                   onPressed: () {

@@ -18,11 +18,12 @@ class NewConsigner extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: AppBarUtils.leadingWidget,
         title: Text(isEditing ? "Modificar Cliente" : "Crear cliente"),
         centerTitle: false,
         leadingWidth: AppBarUtils.appbarSpace?.left,
         toolbarHeight: AppBarUtils.appbarHeight,
-        flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace(context),
+        flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
       ),
       body: BlocListener<ConsignerBloc, ConsignerState>(
         listener: (context, state) {
