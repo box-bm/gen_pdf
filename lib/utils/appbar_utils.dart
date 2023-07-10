@@ -12,13 +12,13 @@ class AppBarSpacing {
 class AppBarUtils {
   static double? get appbarHeight {
     if (isMac) return 16;
-    if (isWindows) return kWindowCaptionHeight;
+    if (isWindows) return 40;
     return null;
   }
 
   static AppBarSpacing? get appbarSpace {
     if (isMac) return AppBarSpacing(500, 0);
-    if (isWindows) return AppBarSpacing(0, 128);
+    if (isWindows) return AppBarSpacing(50, 138);
     return null;
   }
 
@@ -26,6 +26,7 @@ class AppBarUtils {
     if (isWindows) {
       return WindowCaption(
         brightness: Theme.of(context).brightness,
+        backgroundColor: Colors.transparent,
       );
     }
 
