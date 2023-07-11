@@ -32,7 +32,8 @@ class _AppState extends State<App> with WindowListener {
       theme: ThemeData.from(
               useMaterial3: true,
               colorScheme: ColorScheme.fromSeed(
-                  seedColor: const Color.fromARGB(255, 89, 168, 199)))
+                  seedColor: const Color.fromARGB(255, 89, 168, 199),
+                  background: const Color.fromARGB(255, 250, 250, 250)))
           .copyWith(
               inputDecorationTheme:
                   const InputDecorationTheme(border: OutlineInputBorder())),

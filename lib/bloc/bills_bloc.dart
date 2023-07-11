@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -35,7 +36,9 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
                 element.consignerAddress
                     .toLowerCase()
                     .contains(searchCriteria) ||
-                element.consignerNIT.toLowerCase().contains(searchCriteria) ||
+                (element.consignerNIT ?? "")
+                    .toLowerCase()
+                    .contains(searchCriteria) ||
                 element.consignerName.toLowerCase().contains(searchCriteria) ||
                 element.containerNumber
                     .toLowerCase()
@@ -77,15 +80,33 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       add(const GetAllBills());
     });
     on<EditBill>((event, emit) async {
-      add(DeleteBill(event.values['id']));
-      add(CreateBill(event.values));
+      var values = {...event.values};
+      var billItems = (values['items'] as List<dynamic>? ?? []);
+
+      double total = billItems.isEmpty
+          ? 0
+          : billItems
+              .map((e) => e['total'])
+              .toList()
+              .reduce((value, element) => value + element);
+
+      values['total'] = total;
+
+      await billRepository.updateBill(values);
+      await billItemRepository.deleteBillItemsByBillID(event.values['id']);
+      for (var item in values['items']) {
+        item['billId'] = event.values['id'];
+      }
+      await billItemRepository.createBillItems(values['items']);
 
       emit(BillSaved(searchValue: state.searchValue));
       add(const GetAllBills());
     });
     on<DeleteBill>((event, emit) async {
-      await billRepository.deleteBill(event.id);
-      await billItemRepository.deleteBillItemsByBillID(event.id);
+      await Future.wait([
+        billRepository.deleteBill(event.id),
+        billItemRepository.deleteBillItemsByBillID(event.id)
+      ]);
       emit(DeletingBill(searchValue: state.searchValue));
       add(const GetAllBills());
     });
@@ -98,6 +119,33 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       emit(DeletedBill(searchValue: state.searchValue));
       add(const GetAllBills());
     });
+
+    on<FindNewBillNumber>((event, emit) async {
+      List<Bill> bills = [];
+      int newBillNumber = 0;
+
+      if (event.date != null) {
+        bills = await billRepository.getBills();
+        bills = bills
+            .where((element) => element.date!.isAtSameMomentAs(event.date!))
+            .toList();
+      }
+
+      if (bills.map((e) => e.id).contains(event.id)) {
+        newBillNumber =
+            bills.firstWhere((element) => element.id == event.id).number;
+      } else {
+        newBillNumber =
+            bills.isEmpty ? 0 : bills.map((e) => e.number).reduce(max);
+
+        newBillNumber++;
+      }
+
+      emit(FindedNewBillNumber(newBillNumber, event.date,
+          bills: state.bills, searchValue: state.searchValue));
+      emit(BillsLoaded(searchValue: state.searchValue, bills: state.bills));
+    });
+
     on<PrintBill>((event, emit) async {
       Bill bill = await billRepository.getByID(event.id);
       List<BillItem> items =

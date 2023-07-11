@@ -66,7 +66,7 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
       numeration: numeration ?? this.numeration,
       description: description ?? this.description,
       quantity: quantity ?? this.quantity,
-      prs: prs ?? this.prs,
+      prs: prs ?? this.prs ?? "",
       unitPrice: unitPrice ?? this.unitPrice,
       total: total ?? this.total,
     );
@@ -80,7 +80,7 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
       numeration: map['numeration'],
       description: map['description'],
       quantity: map['quantity'],
-      prs: map['prs'] ?? "",
+      prs: map['prs'],
       unitPrice: map['unitPrice'],
       total: map['total'],
     );

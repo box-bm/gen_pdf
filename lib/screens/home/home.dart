@@ -47,14 +47,16 @@ class _HomeState extends State<Home> {
           itemCount: pages.length,
           itemBuilder: (context, index) => pages.elementAt(index).content),
       bottomNavigationBar: BottomNavigationBar(
-          mouseCursor: MaterialStateMouseCursor.textable,
+          mouseCursor: MaterialStateMouseCursor.clickable,
           type: BottomNavigationBarType.fixed,
           landscapeLayout: isDesktop
               ? BottomNavigationBarLandscapeLayout.linear
               : BottomNavigationBarLandscapeLayout.centered,
           currentIndex: currentPage,
           onTap: (value) {
-            _controller.jumpToPage(value);
+            _controller.animateToPage(value,
+                curve: Curves.easeInOut,
+                duration: const Duration(milliseconds: 500));
             setState(() {
               currentPage = value;
             });

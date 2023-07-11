@@ -43,3 +43,10 @@ class PrintReady extends BillsState {
   const PrintReady(this.document, this.id,
       {required super.searchValue, super.bills});
 }
+
+class FindedNewBillNumber extends BillsState {
+  final int? newBillNumber;
+  final DateTime? dateTime;
+  const FindedNewBillNumber(this.newBillNumber, this.dateTime,
+      {super.bills, super.searchValue = ""});
+}

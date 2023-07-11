@@ -137,7 +137,7 @@ Future<Document> genPDF(Bill bill) async {
                                                 padding:
                                                     const EdgeInsets.all(4),
                                                 child: Text(
-                                                    "Nit: ${bill.consignerNIT.isEmpty ? "-" : bill.consignerNIT}"))
+                                                    "Nit: ${(bill.consignerNIT ?? "").isEmpty ? "-" : bill.consignerNIT}"))
                                           ]))),
                             ])),
                         Container(

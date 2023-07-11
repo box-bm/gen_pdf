@@ -6,6 +6,8 @@ import 'package:gen_pdf/bloc/exporter_bloc.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/utils/appbar_utils.dart';
 import 'package:gen_pdf/widgets/bill/create_bill_form.dart';
+import 'package:intl/intl.dart';
+import 'package:gen_pdf/utils/formatter.dart';
 
 class NewBill extends StatefulWidget {
   static String route = "newBill";
@@ -22,8 +24,22 @@ class _NewBillState extends State<NewBill> {
   void initState() {
     context.read<ExporterBloc>().add(const GetAllExporters());
     context.read<ConsignerBloc>().add(const GetAllConsigners());
+    // context.read<BillsBloc>().add(const GetAllConsigners());
     _formkey.currentState?.initState();
     super.initState();
+  }
+
+  bool validateForm() {
+    var valid = _formkey.currentState!.saveAndValidate();
+    var errors = _formkey.currentState?.errors;
+
+    if (errors != null) {
+      if (errors.containsKey('items')) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Agregar al menos un articulo")));
+      }
+    }
+    return valid;
   }
 
   @override
@@ -33,55 +49,59 @@ class _NewBillState extends State<NewBill> {
 
     var isEditing = values != null;
 
-    bool validateForm() {
-      var valid = _formkey.currentState!.saveAndValidate();
-      var errors = _formkey.currentState?.errors;
+    return BlocListener<BillsBloc, BillsState>(
+        listener: (context, state) {
+          if (state is FindedNewBillNumber) {
+            _formkey.currentState?.fields['number']
+                ?.didChange(state.newBillNumber.toString());
 
-      if (errors != null) {
-        if (errors.containsKey('items')) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Agregar al menos un articulo")));
-        }
-      }
-      return valid;
-    }
-
-    return FormBuilder(
-        key: _formkey,
-        initialValue: values ?? {},
-        child: Scaffold(
-          appBar: AppBar(
-            leading: AppBarUtils.leadingWidget,
-            title: Text(isEditing ? "Modificar Factura" : "Creando Factura"),
-            toolbarHeight: AppBarUtils.appbarHeight,
-            flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
-            centerTitle: false,
-          ),
-          body: BlocListener<BillsBloc, BillsState>(
-            listener: (context, state) {
-              if (state is BillSaved) {
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                        isEditing ? "Factura modificada" : "Factura creada"),
-                  ),
-                );
-              }
-            },
-            child: SafeArea(child: CreateBillForm(formkey: _formkey)),
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-          floatingActionButton: FloatingActionButton.extended(
-              onPressed: () {
-                if (validateForm()) {
-                  context
-                      .read<BillsBloc>()
-                      .add(CreateBill(_formkey.currentState!.value));
-                }
-              },
-              icon: const Icon(Icons.save_as_outlined),
-              label: const Text("Guardar")),
-        ));
+            _formkey.currentState?.fields['billNumber']?.didChange(state
+                        .dateTime !=
+                    null
+                ? "502-${DateFormat("MM-dd").format(state.dateTime!)}-${state.newBillNumber?.suffixNumber()}"
+                : null);
+          }
+          if (state is BillSaved) {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content:
+                    Text(isEditing ? "Factura modificada" : "Factura creada"),
+              ),
+            );
+          }
+        },
+        child: FormBuilder(
+            key: _formkey,
+            initialValue: values ?? {},
+            child: Scaffold(
+              appBar: AppBar(
+                leading: AppBarUtils.leadingWidget,
+                title:
+                    Text(isEditing ? "Modificar Factura" : "Creando Factura"),
+                toolbarHeight: AppBarUtils.appbarHeight,
+                flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
+                centerTitle: false,
+              ),
+              body: SafeArea(child: CreateBillForm(formkey: _formkey)),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.endFloat,
+              floatingActionButton: FloatingActionButton.extended(
+                  onPressed: () {
+                    if (validateForm()) {
+                      if (isEditing) {
+                        context
+                            .read<BillsBloc>()
+                            .add(EditBill(_formkey.currentState!.value));
+                      } else {
+                        context
+                            .read<BillsBloc>()
+                            .add(CreateBill(_formkey.currentState!.value));
+                      }
+                    }
+                  },
+                  icon: const Icon(Icons.save_as_outlined),
+                  label: const Text("Guardar")),
+            )));
   }
 }

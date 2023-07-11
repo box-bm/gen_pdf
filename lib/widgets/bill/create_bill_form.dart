@@ -10,21 +10,41 @@ class CreateBillForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-            child: Container(
-                constraints: const BoxConstraints(maxWidth: 330),
-                child: HeaderBillForm(formKey: formkey))),
-        Expanded(
-            child: SingleChildScrollView(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth < 1000) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Column(
+              children: [
+                HeaderBillForm(formKey: formkey),
+                const SizedBox(height: 20),
+                const Divider(),
+                const SizedBox(height: 20),
+                ProductTable(formKey: formkey)
+              ],
+            ),
+          );
+        }
+        return Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SingleChildScrollView(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                child: ProductTable(formKey: formkey)))
-      ],
+                child: Container(
+                    constraints: const BoxConstraints(maxWidth: 330),
+                    child: HeaderBillForm(formKey: formkey))),
+            Expanded(
+                child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 16),
+                    child: ProductTable(formKey: formkey)))
+          ],
+        );
+      },
     );
   }
 }

@@ -63,7 +63,7 @@ class _NewItemFormState extends State<NewItemForm> {
                 decoration: const InputDecoration(labelText: "Precio Unitario"),
                 validator: FormBuilderValidators.compose([
                   FormBuilderValidators.required(),
-                  FormBuilderValidators.integer(),
+                  FormBuilderValidators.numeric(),
                   FormBuilderValidators.min(1),
                 ]),
               ),

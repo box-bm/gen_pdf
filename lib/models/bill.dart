@@ -8,6 +8,7 @@ import 'package:uuid/uuid.dart';
 class Bill extends Table<Bill> implements TableInterface<Bill> {
   String id;
   DateTime? date;
+  int number;
   String billNumber;
   String exporterID;
   String exporterName;
@@ -15,7 +16,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   String consignerID;
   String consignerName;
   String consignerAddress;
-  String consignerNIT;
+  String? consignerNIT;
   String containerNumber;
   String bl;
   List<BillItem> items;
@@ -24,6 +25,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   Bill({
     this.id = "",
     this.date,
+    this.number = 0,
     this.billNumber = "",
     this.exporterID = "",
     this.exporterName = "",
@@ -31,7 +33,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     this.consignerID = "",
     this.consignerName = "",
     this.consignerAddress = "",
-    this.consignerNIT = "",
+    this.consignerNIT,
     this.containerNumber = "",
     this.bl = "",
     this.items = const [],
@@ -42,6 +44,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     return Bill(
       id: const Uuid().v4(),
       date: values['date'],
+      number: int.parse(values['number'].toString()),
       billNumber: values['billNumber'],
       exporterID: values['exporterID'],
       exporterName: values['exporterName'],
@@ -49,7 +52,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       consignerID: values['consignerID'],
       consignerName: values['consignerName'],
       consignerAddress: values['consignerAddress'],
-      consignerNIT: values['consignerNIT'] ?? "",
+      consignerNIT: values['consignerNIT'],
       containerNumber: values['containerNumber'],
       bl: values['bl'],
       total: values['total'],
@@ -59,6 +62,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   Bill.create({
     required this.id,
     required this.date,
+    required this.number,
     required this.billNumber,
     required this.exporterID,
     required this.exporterName,
@@ -76,6 +80,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   @override
   Bill copyWith({
     DateTime? date,
+    int? number,
     String? billNumber,
     String? exporterID,
     String? exporterName,
@@ -93,6 +98,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       id: id,
       items: items ?? this.items,
       date: date ?? this.date,
+      number: number ?? this.number,
       billNumber: billNumber ?? this.billNumber,
       exporterID: exporterID ?? this.exporterID,
       exporterName: exporterName ?? this.exporterName,
@@ -111,8 +117,10 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   Bill fromMap(Map<String, dynamic> map) {
     return Bill.create(
         id: map['id'],
-        date:
-            DateTime.tryParse(map['date'] ?? DateTime.now().toIso8601String()),
+        date: map['date'] is String
+            ? DateTime.tryParse(map['date'] ?? DateTime.now().toIso8601String())
+            : map['date'],
+        number: int.parse(map['number'].toString()),
         billNumber: map['billNumber'],
         exporterID: map['exporterID'],
         exporterName: map['exporterName'],
@@ -123,7 +131,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
         consignerNIT: map['consignerNIT'],
         containerNumber: map['containerNumber'],
         bl: map['bl'],
-        total: map['total']);
+        total: double.parse(map['total'].toString()));
   }
 
   @override
@@ -131,6 +139,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     return {
       "id": id,
       "date": (date ?? DateTime.now()).toIso8601String(),
+      "number": number,
       "billNumber": billNumber,
       "exporterID": exporterID,
       "exporterName": exporterName,
@@ -148,7 +157,8 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   Map<String, dynamic> toListAsMap() {
     return {
       "id": id,
-      "date": (date ?? DateTime.now()).toIso8601String(),
+      "date": (date ?? DateTime.now()),
+      "number": number.toString(),
       "billNumber": billNumber,
       "exporterID": exporterID,
       "exporterName": exporterName,
@@ -180,6 +190,11 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
         Column(
           name: 'date',
           columnType: SQLiteDataType.text,
+          notNull: true,
+        ),
+        Column(
+          name: 'number',
+          columnType: SQLiteDataType.integer,
           notNull: true,
         ),
         Column(

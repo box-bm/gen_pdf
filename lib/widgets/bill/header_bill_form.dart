@@ -1,9 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:gen_pdf/bloc/bills_bloc.dart';
 import 'package:gen_pdf/bloc/consigner_bloc.dart';
 import 'package:gen_pdf/bloc/exporter_bloc.dart';
 import 'package:gen_pdf/common.dart';
+import 'package:gen_pdf/utils/formatter.dart';
+import 'package:gen_pdf/widgets/inputs/hidden_input.dart';
 import 'package:gen_pdf/widgets/inputs/input_params.dart';
 
 import '../exporter/form_inputs.dart' as expoter_form;
@@ -19,12 +22,35 @@ class HeaderBillForm extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
+        const HiddenInput(name: 'id'),
+        FormBuilderDateTimePicker(
+          name: 'date',
+          format: dateFormat,
+          inputType: InputType.date,
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.required(),
+          ]),
+          decoration: const InputDecoration(labelText: "Fecha de la factura"),
+          onChanged: (value) => context.read<BillsBloc>().add(FindNewBillNumber(
+              value, formKey.currentState?.instantValue['id'])),
+        ),
+        const SizedBox(height: 10),
+        HiddenInput(
+            name: 'number',
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(),
+              FormBuilderValidators.integer(),
+              FormBuilderValidators.min(1)
+            ])),
         FormBuilderTextField(
             name: 'billNumber',
+            readOnly: true,
             decoration: const InputDecoration(labelText: "Numero de factura"),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(),
             ])),
+        const SizedBox(height: 10),
+        const Divider(),
         const SizedBox(height: 10),
         BlocBuilder<ExporterBloc, ExporterState>(builder: (context, state) {
           if (state is LoadingExporters) {
@@ -133,7 +159,7 @@ class HeaderBillForm extends StatelessWidget {
                         label: 'Direccion de Cliente',
                         placeholder: "Ingresa la direccion del cliente"),
                     nitParams: const InputParams(
-                        name: 'consignerNit',
+                        name: 'consignerNIT',
                         label: 'NIT de cliente',
                         placeholder: "Ingresa el NIT del cliente"))
               ],

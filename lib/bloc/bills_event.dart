@@ -41,6 +41,13 @@ class Filter extends BillsEvent {
   const Filter(this.value);
 }
 
+class FindNewBillNumber extends BillsEvent {
+  final DateTime? date;
+  final String? id;
+
+  const FindNewBillNumber(this.date, this.id);
+}
+
 class PrintBill extends BillsEvent {
   final String id;
 
