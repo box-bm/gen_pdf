@@ -35,7 +35,7 @@ class PreviewBill extends StatelessWidget {
             IconButton(
                 icon: const Icon(Icons.save),
                 onPressed: () {
-                  context.read<BillsBloc>().add(PrintBill(id));
+                  context.read<BillsBloc>().add(GenerateBillDocuments(id));
                 })
           ],
           build: (format) => document.save(),

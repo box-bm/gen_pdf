@@ -1,12 +1,10 @@
-import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:gen_pdf/models/bill.dart';
-import 'package:gen_pdf/utils/file_picker.dart';
 import 'package:gen_pdf/utils/formatter.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
-Future<Document> genPDF(Bill bill) async {
+Future<Document> generatePricePDF(Bill bill) async {
   final pdf = Document();
 
   var logo = MemoryImage(
@@ -376,18 +374,4 @@ Future<Document> genPDF(Bill bill) async {
       }));
 
   return pdf;
-}
-
-Future savePDF(Document document, {String defaultName = ""}) async {
-  FileManager manager = FileManager();
-
-  final filePath = await manager
-      .saveFile(fileName: "$defaultName.pdf", allowedExtensions: ['.pdf']);
-
-  if (filePath == null) {
-    return;
-  }
-
-  File file = File(filePath);
-  await file.writeAsBytes(await document.save());
 }

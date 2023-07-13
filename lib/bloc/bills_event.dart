@@ -48,20 +48,45 @@ class FindNewBillNumber extends BillsEvent {
   const FindNewBillNumber(this.date, this.id);
 }
 
-class PrintBill extends BillsEvent {
-  final String id;
-
-  const PrintBill(this.id);
-}
-
+/// The PreviewPDF class represents an event to preview a PDF with a given ID.
 class PreviewPDF extends BillsEvent {
   final String id;
 
   const PreviewPDF(this.id);
 }
 
-class PrintBills extends BillsEvent {
+class GenerateBillDocuments extends BillsEvent {
+  final String id;
+
+  const GenerateBillDocuments(this.id);
+}
+
+class GenerateBill extends BillsEvent {
+  final String id;
+
+  const GenerateBill(this.id);
+}
+
+class GeneratePrice extends BillsEvent {
+  final String id;
+
+  const GeneratePrice(this.id);
+}
+
+class GenerateConfirmation extends BillsEvent {
+  final String id;
+
+  const GenerateConfirmation(this.id);
+}
+
+class GenerateNote extends BillsEvent {
+  final String id;
+
+  const GenerateNote(this.id);
+}
+
+class GenerateAllBillsDocuments extends BillsEvent {
   final List<String> ids;
 
-  const PrintBills(this.ids);
+  const GenerateAllBillsDocuments(this.ids);
 }

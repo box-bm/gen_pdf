@@ -7,8 +7,11 @@ import 'package:gen_pdf/models/bill.dart';
 import 'package:gen_pdf/models/bill_item.dart';
 import 'package:gen_pdf/repository/bill_item_repository.dart';
 import 'package:gen_pdf/repository/bill_repository.dart';
+import 'package:gen_pdf/utils/document_templates/confirmation.dart';
+import 'package:gen_pdf/utils/document_templates/note.dart';
+import 'package:gen_pdf/utils/document_templates/price.dart';
 import 'package:gen_pdf/utils/file_picker.dart';
-import 'package:gen_pdf/utils/gen_test_pdf.dart';
+import 'package:gen_pdf/utils/document_templates/bill.dart';
 import 'package:pdf/widgets.dart';
 
 part 'bills_event.dart';
@@ -146,28 +149,67 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       emit(BillsLoaded(searchValue: state.searchValue, bills: state.bills));
     });
 
-    on<PrintBill>((event, emit) async {
-      Bill bill = await billRepository.getByID(event.id);
-      List<BillItem> items =
-          await billItemRepository.getAllBillItemsByBillID(event.id);
-      bill.items = items;
-
-      var doc = await genPDF(bill);
-      await savePDF(doc, defaultName: event.id);
-    });
-
+    // Document Generation
     on<PreviewPDF>((event, emit) async {
-      Bill bill = await billRepository.getByID(event.id);
-      List<BillItem> items =
-          await billItemRepository.getAllBillItemsByBillID(event.id);
-      bill.items = items;
+      Bill bill = await getAllBillDetails(event.id);
 
-      var doc = await genPDF(bill);
+      var doc = await generateBillPDF(bill);
       emit(PrintReady(doc, event.id,
           searchValue: state.searchValue, bills: state.bills));
       emit(BillsLoaded(searchValue: state.searchValue, bills: state.bills));
     });
-    on<PrintBills>((event, emit) async {
+
+    on<GenerateBillDocuments>((event, emit) async {
+      var folder = await chooseFolderToSaveFiles();
+
+      if (folder == null) {
+        return;
+      }
+      await prinAllDocuments(event.id, folder);
+    });
+
+    on<GenerateBill>((event, emit) async {
+      var path = await chooseFolderToSaveFile();
+
+      if (path == null) {
+        return;
+      }
+      var bill = await getAllBillDetails(event.id);
+      var document = await generateBillPDF(bill);
+      await saveFilesWithPath(document, path);
+    });
+    on<GeneratePrice>((event, emit) async {
+      var path = await chooseFolderToSaveFile();
+
+      if (path == null) {
+        return;
+      }
+      var bill = await getAllBillDetails(event.id);
+      var document = await generatePricePDF(bill);
+      await saveFilesWithPath(document, path);
+    });
+    on<GenerateConfirmation>((event, emit) async {
+      var path = await chooseFolderToSaveFile();
+
+      if (path == null) {
+        return;
+      }
+      var bill = await getAllBillDetails(event.id);
+      var document = await generateConfirmationPDF(bill);
+      await saveFilesWithPath(document, path);
+    });
+    on<GenerateNote>((event, emit) async {
+      var path = await chooseFolderToSaveFile();
+
+      if (path == null) {
+        return;
+      }
+      var bill = await getAllBillDetails(event.id);
+      var document = await generateNotePDF(bill);
+      await saveFilesWithPath(document, path);
+    });
+
+    on<GenerateAllBillsDocuments>((event, emit) async {
       var folder = await FileManager().chooseDirectoryPath(
           dialogTitle: "Seleccione la ubicacion para guardar");
 
@@ -175,21 +217,56 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
         List<Future> savedBills = [];
 
         for (var id in event.ids) {
-          Bill bill = await billRepository.getByID(id);
-          List<BillItem> items =
-              await billItemRepository.getAllBillItemsByBillID(id);
-
-          bill.items = items;
-          savedBills.add(genFile(bill, folder));
+          savedBills.add(prinAllDocuments(id, folder));
         }
         await Future.wait(savedBills);
       }
     });
   }
-}
 
-Future<void> genFile(Bill bill, String folder) async {
-  var doc = await genPDF(bill);
-  File file = File("$folder/${bill.id}.pdf");
-  await file.writeAsBytes(await doc.save());
+  Future prinAllDocuments(String id, String folder) async {
+    Bill bill = await getAllBillDetails(id);
+
+    await Future.value([
+      generateBillPDF(bill)
+          .then((value) => saveFiles(value, "Factura-$id", folder)),
+      generatePricePDF(bill)
+          .then((value) => saveFiles(value, "Cotizacion-$id", folder)),
+      generateConfirmationPDF(bill)
+          .then((value) => saveFiles(value, "Confirmacion-$id", folder)),
+      generateNotePDF(bill)
+          .then((value) => saveFiles(value, "Nota-$id", folder)),
+    ]);
+  }
+
+  Future<Bill> getAllBillDetails(String id) async {
+    Bill bill = await billRepository.getByID(id);
+    List<BillItem> items = await billItemRepository.getAllBillItemsByBillID(id);
+    bill.items = items;
+    return bill;
+  }
+
+  Future<void> saveFiles(Document document, String name, String folder) async {
+    File file = File("$folder/$name.pdf");
+    await file.writeAsBytes(await document.save());
+  }
+
+  Future<void> saveFilesWithPath(Document document, String path) async {
+    File file = File(path);
+    await file.writeAsBytes(await document.save());
+  }
+
+  Future<String?> chooseFolderToSaveFiles(
+      {String dialog = "Seleccione la ubicacion para guardar"}) async {
+    return await FileManager().chooseDirectoryPath(dialogTitle: dialog);
+  }
+
+  Future<String?> chooseFolderToSaveFile(
+      {String dialog = "Seleccione la ubicacion para guardar",
+      String defaultName = "document"}) async {
+    return await FileManager().saveFile(
+        fileName: "$defaultName.pdf",
+        allowedExtensions: ['.pdf'],
+        dialogTitle: dialog);
+  }
 }

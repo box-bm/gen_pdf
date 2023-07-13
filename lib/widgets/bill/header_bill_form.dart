@@ -22,6 +22,8 @@ class HeaderBillForm extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
+        const Text("Datos principales"),
+        const SizedBox(height: 10),
         const HiddenInput(name: 'id'),
         FormBuilderDateTimePicker(
           name: 'date',

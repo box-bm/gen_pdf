@@ -14,7 +14,7 @@ class CreateBillForm extends StatelessWidget {
       builder: (context, constraints) {
         if (constraints.maxWidth < 1000) {
           return SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.fromLTRB(12, 10, 12, 80),
             child: Column(
               children: [
                 HeaderBillForm(formKey: formkey),

@@ -5,6 +5,27 @@ import 'package:gen_pdf/screens/new_bill.dart';
 import 'package:gen_pdf/screens/preview_pdf.dart';
 import 'package:gen_pdf/widgets/base_home_screen.dart';
 
+List<PrintOption> getBillOptions(BuildContext context, String id) => [
+      PrintOption(Icons.remove_red_eye, "Vista previa", () {
+        context.read<BillsBloc>().add(PreviewPDF(id));
+      }),
+      PrintOption(Icons.print, "Guardar todo", () {
+        context.read<BillsBloc>().add(GenerateBillDocuments(id));
+      }),
+      PrintOption(Icons.document_scanner, "Generar Factura", () {
+        context.read<BillsBloc>().add(GenerateBill(id));
+      }),
+      PrintOption(Icons.attach_money, "Generar Cotizacion", () {
+        context.read<BillsBloc>().add(GeneratePrice(id));
+      }),
+      PrintOption(Icons.checklist, "Generar Confirmación", () {
+        context.read<BillsBloc>().add(GenerateConfirmation(id));
+      }),
+      PrintOption(Icons.edit_document, "Generar nota", () {
+        context.read<BillsBloc>().add(GenerateNote(id));
+      }),
+    ];
+
 class Bills extends StatelessWidget {
   const Bills({super.key});
 
@@ -36,7 +57,9 @@ class Bills extends StatelessWidget {
                       onPressed: ids.isEmpty
                           ? null
                           : () {
-                              context.read<BillsBloc>().add(PrintBills(ids));
+                              context
+                                  .read<BillsBloc>()
+                                  .add(GenerateAllBillsDocuments(ids));
                             },
                       icon: const Icon(Icons.document_scanner),
                       label: const Text("Generar PDFs")),
@@ -63,12 +86,12 @@ class Bills extends StatelessWidget {
                                 DeleteBill(state.bills.elementAt(index).id));
                           },
                           icon: const Icon(Icons.delete)),
-                      IconButton(
-                          onPressed: () {
-                            context.read<BillsBloc>().add(
-                                PreviewPDF(state.bills.elementAt(index).id));
-                          },
-                          icon: const Icon(Icons.print)),
+                      PopupMenuButton(
+                          icon: const Icon(Icons.print),
+                          itemBuilder: (context) => getBillOptions(
+                                  context, state.bills.elementAt(index).id)
+                              .map((e) => e.menuItem)
+                              .toList()),
                       IconButton(
                           onPressed: () {
                             Navigator.pushNamed(context, NewBill.route,
@@ -83,4 +106,21 @@ class Bills extends StatelessWidget {
                 context.read<BillsBloc>().add(Filter(searchValue)),
             isLoading: state is LoadingBills));
   }
+}
+
+class PrintOption {
+  final IconData icon;
+  final String title;
+  final Function onTap;
+
+  PrintOption(this.icon, this.title, this.onTap);
+
+  PopupMenuItem get menuItem => PopupMenuItem<String>(
+      onTap: () => onTap(),
+      child: ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: Icon(icon),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        title: Text(title),
+      ));
 }

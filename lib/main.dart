@@ -2,6 +2,7 @@ import 'package:gen_pdf/app.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/database/database_provider.dart';
 import 'package:gen_pdf/utils/device.dart';
+import 'package:intl/intl.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -22,6 +23,7 @@ void main() async {
     });
   }
 
+  Intl.defaultLocale = 'es_GT';
   await DatabaseProvider().createDatabase();
 
   runApp(const App());
