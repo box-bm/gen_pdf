@@ -79,10 +79,16 @@ class GenerateConfirmation extends BillsEvent {
   const GenerateConfirmation(this.id);
 }
 
-class GenerateNote extends BillsEvent {
+class GenerateAgreement extends BillsEvent {
   final String id;
 
-  const GenerateNote(this.id);
+  const GenerateAgreement(this.id);
+}
+
+class GenerateExplanatoryNote extends BillsEvent {
+  final String id;
+
+  const GenerateExplanatoryNote(this.id);
 }
 
 class GenerateAllBillsDocuments extends BillsEvent {

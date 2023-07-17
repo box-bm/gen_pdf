@@ -18,7 +18,6 @@ void main() async {
         windowButtonVisibility: true,
       );
       await windowManager.setMinimumSize(const Size(800, 400));
-      await windowManager.setPreventClose(true);
       await windowManager.setSkipTaskbar(false);
     });
   }

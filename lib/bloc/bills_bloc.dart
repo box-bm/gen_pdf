@@ -7,9 +7,10 @@ import 'package:gen_pdf/models/bill.dart';
 import 'package:gen_pdf/models/bill_item.dart';
 import 'package:gen_pdf/repository/bill_item_repository.dart';
 import 'package:gen_pdf/repository/bill_repository.dart';
+import 'package:gen_pdf/utils/document_templates/agreement.dart';
 import 'package:gen_pdf/utils/document_templates/confirmation.dart';
-import 'package:gen_pdf/utils/document_templates/note.dart';
-import 'package:gen_pdf/utils/document_templates/price.dart';
+import 'package:gen_pdf/utils/document_templates/explanatory_note.dart';
+import 'package:gen_pdf/utils/document_templates/quotation.dart';
 import 'package:gen_pdf/utils/file_picker.dart';
 import 'package:gen_pdf/utils/document_templates/bill.dart';
 import 'package:pdf/widgets.dart';
@@ -159,6 +160,7 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       emit(BillsLoaded(searchValue: state.searchValue, bills: state.bills));
     });
 
+    // Generar todos los documentos
     on<GenerateBillDocuments>((event, emit) async {
       var folder = await chooseFolderToSaveFiles();
 
@@ -168,8 +170,9 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       await prinAllDocuments(event.id, folder);
     });
 
+    // Generar la factura
     on<GenerateBill>((event, emit) async {
-      var path = await chooseFolderToSaveFile();
+      var path = await chooseFolderToSaveFile(defaultName: "Factura");
 
       if (path == null) {
         return;
@@ -178,18 +181,22 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       var document = await generateBillPDF(bill);
       await saveFilesWithPath(document, path);
     });
+
+    // Generar cotizacion
     on<GeneratePrice>((event, emit) async {
-      var path = await chooseFolderToSaveFile();
+      var path = await chooseFolderToSaveFile(defaultName: "Cotización");
 
       if (path == null) {
         return;
       }
       var bill = await getAllBillDetails(event.id);
-      var document = await generatePricePDF(bill);
+      var document = await generateQuotationPDF(bill);
       await saveFilesWithPath(document, path);
     });
+
+    // Generar confirmación
     on<GenerateConfirmation>((event, emit) async {
-      var path = await chooseFolderToSaveFile();
+      var path = await chooseFolderToSaveFile(defaultName: "Confirmación");
 
       if (path == null) {
         return;
@@ -198,17 +205,32 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       var document = await generateConfirmationPDF(bill);
       await saveFilesWithPath(document, path);
     });
-    on<GenerateNote>((event, emit) async {
-      var path = await chooseFolderToSaveFile();
+
+    // Generar contrato
+    on<GenerateAgreement>((event, emit) async {
+      var path = await chooseFolderToSaveFile(defaultName: "Contrato");
 
       if (path == null) {
         return;
       }
       var bill = await getAllBillDetails(event.id);
-      var document = await generateNotePDF(bill);
+      var document = await generateAgreementPDF(bill);
       await saveFilesWithPath(document, path);
     });
 
+    // Generar nota explicatoria
+    on<GenerateExplanatoryNote>((event, emit) async {
+      var path = await chooseFolderToSaveFile(defaultName: "Nota-Explicatoria");
+
+      if (path == null) {
+        return;
+      }
+      var bill = await getAllBillDetails(event.id);
+      var document = await generateExplanatoryNotePDF(bill);
+      await saveFilesWithPath(document, path);
+    });
+
+    // Generacion de todos los documentos
     on<GenerateAllBillsDocuments>((event, emit) async {
       var folder = await FileManager().chooseDirectoryPath(
           dialogTitle: "Seleccione la ubicacion para guardar");
@@ -230,12 +252,14 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
     await Future.value([
       generateBillPDF(bill)
           .then((value) => saveFiles(value, "Factura-$id", folder)),
-      generatePricePDF(bill)
-          .then((value) => saveFiles(value, "Cotizacion-$id", folder)),
+      generateQuotationPDF(bill)
+          .then((value) => saveFiles(value, "Cotización-$id", folder)),
       generateConfirmationPDF(bill)
-          .then((value) => saveFiles(value, "Confirmacion-$id", folder)),
-      generateNotePDF(bill)
-          .then((value) => saveFiles(value, "Nota-$id", folder)),
+          .then((value) => saveFiles(value, "Confirmación-$id", folder)),
+      generateAgreementPDF(bill)
+          .then((value) => saveFiles(value, "Contrato-$id", folder)),
+      generateExplanatoryNotePDF(bill)
+          .then((value) => saveFiles(value, "Nota-Explicatoria-$id", folder)),
     ]);
   }
 
@@ -257,12 +281,12 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
   }
 
   Future<String?> chooseFolderToSaveFiles(
-      {String dialog = "Seleccione la ubicacion para guardar"}) async {
+      {String dialog = "Seleccione la ubicación para guardar"}) async {
     return await FileManager().chooseDirectoryPath(dialogTitle: dialog);
   }
 
   Future<String?> chooseFolderToSaveFile(
-      {String dialog = "Seleccione la ubicacion para guardar",
+      {String dialog = "Seleccione la ubicación para guardar",
       String defaultName = "document"}) async {
     return await FileManager().saveFile(
         fileName: "$defaultName.pdf",
