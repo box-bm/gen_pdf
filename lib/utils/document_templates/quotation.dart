@@ -1,10 +1,11 @@
 import 'package:flutter/services.dart';
 import 'package:gen_pdf/models/bill.dart';
 import 'package:gen_pdf/utils/formatter.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
-Future<Document> generatePricePDF(Bill bill) async {
+Future<Document> generateQuotationPDF(Bill bill) async {
   final pdf = Document();
 
   var logo = MemoryImage(
@@ -70,7 +71,10 @@ Future<Document> generatePricePDF(Bill bill) async {
                                       children: [
                                         Text("Fecha", style: boldText),
                                         Text(dateFormat.format(
-                                            bill.date ?? DateTime.now()))
+                                            Jiffy.parseFromDateTime(
+                                                    bill.date ?? DateTime.now())
+                                                .add(months: -1)
+                                                .dateTime))
                                       ]))),
                           Expanded(
                               child: Container(

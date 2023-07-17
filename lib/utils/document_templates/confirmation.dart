@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:gen_pdf/models/bill.dart';
 import 'package:gen_pdf/utils/formatter.dart';
+import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
@@ -10,362 +11,245 @@ Future<Document> generateConfirmationPDF(Bill bill) async {
   var logo = MemoryImage(
     (await rootBundle.load('assets/img/logo.png')).buffer.asUint8List(),
   );
+  var signature = MemoryImage(
+    (await rootBundle.load('assets/img/signature.png')).buffer.asUint8List(),
+  );
 
   var contentBorder = Border.all();
-  var boldText = TextStyle(fontWeight: FontWeight.bold, font: Font.timesBold());
+  var boldText = TextStyle(fontWeight: FontWeight.bold);
 
   pdf.addPage(Page(
-      pageFormat: PdfPageFormat.letter,
-      theme: ThemeData(
-          defaultTextStyle: TextStyle(
-              fontItalic: Font.timesItalic(),
-              font: Font.times(),
-              fontSize: 10)),
+      pageFormat: PdfPageFormat.a4,
+      margin: const EdgeInsets.fromLTRB(30, 30, 30, 20),
+      theme: ThemeData(defaultTextStyle: const TextStyle(fontSize: 10)),
       build: (Context context) {
         return Stack(children: [
           Expanded(
-              child: Container(
-                  decoration: BoxDecoration(border: contentBorder),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Row(children: [
-                          Container(
-                              decoration: BoxDecoration(border: contentBorder),
-                              height: 90,
-                              width: 90,
-                              child: Center(
-                                  child: Image(logo, width: 80, height: 80))),
-                          Expanded(
-                              child: Container(
-                                  decoration:
-                                      BoxDecoration(border: Border.all()),
-                                  padding: const EdgeInsets.all(4),
-                                  height: 90,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                Container(height: 80, child: Image(logo)),
+                Expanded(
+                    child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text("Confirmación de compra".toUpperCase(),
+                                  textAlign: TextAlign.right,
+                                  style: boldText.copyWith(fontSize: 14)),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    SizedBox(
+                                        width: 70,
+                                        child: Text("Fecha".toUpperCase(),
+                                            textAlign: TextAlign.left)),
+                                    SizedBox(
+                                        width: 80,
+                                        child: Text(
+                                            DateFormat.yMMMd().format(bill.date!
+                                                .add(
+                                                    const Duration(days: -15))),
+                                            textAlign: TextAlign.center))
+                                  ]),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    SizedBox(
+                                        width: 70,
+                                        child: Text("No.".toUpperCase(),
+                                            textAlign: TextAlign.left)),
+                                    Container(
+                                        width: 80,
+                                        padding: const EdgeInsets.all(1),
+                                        decoration: BoxDecoration(
+                                            border: contentBorder),
+                                        child: Text(bill.billNumber,
+                                            textAlign: TextAlign.center))
+                                  ]),
+                              SizedBox(height: 20),
+                              Text("Comprador:".toUpperCase(),
+                                  style: TextStyle(
+                                      background: BoxDecoration(
+                                          color: PdfColors.black,
+                                          border: Border.all(width: 2)),
+                                      color: PdfColors.white)),
+                              Text(bill.consignerName.toUpperCase()),
+                              SizedBox(
+                                  width: 180,
+                                  child: Text(
+                                      bill.consignerAddress.toUpperCase())),
+                              SizedBox(height: 18),
+                              SizedBox(
+                                  width: 150,
                                   child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                          CrossAxisAlignment.stretch,
                                       children: [
+                                        Text("Queridos señores:".toUpperCase(),
+                                            textAlign: TextAlign.left),
                                         Text(
-                                            "MAKAN GLOBAL SHIPPING"
+                                            "Confirmamos venderle los siguientes productos en términos y condiciones estipulados a continuación."
                                                 .toUpperCase(),
-                                            style: TextStyle(
-                                                font: Font.timesBold(),
-                                                fontSize: 20)),
-                                        Text(
-                                            "Calle Elvira Méndez, edificio Interseco, Piso B.Panamá, Panamá.")
-                                      ])))
-                        ]),
-                        Row(children: [
-                          Expanded(
-                              flex: 2,
-                              child: Container(
-                                  decoration:
-                                      BoxDecoration(border: contentBorder),
-                                  padding: const EdgeInsets.all(4),
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        Text("Fecha", style: boldText),
-                                        Text(dateFormat.format(
-                                            bill.date ?? DateTime.now()))
-                                      ]))),
-                          Expanded(
-                              child: Container(
-                                  decoration:
-                                      BoxDecoration(border: contentBorder),
-                                  padding: const EdgeInsets.all(4),
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        Text("No", style: boldText),
-                                        Text(bill.billNumber)
-                                      ])))
-                        ]),
-                        Container(
-                            decoration: BoxDecoration(border: contentBorder),
-                            child: Row(children: [
-                              Expanded(
-                                  flex: 2,
-                                  child: Container(
-                                      padding: const EdgeInsets.all(4),
-                                      child: Text(
-                                          "Exportador: ${bill.exporterName}"))),
-                              Expanded(
-                                  child: Container(
-                                      decoration:
-                                          BoxDecoration(border: contentBorder),
-                                      padding: const EdgeInsets.all(4),
-                                      child: Text(
-                                          "Consignatario: ${bill.consignerName}"))),
-                            ])),
-                        Container(
-                            decoration: BoxDecoration(border: contentBorder),
-                            child: Row(children: [
-                              Expanded(
-                                  flex: 2,
-                                  child: Container(
-                                      padding: const EdgeInsets.all(4),
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          children: [
-                                            Text("Direccion", style: boldText),
-                                            Text(bill.exporterAddress)
-                                          ]))),
-                              Expanded(
-                                  child: Container(
-                                      decoration:
-                                          BoxDecoration(border: contentBorder),
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          children: [
-                                            Container(
-                                                padding:
-                                                    const EdgeInsets.all(4),
-                                                child: Text(
-                                                    "Direccion: ${bill.consignerAddress}")),
-                                            Container(
-                                                decoration: BoxDecoration(
-                                                    border: contentBorder),
-                                                padding:
-                                                    const EdgeInsets.all(4),
-                                                child: Text(
-                                                    "Nit: ${(bill.consignerNIT ?? "").isEmpty ? "-" : bill.consignerNIT}"))
-                                          ]))),
-                            ])),
-                        Container(
-                            decoration: BoxDecoration(border: contentBorder),
-                            child: Row(children: [
-                              Expanded(
-                                  flex: 2,
-                                  child: Container(
-                                      decoration:
-                                          BoxDecoration(border: contentBorder),
-                                      padding: const EdgeInsets.all(4),
-                                      child: Text(
-                                          "No. Contenedor: ${bill.containerNumber}"))),
-                              Expanded(
-                                  child: Container(
-                                      decoration:
-                                          BoxDecoration(border: contentBorder),
-                                      padding: const EdgeInsets.all(4),
-                                      child: Text("No. B/L: ${bill.bl}"))),
-                            ])),
-                        Container(
-                            decoration: BoxDecoration(border: contentBorder),
-                            child: Row(children: [
-                              Expanded(
-                                  child: Container(
-                                      constraints:
-                                          const BoxConstraints(minHeight: 70),
-                                      padding: const EdgeInsets.all(4),
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          children: [
-                                            Text("No. Total de piezas"),
-                                            Center(
-                                                child: Text(
-                                                    bill.items
-                                                        .map((e) => e.quantity)
-                                                        .reduce(
-                                                            (value, element) =>
-                                                                value + element)
-                                                        .toString(),
-                                                    textAlign: TextAlign.center,
-                                                    style: Theme.of(context)
-                                                        .header2))
-                                          ]))),
-                              Expanded(
-                                  child: Container(
-                                      constraints:
-                                          const BoxConstraints(minHeight: 70),
-                                      decoration: const BoxDecoration(
-                                          border: Border.symmetric(
-                                              vertical: BorderSide())),
-                                      padding: const EdgeInsets.all(4),
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          children: [
-                                            Text("Terminos y condiciones"),
-                                            SizedBox(height: 10),
-                                            Text(
-                                                "*FACTORES DE BALANCES/OUTLET ",
-                                                style: Theme.of(context)
-                                                    .defaultTextStyle
-                                                    .copyWith(fontSize: 10)),
-                                            Text("**CIF POR PUERTO QUETZAL ",
-                                                style: Theme.of(context)
-                                                    .defaultTextStyle
-                                                    .copyWith(fontSize: 10)),
-                                            Text("***90 DÍAS DE CREDITO",
-                                                style: Theme.of(context)
-                                                    .defaultTextStyle
-                                                    .copyWith(fontSize: 10)),
-                                          ]))),
-                            ])),
-                        Table(
-                            border: TableBorder.all(),
-                            defaultVerticalAlignment:
-                                TableCellVerticalAlignment.middle,
-                            columnWidths: {
-                              0: const FixedColumnWidth(55),
-                              1: const FlexColumnWidth(3),
-                              2: const FlexColumnWidth(1),
-                              3: const FixedColumnWidth(55),
-                              4: const FlexColumnWidth(2),
-                              5: const FlexColumnWidth(2),
-                            },
-                            children: [
-                              TableRow(children: [
-                                Container(
-                                    padding: const EdgeInsets.all(2),
-                                    child: Text('Numeracion',
-                                        textAlign: TextAlign.center)),
-                                Container(
-                                    padding: const EdgeInsets.all(2),
-                                    child: Text('Descripcion',
-                                        textAlign: TextAlign.center)),
-                                Container(
-                                    padding: const EdgeInsets.all(2),
-                                    child: Text('Cantidad',
-                                        textAlign: TextAlign.center)),
-                                Container(
-                                    padding: const EdgeInsets.all(2),
-                                    child: Text('PRS',
-                                        textAlign: TextAlign.center)),
-                                Container(
-                                    padding: const EdgeInsets.all(2),
-                                    child: Text('Precio Unitario',
-                                        textAlign: TextAlign.center)),
-                                Container(
-                                    padding: const EdgeInsets.all(2),
-                                    child: Text('Monto total',
-                                        textAlign: TextAlign.center)),
+                                            textAlign: TextAlign.left)
+                                      ])),
+                              SizedBox(height: 18),
+                              Row(children: [
+                                SizedBox(
+                                    width: 102,
+                                    child: Text("Cotizacion No.:".toUpperCase(),
+                                        style: boldText)),
+                                Text(bill.billNumber),
+                                SizedBox(width: 8),
+                                Text("Total:".toUpperCase(), style: boldText),
+                                SizedBox(width: 2),
+                                Text(moneyFormat.format(bill.total))
                               ]),
-                              ...bill.items
-                                  .map(
-                                    (e) => TableRow(children: [
-                                      Container(
-                                          padding: const EdgeInsets.all(2),
-                                          child: Text(e.numeration,
-                                              textAlign: TextAlign.center)),
-                                      Container(
-                                          padding: const EdgeInsets.all(2),
-                                          child: Text(e.description,
-                                              textAlign: TextAlign.center)),
-                                      Container(
-                                          padding: const EdgeInsets.all(2),
-                                          child: Text(
-                                              moneyFormat.format(e.quantity),
-                                              textAlign: TextAlign.center)),
-                                      Container(
-                                          padding: const EdgeInsets.all(2),
-                                          child: Text(e.prs ?? "",
-                                              textAlign: TextAlign.center)),
-                                      Container(
-                                          padding: const EdgeInsets.all(2),
-                                          child: Text(
-                                              moneyFormat.format(e.unitPrice),
-                                              textAlign: TextAlign.right)),
-                                      Container(
-                                          padding: const EdgeInsets.all(2),
-                                          child: Text(
-                                              moneyFormat.format(e.total),
-                                              textAlign: TextAlign.right)),
-                                    ]),
-                                  )
-                                  .toList(),
-                            ]),
-                        Table(
-                            defaultVerticalAlignment:
-                                TableCellVerticalAlignment.middle,
-                            columnWidths: {
-                              0: const FixedColumnWidth(55),
-                              1: const FlexColumnWidth(3),
-                              2: const FlexColumnWidth(1),
-                              3: const FixedColumnWidth(55),
-                              4: const FlexColumnWidth(2),
-                              5: const FlexColumnWidth(2),
-                            },
-                            children: [
-                              TableRow(children: [
-                                SizedBox(),
-                                SizedBox(),
-                                SizedBox(),
-                                SizedBox(),
-                                Container(
-                                    decoration:
-                                        BoxDecoration(border: Border.all()),
-                                    padding: const EdgeInsets.all(2),
-                                    child: Text("Total", style: boldText)),
-                                Container(
-                                    decoration:
-                                        BoxDecoration(border: Border.all()),
-                                    padding: const EdgeInsets.all(2),
-                                    child: Text(
-                                        "\$ ${bill.total.toStringAsFixed(2)}",
-                                        textAlign: TextAlign.right)),
+                              SizedBox(height: 4),
+                              Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                        width: 102,
+                                        child: Text(
+                                            "Descripcion:".toUpperCase(),
+                                            style: boldText)),
+                                    Expanded(
+                                        child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            children: bill.items
+                                                .map((e) => Text(e.description
+                                                    .toUpperCase()))
+                                                .toList()))
+                                  ]),
+                              SizedBox(height: 4),
+                              Row(children: [
+                                SizedBox(
+                                    width: 102,
+                                    child: Text("Embalaje:".toUpperCase(),
+                                        style: boldText)),
+                                Text("CTNS")
                               ]),
-                              TableRow(children: [
-                                SizedBox(),
-                                SizedBox(),
-                                SizedBox(),
-                                SizedBox(),
-                                Container(
-                                    decoration:
-                                        BoxDecoration(border: Border.all()),
-                                    padding: const EdgeInsets.all(2),
-                                    child: Text("Valor FOB", style: boldText)),
-                                Container(
-                                    decoration:
-                                        BoxDecoration(border: Border.all()),
-                                    padding: const EdgeInsets.all(2),
-                                    child: Text("\$ - ",
-                                        textAlign: TextAlign.right)),
+                              SizedBox(height: 4),
+                              Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                        width: 102,
+                                        child: Text("seguro:".toUpperCase(),
+                                            style: boldText)),
+                                    Expanded(
+                                        child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            children: [
+                                          Text(
+                                              "COBERTURA TODO RIESGO SOBRE EL 110% DEL VALOR DE LA MERCANCÍA,"),
+                                          Text(
+                                              "QUE SERÁ CUBIERTO POR EL VENDEDOR HASTA EL PUERTO DE DESTINO."),
+                                        ]))
+                                  ]),
+                              SizedBox(height: 4),
+                              Row(children: [
+                                SizedBox(
+                                    width: 102,
+                                    child: Text("Envío:".toUpperCase(),
+                                        style: boldText)),
+                                Text("China".toUpperCase()),
+                                SizedBox(width: 50),
+                                Text("DESTINO: PUERTO QUETZAL GUATEMALA.")
                               ]),
-                              TableRow(children: [
-                                SizedBox(),
-                                SizedBox(),
-                                SizedBox(),
-                                SizedBox(),
-                                Container(
-                                    decoration:
-                                        BoxDecoration(border: Border.all()),
-                                    padding: const EdgeInsets.all(2),
-                                    child: Text("Transporte")),
-                                Container(
-                                    decoration:
-                                        BoxDecoration(border: Border.all()),
-                                    padding: const EdgeInsets.all(2),
-                                    child: Text("\$ - ",
-                                        textAlign: TextAlign.right)),
+                              SizedBox(height: 4),
+                              Row(children: [
+                                SizedBox(
+                                    width: 102,
+                                    child: Text("Pago:".toUpperCase(),
+                                        style: boldText)),
+                                Text(
+                                    "CRÉDITO A 90 DÍAS A PARTIR DE LA FECHA DE LA FACTURA")
                               ]),
-                              TableRow(children: [
-                                SizedBox(),
-                                SizedBox(),
-                                SizedBox(),
-                                SizedBox(),
-                                Container(
-                                    decoration:
-                                        BoxDecoration(border: Border.all()),
-                                    padding: const EdgeInsets.all(2),
-                                    child: Text("Seguro")),
-                                Container(
-                                    decoration:
-                                        BoxDecoration(border: Border.all()),
-                                    padding: const EdgeInsets.all(2),
-                                    child: Text("\$ 20.00 ",
-                                        textAlign: TextAlign.right)),
+                              SizedBox(height: 4),
+                              Row(children: [
+                                SizedBox(
+                                    width: 102,
+                                    child: Text("Notificar:".toUpperCase(),
+                                        style: boldText)),
+                                Text(
+                                    "${bill.consignerName.toUpperCase()} COMO CONSIGNATARIO EN EL DOCUMENTO DE TRANSPORTE")
                               ]),
-                            ])
-                      ]))),
+                              SizedBox(height: 18),
+                              Text(
+                                  "POR 100% CONFIRMADA E IRREVOCABLE L/C DISPONIBLE POR GIRA AL SIGG 30 DÍAS ANTES DEL MES PERMANECE VÁLIDO PARA NEGOCIACIÓN EN CHINA HASTA EL DÍA 15 DESPUÉS DE LA ÚLTIMA FECHA DE ENVÍO Y PERMITE ENVÍOS PARCIALES Y TRANSBORDO."),
+                              SizedBox(height: 18),
+                              Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                        width: 102,
+                                        child: Text(
+                                            "shipping samp:".toUpperCase(),
+                                            style: boldText)),
+                                    SizedBox(width: 20),
+                                    Expanded(
+                                        child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            children: [
+                                          Text(
+                                              "JUEGOS DE MUESTRA DE ENVÍO A ENVIAR ANTES DEL ENVÍO"),
+                                          Text(
+                                              "1. EL VENDEDOR SE RESERVA EL DERECHO DE CANCELAR ESTA VENTA O PARTE DE VED DE ACUERDO CON LOS TÉRMINOS ESTIPULADOS EN ESTA CONFIMACIÓN DE VENTA."),
+                                          Text(
+                                              "2. DIFERENCIAS RAZONABLES EN LOS DISEÑOS Y DEBEN PERMITIRSE."),
+                                          Text(
+                                              "3. LOS COMPRADORES DEBEN INDICAR SIEMPRE EL NÚMERO DE ESTA CONFIRMACIÓN DE VENTA EN LA L/C."),
+                                        ]))
+                                  ]),
+                              SizedBox(height: 18),
+                              Text(
+                                  "POR FAVOR FIRME Y DEVUELVA UNA COPIA PARA EL ARCHIVO."),
+                              Text("FIRMADO Y CONFIRMADO POR:"),
+                              SizedBox(height: 20),
+                              Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                        width: 150,
+                                        child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            children: [
+                                              Center(
+                                                  child: SizedBox(
+                                                      height: 80,
+                                                      child: Image(signature))),
+                                              Divider(height: 4),
+                                              Text("Mr. Rogelio Mansilla",
+                                                  textAlign: TextAlign.center),
+                                              Text("(Los vendedores)",
+                                                  textAlign: TextAlign.center),
+                                            ])),
+                                    SizedBox(
+                                        width: 150,
+                                        child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            children: [
+                                              Divider(height: 4),
+                                              Text("Mr. Guillermo Asencio",
+                                                  textAlign: TextAlign.center),
+                                              Text("(Agente de compra)",
+                                                  textAlign: TextAlign.center),
+                                            ]))
+                                  ])
+                            ])))
+              ])),
           Watermark(
               fit: BoxFit.scaleDown,
               child: Opacity(

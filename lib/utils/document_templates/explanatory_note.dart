@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
-Future<Document> generateNotePDF(Bill bill) async {
+Future<Document> generateExplanatoryNotePDF(Bill bill) async {
   final pdf = Document();
 
   var signature = MemoryImage(
@@ -16,7 +16,7 @@ Future<Document> generateNotePDF(Bill bill) async {
   );
 
   pdf.addPage(Page(
-      pageFormat: PdfPageFormat.letter,
+      pageFormat: PdfPageFormat.a4,
       margin: const EdgeInsets.fromLTRB(30, 30, 30, 20),
       theme: ThemeData(
           defaultTextStyle:
@@ -92,4 +92,4 @@ Future<Document> generateNotePDF(Bill bill) async {
 
 String letterBody(String billNumber, String customerName, double total,
         double marineFreigth, DateTime billDateTime) =>
-    "Por la presente URRACA INTERNATIONAL SHIPPING, LLC. Certifica: Los productos detallados en la FACTURA No.$billNumber de fecha: ${DateFormat.yMMMMd().format(billDateTime)} consignados a nombre de ${customerName.toUpperCase()}. por un valor de USD ${moneyFormat.format(total)} Se emite bajo el INCOTERM CIF que incluye el costo del producto, flete marítimo y seguro. El mismo que tuvo una VARIACIÓN en el precio del FLETE MARÍTIMO, situación que se presenta por las variaciones que tienen las navieras en sus precios de última hora, lo cual hacemos constar en este documento y en la FACTURA comercial No.$billNumber emitida como COMPLEMENTO A FLETE MARÍTIMO, por un valor de USD ${moneyFormat.format(marineFreigth)} haciendo un total CIF USD ${moneyFormat.format(marineFreigth)}.";
+    "Por la presente MAKAN GLOBAL SHIPPING. Certifica: Los productos detallados en la FACTURA No.$billNumber de fecha: ${DateFormat.yMMMMd().format(billDateTime)} consignados a nombre de ${customerName.toUpperCase()}. por un valor de USD ${moneyFormat.format(total)} Se emite bajo el INCOTERM CIF que incluye el costo del producto, flete marítimo y seguro. El mismo que tuvo una VARIACIÓN en el precio del FLETE MARÍTIMO, situación que se presenta por las variaciones que tienen las navieras en sus precios de última hora, lo cual hacemos constar en este documento y en la FACTURA comercial No.$billNumber emitida como COMPLEMENTO A FLETE MARÍTIMO, por un valor de USD ${moneyFormat.format(marineFreigth)} haciendo un total CIF USD ${moneyFormat.format(marineFreigth)}.";
