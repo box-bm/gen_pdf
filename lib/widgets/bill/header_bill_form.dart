@@ -189,6 +189,18 @@ class HeaderBillForm extends StatelessWidget {
             FormBuilderValidators.required(),
           ]),
         ),
+        const SizedBox(height: 10),
+        FormBuilderTextField(
+          name: 'termsAndConditions',
+          minLines: 2,
+          maxLines: 5,
+          decoration: const InputDecoration(
+              hintText: "Ingrese los terminos y condiciones",
+              labelText: "Terminos y condiciones"),
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.required(),
+          ]),
+        ),
       ],
     );
   }

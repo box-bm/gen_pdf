@@ -39,8 +39,7 @@ class CreateBillForm extends StatelessWidget {
                     child: HeaderBillForm(formKey: formkey))),
             Expanded(
                 child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 16),
+                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 80),
                     child: ProductTable(formKey: formkey)))
           ],
         );

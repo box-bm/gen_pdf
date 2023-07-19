@@ -18,6 +18,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   String consignerAddress;
   String? consignerNIT;
   String containerNumber;
+  String? termsAndConditions;
   String bl;
   List<BillItem> items;
   double total;
@@ -35,6 +36,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     this.consignerAddress = "",
     this.consignerNIT,
     this.containerNumber = "",
+    this.termsAndConditions,
     this.bl = "",
     this.items = const [],
     this.total = 0,
@@ -54,6 +56,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       consignerAddress: values['consignerAddress'],
       consignerNIT: values['consignerNIT'],
       containerNumber: values['containerNumber'],
+      termsAndConditions: values['termsAndConditions'],
       bl: values['bl'],
       total: values['total'],
     );
@@ -72,6 +75,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     required this.consignerAddress,
     required this.consignerNIT,
     required this.containerNumber,
+    this.termsAndConditions,
     required this.bl,
     this.items = const [],
     this.total = 0,
@@ -90,6 +94,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     String? consignerAddress,
     String? consignerNIT,
     String? containerNumber,
+    String? termsAndConditions,
     String? bl,
     List<BillItem>? items,
     double? total,
@@ -108,6 +113,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       consignerAddress: consignerAddress ?? this.consignerAddress,
       consignerNIT: consignerNIT ?? this.consignerNIT,
       containerNumber: containerNumber ?? this.containerNumber,
+      termsAndConditions: termsAndConditions ?? this.termsAndConditions,
       bl: bl ?? this.bl,
       total: total ?? this.total,
     );
@@ -130,6 +136,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
         consignerAddress: map['consignerAddress'],
         consignerNIT: map['consignerNIT'],
         containerNumber: map['containerNumber'],
+        termsAndConditions: map['termsAndConditions'],
         bl: map['bl'],
         total: double.parse(map['total'].toString()));
   }
@@ -149,6 +156,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       "consignerAddress": consignerAddress,
       "consignerNIT": consignerNIT,
       "containerNumber": containerNumber,
+      "termsAndConditions": termsAndConditions,
       "bl": bl,
       "total": total,
     };
@@ -168,6 +176,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       "consignerAddress": consignerAddress,
       "consignerNIT": consignerNIT,
       "containerNumber": containerNumber,
+      "termsAndConditions": termsAndConditions,
       "bl": bl,
       "total": total,
       "items": items.map((e) => e.toMap()).toList()
@@ -240,6 +249,10 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
           name: 'containerNumber',
           columnType: SQLiteDataType.text,
           notNull: true,
+        ),
+        Column(
+          name: 'termsAndConditions',
+          columnType: SQLiteDataType.text,
         ),
         Column(
           name: 'bl',
