@@ -1,4 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_pdf/common.dart';
+import 'package:gen_pdf/cubit/selecteds_cubit.dart';
 import 'package:gen_pdf/utils/device.dart';
 import 'package:gen_pdf/widgets/empty_list.dart';
 
@@ -30,7 +32,6 @@ class BaseHomeScreen extends StatefulWidget {
 }
 
 class _BaseHomeScreenState extends State<BaseHomeScreen> {
-  List<String> selecteds = [];
   TextEditingController textEditingController = TextEditingController();
 
   @override
@@ -45,26 +46,16 @@ class _BaseHomeScreenState extends State<BaseHomeScreen> {
     widget.onChangedFilter(value);
   }
 
-  void cleanSelecteds() {
-    setState(() {
-      selecteds = const [];
-    });
-  }
-
   void select(String id) {
-    var newSelecteds = [...selecteds];
-    if (selecteds.contains(id)) {
-      newSelecteds.removeWhere((element) => element == id);
-    } else {
-      newSelecteds.add(id);
-    }
-    setState(() {
-      selecteds = newSelecteds;
-    });
+    context.read<SelectedsCubit>().select(id);
   }
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<SelectedsCubit, List<String>>(builder: buildWidget);
+  }
+
+  Widget buildWidget(BuildContext context, List<String> selecteds) {
     return Scaffold(
         appBar: AppBar(
             centerTitle: false,
@@ -77,11 +68,11 @@ class _BaseHomeScreenState extends State<BaseHomeScreen> {
                   ]),
         body: SafeArea(
             child: SizedBox.expand(
-          child: buildList(),
+          child: buildList(selecteds),
         )));
   }
 
-  Widget buildList() {
+  Widget buildList(List<String> selecteds) {
     if (widget.isLoading) {
       return const Center(
         child: CircularProgressIndicator.adaptive(),

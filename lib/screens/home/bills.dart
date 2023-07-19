@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_pdf/bloc/bills_bloc.dart';
 import 'package:gen_pdf/common.dart';
+import 'package:gen_pdf/cubit/selecteds_cubit.dart';
 import 'package:gen_pdf/screens/preview_pdf.dart';
 import 'package:gen_pdf/widgets/base_home_screen.dart';
 import 'package:gen_pdf/widgets/bill/bill_card.dart';
@@ -19,6 +20,10 @@ class Bills extends StatelessWidget {
                   builder: (context) =>
                       PreviewBill(document: state.document, id: state.id),
                 ));
+          }
+
+          if (state is EndGenerateDocument) {
+            context.read<SelectedsCubit>().clearSelection();
           }
         },
         builder: (context, state) => BaseHomeScreen(

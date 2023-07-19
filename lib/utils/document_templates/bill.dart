@@ -212,15 +212,9 @@ Future<Document> generateBillPDF(Bill bill) async {
                                               Text("Terminos y condiciones"),
                                               SizedBox(height: 10),
                                               Text(
-                                                  "*FACTORES DE BALANCES/OUTLET ",
-                                                  style: Theme.of(context)
-                                                      .defaultTextStyle
-                                                      .copyWith(fontSize: 10)),
-                                              Text("**CIF POR PUERTO QUETZAL ",
-                                                  style: Theme.of(context)
-                                                      .defaultTextStyle
-                                                      .copyWith(fontSize: 10)),
-                                              Text("***90 DÍAS DE CREDITO",
+                                                  (bill.termsAndConditions ??
+                                                          "-")
+                                                      .toUpperCase(),
                                                   style: Theme.of(context)
                                                       .defaultTextStyle
                                                       .copyWith(fontSize: 10)),

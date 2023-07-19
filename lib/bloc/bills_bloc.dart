@@ -168,6 +168,8 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
         return;
       }
       await prinAllDocuments(event.id, folder);
+      emit(EndGenerateDocument(
+          searchValue: state.searchValue, bills: state.bills));
     });
 
     // Generar la factura
@@ -180,6 +182,8 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       var bill = await getAllBillDetails(event.id);
       var document = await generateBillPDF(bill);
       await saveFilesWithPath(document, path);
+      emit(EndGenerateDocument(
+          searchValue: state.searchValue, bills: state.bills));
     });
 
     // Generar cotizacion
@@ -192,6 +196,8 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       var bill = await getAllBillDetails(event.id);
       var document = await generateQuotationPDF(bill);
       await saveFilesWithPath(document, path);
+      emit(EndGenerateDocument(
+          searchValue: state.searchValue, bills: state.bills));
     });
 
     // Generar confirmación
@@ -204,6 +210,8 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       var bill = await getAllBillDetails(event.id);
       var document = await generateConfirmationPDF(bill);
       await saveFilesWithPath(document, path);
+      emit(EndGenerateDocument(
+          searchValue: state.searchValue, bills: state.bills));
     });
 
     // Generar contrato
@@ -216,6 +224,8 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       var bill = await getAllBillDetails(event.id);
       var document = await generateAgreementPDF(bill);
       await saveFilesWithPath(document, path);
+      emit(EndGenerateDocument(
+          searchValue: state.searchValue, bills: state.bills));
     });
 
     // Generar nota explicatoria
@@ -228,6 +238,8 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       var bill = await getAllBillDetails(event.id);
       var document = await generateExplanatoryNotePDF(bill);
       await saveFilesWithPath(document, path);
+      emit(EndGenerateDocument(
+          searchValue: state.searchValue, bills: state.bills));
     });
 
     // Generacion de todos los documentos
@@ -243,6 +255,8 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
         }
         await Future.wait(savedBills);
       }
+      emit(EndGenerateDocument(
+          searchValue: state.searchValue, bills: state.bills));
     });
   }
 

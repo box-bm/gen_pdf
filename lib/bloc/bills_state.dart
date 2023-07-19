@@ -44,6 +44,10 @@ class PrintReady extends BillsState {
       {required super.searchValue, super.bills});
 }
 
+class EndGenerateDocument extends BillsState {
+  const EndGenerateDocument({required super.searchValue, super.bills});
+}
+
 class FindedNewBillNumber extends BillsState {
   final int? newBillNumber;
   final DateTime? dateTime;
