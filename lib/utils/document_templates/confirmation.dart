@@ -19,7 +19,7 @@ Future<Document> generateConfirmationPDF(Bill bill) async {
   var boldText = TextStyle(fontWeight: FontWeight.bold);
 
   pdf.addPage(Page(
-      pageFormat: PdfPageFormat.a4,
+      pageFormat: PdfPageFormat.letter,
       margin: const EdgeInsets.fromLTRB(30, 30, 30, 20),
       theme: ThemeData(defaultTextStyle: const TextStyle(fontSize: 10)),
       build: (Context context) {
@@ -116,13 +116,9 @@ Future<Document> generateConfirmationPDF(Bill bill) async {
                                             "Descripcion:".toUpperCase(),
                                             style: boldText)),
                                     Expanded(
-                                        child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            children: bill.items
-                                                .map((e) => Text(e.description
-                                                    .toUpperCase()))
-                                                .toList()))
+                                        child: Text(
+                                            "COMO SE DESCRIBE EN LA COTIZACION"
+                                                .toUpperCase()))
                                   ]),
                               SizedBox(height: 4),
                               Row(children: [

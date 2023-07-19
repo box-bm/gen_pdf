@@ -16,7 +16,7 @@ Future<Document> generateExplanatoryNotePDF(Bill bill) async {
   );
 
   pdf.addPage(Page(
-      pageFormat: PdfPageFormat.a4,
+      pageFormat: PdfPageFormat.letter,
       margin: const EdgeInsets.fromLTRB(30, 30, 30, 20),
       theme: ThemeData(
           defaultTextStyle:

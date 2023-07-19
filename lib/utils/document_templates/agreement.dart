@@ -17,7 +17,7 @@ Future<Document> generateAgreementPDF(Bill bill) async {
   var boldText = TextStyle(fontWeight: FontWeight.bold);
 
   pdf.addPage(Page(
-      pageFormat: PdfPageFormat.a4,
+      pageFormat: PdfPageFormat.letter,
       margin: const EdgeInsets.fromLTRB(30, 30, 30, 20),
       theme: ThemeData(
           defaultTextStyle: TextStyle(
