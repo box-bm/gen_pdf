@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 
 final DateFormat dateFormat = DateFormat('dd-MM-yyyy');
 final NumberFormat moneyFormat = NumberFormat("\$#,##0.00", "en_US");
+final NumberFormat moneyFormatWithoutSimbol = NumberFormat("#,##0.00", "en_US");
 
 extension IntParsing on int {
   String suffixNumber({int length = 4}) {

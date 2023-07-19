@@ -69,12 +69,16 @@ Future<Document> generateConfirmationPDF(Bill bill) async {
                                             textAlign: TextAlign.center))
                                   ]),
                               SizedBox(height: 20),
-                              Text("Comprador:".toUpperCase(),
-                                  style: TextStyle(
-                                      background: BoxDecoration(
-                                          color: PdfColors.black,
-                                          border: Border.all(width: 2)),
-                                      color: PdfColors.white)),
+                              Row(children: [
+                                Container(
+                                    margin: const EdgeInsets.only(bottom: 2),
+                                    padding: const EdgeInsets.all(2),
+                                    decoration: const BoxDecoration(
+                                        color: PdfColors.black),
+                                    child: Text("Comprador:".toUpperCase(),
+                                        style: const TextStyle(
+                                            color: PdfColors.white)))
+                              ]),
                               Text(bill.consignerName.toUpperCase()),
                               SizedBox(
                                   width: 180,
