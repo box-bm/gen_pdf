@@ -56,20 +56,30 @@ class _BaseHomeScreenState extends State<BaseHomeScreen> {
   }
 
   Widget buildWidget(BuildContext context, List<String> selecteds) {
-    return Scaffold(
-        appBar: AppBar(
-            centerTitle: false,
-            title: Text(widget.title),
-            actions: widget.actions == null
-                ? null
-                : [
-                    isDesktop ? searchWidget() : const SizedBox.shrink(),
-                    ...widget.actions!(selecteds),
-                  ]),
-        body: SafeArea(
-            child: SizedBox.expand(
-          child: buildList(selecteds),
-        )));
+    return Column(
+      children: [
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            const SizedBox(width: 14),
+            Expanded(
+                child: Text(
+              widget.title,
+              style: Theme.of(context).textTheme.titleLarge,
+            )),
+            Row(
+              children: [
+                isDesktop ? searchWidget() : const SizedBox.shrink(),
+                ...widget.actions!(selecteds),
+              ],
+            ),
+            const SizedBox(width: 14),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Expanded(child: buildList(selecteds))
+      ],
+    );
   }
 
   Widget buildList(List<String> selecteds) {

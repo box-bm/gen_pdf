@@ -29,7 +29,7 @@ class _NewBillState extends State<NewBill> {
     super.initState();
   }
 
-  bool validateForm() {
+  bool validateForm(BuildContext context) {
     var valid = _formkey.currentState!.saveAndValidate();
     var errors = _formkey.currentState?.errors;
 
@@ -49,59 +49,57 @@ class _NewBillState extends State<NewBill> {
 
     var isEditing = values != null;
 
-    return BlocListener<BillsBloc, BillsState>(
-        listener: (context, state) {
-          if (state is FindedNewBillNumber) {
-            _formkey.currentState?.fields['number']
-                ?.didChange(state.newBillNumber.toString());
+    return Scaffold(
+      appBar: AppBar(
+        leading: AppBarUtils.leadingWidget,
+        title: Text(isEditing ? "Modificar Factura" : "Creando Factura"),
+        toolbarHeight: AppBarUtils.appbarHeight,
+        flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
+        centerTitle: false,
+      ),
+      body: BlocListener<BillsBloc, BillsState>(
+          listener: (context, state) {
+            if (state is FindedNewBillNumber) {
+              _formkey.currentState?.fields['number']
+                  ?.didChange(state.newBillNumber.toString());
 
-            _formkey.currentState?.fields['billNumber']?.didChange(state
-                        .dateTime !=
-                    null
-                ? "502-${DateFormat("MM-dd").format(state.dateTime!)}-${state.newBillNumber?.suffixNumber()}"
-                : null);
-          }
-          if (state is BillSaved) {
-            Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content:
-                    Text(isEditing ? "Factura modificada" : "Factura creada"),
-              ),
-            );
-          }
-        },
-        child: FormBuilder(
-            key: _formkey,
-            initialValue: values ?? {},
-            child: Scaffold(
-              appBar: AppBar(
-                leading: AppBarUtils.leadingWidget,
-                title:
-                    Text(isEditing ? "Modificar Factura" : "Creando Factura"),
-                toolbarHeight: AppBarUtils.appbarHeight,
-                flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
-                centerTitle: false,
-              ),
-              body: SafeArea(child: CreateBillForm(formkey: _formkey)),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.endFloat,
-              floatingActionButton: FloatingActionButton.extended(
-                  onPressed: () {
-                    if (validateForm()) {
-                      if (isEditing) {
-                        context
-                            .read<BillsBloc>()
-                            .add(EditBill(_formkey.currentState!.value));
-                      } else {
-                        context
-                            .read<BillsBloc>()
-                            .add(CreateBill(_formkey.currentState!.value));
-                      }
-                    }
-                  },
-                  icon: const Icon(Icons.save_as_outlined),
-                  label: const Text("Guardar")),
-            )));
+              _formkey.currentState?.fields['billNumber']?.didChange(state
+                          .dateTime !=
+                      null
+                  ? "502-${DateFormat("MM-dd").format(state.dateTime!)}-${state.newBillNumber?.suffixNumber()}"
+                  : null);
+            }
+            if (state is BillSaved) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content:
+                      Text(isEditing ? "Factura modificada" : "Factura creada"),
+                ),
+              );
+              Navigator.pop(context);
+            }
+          },
+          child: FormBuilder(
+              key: _formkey,
+              initialValue: values ?? {},
+              child: SafeArea(child: CreateBillForm(formkey: _formkey)))),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            if (validateForm(context)) {
+              if (isEditing) {
+                context
+                    .read<BillsBloc>()
+                    .add(EditBill(_formkey.currentState!.value));
+              } else {
+                context
+                    .read<BillsBloc>()
+                    .add(CreateBill(_formkey.currentState!.value));
+              }
+            }
+          },
+          icon: const Icon(Icons.save_as_outlined),
+          label: const Text("Guardar")),
+    );
   }
 }

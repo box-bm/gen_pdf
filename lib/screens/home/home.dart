@@ -1,4 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_pdf/common.dart';
+import 'package:gen_pdf/cubit/selecteds_cubit.dart';
 import 'package:gen_pdf/screens/new_bill.dart';
 import 'package:gen_pdf/screens/new_consigner.dart';
 import 'package:gen_pdf/screens/new_exporter.dart';
@@ -56,10 +58,11 @@ class _HomeState extends State<Home> {
           onTap: (value) {
             _controller.animateToPage(value,
                 curve: Curves.easeInOut,
-                duration: const Duration(milliseconds: 500));
+                duration: const Duration(milliseconds: 300));
             setState(() {
               currentPage = value;
             });
+            context.read<SelectedsCubit>().clearSelection();
           },
           items: const [
             BottomNavigationBarItem(

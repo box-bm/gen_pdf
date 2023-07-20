@@ -6,7 +6,7 @@ abstract class BillsState extends Equatable {
   const BillsState({required this.searchValue, this.bills = const []});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [searchValue, bills];
 }
 
 class BillsInitial extends BillsState {

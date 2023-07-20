@@ -27,36 +27,30 @@ class NewExporter extends StatelessWidget {
         body: BlocListener<ExporterBloc, ExporterState>(
             listener: (context, state) {
               if (state is ExporterSaved) {
-                Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: SnackBar(
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
                   content: Text(isEditing
                       ? "Exportador modificado"
                       : "Exportador creado"),
                 )));
+                Navigator.pop(context);
               }
             },
             child: SafeArea(
                 minimum: const EdgeInsets.fromLTRB(10, 12, 10, 20),
-                child: Column(
-                  children: [
-                    BaseForm(
-                      initialValues: initialValues,
-                      inputs: formInputs(),
-                      onSubmit: (values) async {
-                        if (isEditing) {
-                          context
-                              .read<ExporterBloc>()
-                              .add(EditExporter(values));
-                          return;
-                        } else {
-                          context
-                              .read<ExporterBloc>()
-                              .add(CreateExporter(values));
-                        }
-                      },
-                    )
-                  ],
-                ))));
+                child: BaseForm(
+                    initialValues: initialValues,
+                    inputs: formInputs(),
+                    onSubmit: (values) async {
+                      if (isEditing) {
+                        context.read<ExporterBloc>().add(EditExporter(values));
+                        return;
+                      } else {
+                        context
+                            .read<ExporterBloc>()
+                            .add(CreateExporter(values));
+                      }
+                    }))));
   }
 }
