@@ -2,6 +2,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/models/bill_item.dart';
+import 'package:gen_pdf/utils/calculations.dart';
 import 'package:gen_pdf/utils/formatter.dart';
 import 'package:gen_pdf/widgets/bill/new_item_form.dart';
 
@@ -43,6 +44,10 @@ class ProductTable extends StatelessWidget {
                       Text(
                         moneyFormat.format(total),
                         style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      Text(
+                        "Seguro: ${moneyFormat.format(getSecure(total))}",
+                        style: Theme.of(context).textTheme.bodySmall,
                       )
                     ],
                   )),

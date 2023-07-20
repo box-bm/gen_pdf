@@ -52,7 +52,7 @@ class _NewBillState extends State<NewBill> {
     return Scaffold(
       appBar: AppBar(
         leading: AppBarUtils.leadingWidget,
-        title: Text(isEditing ? "Modificar Factura" : "Creando Factura"),
+        title: Text(isEditing ? "Modificar Factura" : "Crear Factura"),
         toolbarHeight: AppBarUtils.appbarHeight,
         flexibleSpace: AppBarUtils.platformAppBarFlexibleSpace,
         centerTitle: false,

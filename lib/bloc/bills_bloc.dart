@@ -170,6 +170,7 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       await prinAllDocuments(event.id, folder);
       emit(EndGenerateDocument(
           searchValue: state.searchValue, bills: state.bills));
+      emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
     });
 
     // Generar la factura
@@ -184,6 +185,7 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       await saveFilesWithPath(document, path);
       emit(EndGenerateDocument(
           searchValue: state.searchValue, bills: state.bills));
+      emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
     });
 
     // Generar cotizacion
@@ -198,6 +200,7 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       await saveFilesWithPath(document, path);
       emit(EndGenerateDocument(
           searchValue: state.searchValue, bills: state.bills));
+      emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
     });
 
     // Generar confirmación
@@ -212,6 +215,7 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       await saveFilesWithPath(document, path);
       emit(EndGenerateDocument(
           searchValue: state.searchValue, bills: state.bills));
+      emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
     });
 
     // Generar contrato
@@ -226,6 +230,7 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       await saveFilesWithPath(document, path);
       emit(EndGenerateDocument(
           searchValue: state.searchValue, bills: state.bills));
+      emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
     });
 
     // Generar nota explicatoria
@@ -240,6 +245,7 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       await saveFilesWithPath(document, path);
       emit(EndGenerateDocument(
           searchValue: state.searchValue, bills: state.bills));
+      emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
     });
 
     // Generacion de todos los documentos
@@ -257,6 +263,7 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       }
       emit(EndGenerateDocument(
           searchValue: state.searchValue, bills: state.bills));
+      emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
     });
   }
 

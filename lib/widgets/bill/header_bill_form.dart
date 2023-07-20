@@ -172,6 +172,15 @@ class HeaderBillForm extends StatelessWidget {
         const Divider(),
         const SizedBox(height: 10),
         FormBuilderTextField(
+          name: 'bl',
+          decoration: const InputDecoration(
+              hintText: "Ingrese el BL", labelText: "No. de BL"),
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.required(),
+          ]),
+        ),
+        const SizedBox(height: 10),
+        FormBuilderTextField(
           name: 'containerNumber',
           decoration: const InputDecoration(
               hintText: "Ingrese el numero de contenedor",
@@ -182,24 +191,24 @@ class HeaderBillForm extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         FormBuilderTextField(
-          name: 'bl',
+          name: 'freight',
           decoration: const InputDecoration(
-              hintText: "Ingrese el BL", labelText: "No. de BL"),
+              prefixText: "\$ ",
+              hintText: "Ingrese el precio de flete",
+              labelText: "Flete"),
           validator: FormBuilderValidators.compose([
             FormBuilderValidators.required(),
+            FormBuilderValidators.numeric()
           ]),
         ),
         const SizedBox(height: 10),
         FormBuilderTextField(
           name: 'termsAndConditions',
-          minLines: 2,
-          maxLines: 5,
+          minLines: 3,
+          maxLines: 6,
           decoration: const InputDecoration(
               hintText: "Ingrese los terminos y condiciones",
               labelText: "Terminos y condiciones"),
-          validator: FormBuilderValidators.compose([
-            FormBuilderValidators.required(),
-          ]),
         ),
       ],
     );

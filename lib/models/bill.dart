@@ -22,6 +22,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   String bl;
   List<BillItem> items;
   double total;
+  double freight;
 
   Bill({
     this.id = "",
@@ -40,6 +41,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     this.bl = "",
     this.items = const [],
     this.total = 0,
+    this.freight = 0,
   });
 
   factory Bill.newByMap(Map<String, dynamic> values) {
@@ -59,6 +61,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       termsAndConditions: values['termsAndConditions'],
       bl: values['bl'],
       total: values['total'],
+      freight: double.parse(values['freight'].toString()),
     );
   }
 
@@ -79,6 +82,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     required this.bl,
     this.items = const [],
     this.total = 0,
+    this.freight = 0,
   });
 
   @override
@@ -98,6 +102,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     String? bl,
     List<BillItem>? items,
     double? total,
+    double? freight,
   }) {
     return Bill.create(
       id: id,
@@ -116,6 +121,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       termsAndConditions: termsAndConditions ?? this.termsAndConditions,
       bl: bl ?? this.bl,
       total: total ?? this.total,
+      freight: freight ?? this.freight,
     );
   }
 
@@ -138,7 +144,8 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
         containerNumber: map['containerNumber'],
         termsAndConditions: map['termsAndConditions'],
         bl: map['bl'],
-        total: double.parse(map['total'].toString()));
+        total: double.parse(map['total'].toString()),
+        freight: double.parse(map['freight'].toString()));
   }
 
   @override
@@ -159,6 +166,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       "termsAndConditions": termsAndConditions,
       "bl": bl,
       "total": total,
+      "freight": freight,
     };
   }
 
@@ -179,6 +187,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       "termsAndConditions": termsAndConditions,
       "bl": bl,
       "total": total,
+      "freight": freight.toStringAsFixed(2),
       "items": items.map((e) => e.toMap()).toList()
     };
   }
@@ -261,6 +270,11 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
         ),
         Column(
           name: 'total',
+          columnType: SQLiteDataType.real,
+          notNull: true,
+        ),
+        Column(
+          name: 'freight',
           columnType: SQLiteDataType.real,
           notNull: true,
         ),

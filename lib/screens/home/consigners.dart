@@ -55,8 +55,23 @@ class Consigners extends StatelessWidget {
                           onChanged: (value) {
                             select(state.consigners.elementAt(index).id);
                           }),
+                      const SizedBox(width: 8),
                       Expanded(
-                          child: Text(state.consigners.elementAt(index).name)),
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            state.consigners.elementAt(index).name,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(height: 0),
+                          ),
+                          Text(state.consigners.elementAt(index).address),
+                          Text(
+                              "NIT: ${state.consigners.elementAt(index).nit ?? "-"}"),
+                        ],
+                      )),
                       IconButton(
                           onPressed: () {
                             context.read<ConsignerBloc>().add(DeleteConsigner(

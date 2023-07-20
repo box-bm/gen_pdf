@@ -55,8 +55,21 @@ class Exporters extends StatelessWidget {
                         onChanged: (value) {
                           select(state.exporters.elementAt(index).id);
                         }),
+                    const SizedBox(width: 8),
                     Expanded(
-                        child: Text(state.exporters.elementAt(index).name)),
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          state.exporters.elementAt(index).name,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(height: 0),
+                        ),
+                        Text(state.exporters.elementAt(index).address)
+                      ],
+                    )),
                     IconButton(
                         onPressed: () {
                           context.read<ExporterBloc>().add(DeleteExporter(

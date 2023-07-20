@@ -24,6 +24,8 @@ class Bills extends StatelessWidget {
 
           if (state is EndGenerateDocument) {
             context.read<SelectedsCubit>().clearSelection();
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Documentos generados")));
           }
         },
         builder: (context, state) => BaseHomeScreen(

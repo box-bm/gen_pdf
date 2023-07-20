@@ -44,6 +44,27 @@ class BillCard extends StatelessWidget {
                         ?.copyWith(height: 0),
                   ),
                   Text(
+                    "Total: ${moneyFormat.format(bill.total)}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(height: 0),
+                  ),
+                  Text(
+                    "BL: ${bill.bl}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(height: 0),
+                  ),
+                  Text(
+                    "Contenedor: ${bill.containerNumber}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(height: 0),
+                  ),
+                  Text(
                     "Fecha: ${dateFormat.format(bill.date!)}",
                     style: Theme.of(context).textTheme.bodySmall,
                   ),

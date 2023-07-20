@@ -60,7 +60,8 @@ class _NewItemFormState extends State<NewItemForm> {
               const SizedBox(height: 10),
               FormBuilderTextField(
                 name: "unitPrice",
-                decoration: const InputDecoration(labelText: "Precio Unitario"),
+                decoration: const InputDecoration(
+                    labelText: "Precio Unitario", prefixText: "\$ "),
                 validator: FormBuilderValidators.compose([
                   FormBuilderValidators.required(),
                   FormBuilderValidators.numeric(),

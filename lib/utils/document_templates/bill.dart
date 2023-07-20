@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:gen_pdf/models/bill.dart';
+import 'package:gen_pdf/utils/calculations.dart';
 import 'package:gen_pdf/utils/formatter.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
@@ -18,6 +19,8 @@ Future<Document> generateBillPDF(Bill bill) async {
 
   double difference = (bill.items.length / rowsPerPage);
   int pages = difference.ceil();
+
+  double secure = getSecure(bill.total);
 
   for (var i = 0; i < pages; i++) {
     var isFinal = difference - i < 1;
@@ -315,32 +318,14 @@ Future<Document> generateBillPDF(Bill bill) async {
                                             decoration: BoxDecoration(
                                                 border: Border.all()),
                                             padding: const EdgeInsets.all(2),
-                                            child:
-                                                Text("Total", style: boldText)),
-                                        Container(
-                                            decoration: BoxDecoration(
-                                                border: Border.all()),
-                                            padding: const EdgeInsets.all(2),
-                                            child: Text(
-                                                "\$ ${bill.total.toStringAsFixed(2)}",
-                                                textAlign: TextAlign.right)),
-                                      ]),
-                                      TableRow(children: [
-                                        SizedBox(),
-                                        SizedBox(),
-                                        SizedBox(),
-                                        SizedBox(),
-                                        Container(
-                                            decoration: BoxDecoration(
-                                                border: Border.all()),
-                                            padding: const EdgeInsets.all(2),
                                             child: Text("Valor FOB",
                                                 style: boldText)),
                                         Container(
                                             decoration: BoxDecoration(
                                                 border: Border.all()),
                                             padding: const EdgeInsets.all(2),
-                                            child: Text("\$ - ",
+                                            child: Text(
+                                                moneyFormat.format(bill.total),
                                                 textAlign: TextAlign.right)),
                                       ]),
                                       TableRow(children: [
@@ -352,12 +337,14 @@ Future<Document> generateBillPDF(Bill bill) async {
                                             decoration: BoxDecoration(
                                                 border: Border.all()),
                                             padding: const EdgeInsets.all(2),
-                                            child: Text("Transporte")),
+                                            child: Text("Flete")),
                                         Container(
                                             decoration: BoxDecoration(
                                                 border: Border.all()),
                                             padding: const EdgeInsets.all(2),
-                                            child: Text("\$ - ",
+                                            child: Text(
+                                                moneyFormat
+                                                    .format(bill.freight),
                                                 textAlign: TextAlign.right)),
                                       ]),
                                       TableRow(children: [
@@ -374,7 +361,29 @@ Future<Document> generateBillPDF(Bill bill) async {
                                             decoration: BoxDecoration(
                                                 border: Border.all()),
                                             padding: const EdgeInsets.all(2),
-                                            child: Text("\$ 20.00 ",
+                                            child: Text(
+                                                "\$ ${moneyFormatWithoutSimbol.format(secure)}",
+                                                textAlign: TextAlign.right)),
+                                      ]),
+                                      TableRow(children: [
+                                        SizedBox(),
+                                        SizedBox(),
+                                        SizedBox(),
+                                        SizedBox(),
+                                        Container(
+                                            decoration: BoxDecoration(
+                                                border: Border.all()),
+                                            padding: const EdgeInsets.all(2),
+                                            child:
+                                                Text("Total", style: boldText)),
+                                        Container(
+                                            decoration: BoxDecoration(
+                                                border: Border.all()),
+                                            padding: const EdgeInsets.all(2),
+                                            child: Text(
+                                                moneyFormat.format(bill.total +
+                                                    secure +
+                                                    bill.freight),
                                                 textAlign: TextAlign.right)),
                                       ]),
                                     ])
