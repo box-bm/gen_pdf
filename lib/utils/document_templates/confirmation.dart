@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:gen_pdf/models/bill.dart';
+import 'package:gen_pdf/utils/calculations.dart';
 import 'package:gen_pdf/utils/formatter.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
@@ -108,7 +109,9 @@ Future<Document> generateConfirmationPDF(Bill bill) async {
                                 SizedBox(width: 8),
                                 Text("Total:".toUpperCase(), style: boldText),
                                 SizedBox(width: 2),
-                                Text(moneyFormat.format(bill.total))
+                                Text(moneyFormat.format(bill.total +
+                                    bill.freight +
+                                    getSecure(bill.total)))
                               ]),
                               SizedBox(height: 4),
                               Row(
@@ -146,7 +149,7 @@ Future<Document> generateConfirmationPDF(Bill bill) async {
                                                 CrossAxisAlignment.stretch,
                                             children: [
                                           Text(
-                                              "COBERTURA TODO RIESGO SOBRE EL 110% DEL VALOR DE LA MERCANCÍA,"),
+                                              "COBERTURA TODO RIESGO SOBRE EL 165% DEL VALOR DE LA MERCANCÍA,"),
                                           Text(
                                               "QUE SERÁ CUBIERTO POR EL VENDEDOR HASTA EL PUERTO DE DESTINO."),
                                         ]))

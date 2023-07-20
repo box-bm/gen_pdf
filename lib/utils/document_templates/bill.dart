@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:gen_pdf/models/bill.dart';
 import 'package:gen_pdf/utils/calculations.dart';
+import 'package:gen_pdf/utils/document_templates/money_cell.dart';
 import 'package:gen_pdf/utils/formatter.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
@@ -15,6 +16,18 @@ Future<Document> generateBillPDF(Bill bill) async {
   );
 
   var contentBorder = Border.all();
+  var finalDataColumnsLeft = const BoxDecoration(
+      border: Border(
+          bottom: BorderSide(),
+          top: BorderSide(),
+          right: BorderSide(),
+          left: BorderSide(width: 3)));
+  var finalDataColumnsRight = const BoxDecoration(
+      border: Border(
+          bottom: BorderSide(),
+          top: BorderSide(),
+          right: BorderSide(width: 3),
+          left: BorderSide()));
   var boldText = TextStyle(fontWeight: FontWeight.bold, font: Font.timesBold());
 
   double difference = (bill.items.length / rowsPerPage);
@@ -108,31 +121,45 @@ Future<Document> generateBillPDF(Bill bill) async {
                                     flex: 2,
                                     child: Container(
                                         padding: const EdgeInsets.all(4),
-                                        child: Text(
-                                            "Exportador: ${bill.exporterName}"))),
+                                        child: RichText(
+                                            text: TextSpan(children: [
+                                          TextSpan(
+                                              text: "Exportador: ",
+                                              style: boldText),
+                                          TextSpan(text: bill.exporterName)
+                                        ])))),
                                 Expanded(
                                     child: Container(
                                         decoration: BoxDecoration(
                                             border: contentBorder),
                                         padding: const EdgeInsets.all(4),
-                                        child: Text(
-                                            "Consignatario: ${bill.consignerName}"))),
+                                        child: RichText(
+                                            text: TextSpan(children: [
+                                          TextSpan(
+                                              text: "Consignatario: ",
+                                              style: boldText),
+                                          TextSpan(text: bill.consignerName),
+                                        ])))),
                               ])),
                           Container(
                               decoration: BoxDecoration(border: contentBorder),
                               child: Row(children: [
                                 Expanded(
                                     flex: 2,
-                                    child: Container(
-                                        padding: const EdgeInsets.all(4),
-                                        child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            children: [
-                                              Text("Direccion",
-                                                  style: boldText),
-                                              Text(bill.exporterAddress)
-                                            ]))),
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                              padding: const EdgeInsets.all(2),
+                                              child: Text("Direccion",
+                                                  style: boldText)),
+                                          Container(
+                                              padding: const EdgeInsets.all(2),
+                                              child: Text(bill.exporterAddress))
+                                        ])),
                                 Expanded(
                                     child: Container(
                                         decoration: BoxDecoration(
@@ -144,15 +171,26 @@ Future<Document> generateBillPDF(Bill bill) async {
                                               Container(
                                                   padding:
                                                       const EdgeInsets.all(4),
-                                                  child: Text(
-                                                      "Direccion: ${bill.consignerAddress}")),
+                                                  child: RichText(
+                                                      text: TextSpan(children: [
+                                                    TextSpan(
+                                                        text: "Direccion: ",
+                                                        style: boldText),
+                                                    TextSpan(
+                                                        text: bill
+                                                            .consignerAddress)
+                                                  ]))),
                                               Container(
                                                   decoration: BoxDecoration(
                                                       border: contentBorder),
                                                   padding:
                                                       const EdgeInsets.all(4),
-                                                  child: Text(
-                                                      "Nit: ${(bill.consignerNIT ?? "").isEmpty ? "-" : bill.consignerNIT}"))
+                                                  child: Row(children: [
+                                                    Text("Nit:",
+                                                        style: boldText),
+                                                    Text((bill.consignerNIT ??
+                                                        "-"))
+                                                  ]))
                                             ]))),
                               ])),
                           Container(
@@ -164,14 +202,25 @@ Future<Document> generateBillPDF(Bill bill) async {
                                         decoration: BoxDecoration(
                                             border: contentBorder),
                                         padding: const EdgeInsets.all(4),
-                                        child: Text(
-                                            "No. Contenedor: ${bill.containerNumber}"))),
+                                        child: RichText(
+                                            text: TextSpan(children: [
+                                          TextSpan(
+                                              text: "No. Contenedor:",
+                                              style: boldText),
+                                          TextSpan(text: bill.containerNumber)
+                                        ])))),
                                 Expanded(
                                     child: Container(
                                         decoration: BoxDecoration(
                                             border: contentBorder),
                                         padding: const EdgeInsets.all(4),
-                                        child: Text("No. B/L: ${bill.bl}"))),
+                                        child: RichText(
+                                            text: TextSpan(children: [
+                                          TextSpan(
+                                              text: "No. B/L: ",
+                                              style: boldText),
+                                          TextSpan(text: bill.bl)
+                                        ]))))
                               ])),
                           Container(
                               decoration: BoxDecoration(border: contentBorder),
@@ -185,7 +234,9 @@ Future<Document> generateBillPDF(Bill bill) async {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.stretch,
                                             children: [
-                                              Text("No. Total de piezas"),
+                                              Text("No. Total de piezas",
+                                                  style: boldText),
+                                              SizedBox(height: 4),
                                               Center(
                                                   child: Text(
                                                       bill.items
@@ -212,8 +263,9 @@ Future<Document> generateBillPDF(Bill bill) async {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.stretch,
                                             children: [
-                                              Text("Terminos y condiciones"),
-                                              SizedBox(height: 10),
+                                              Text("Terminos y condiciones",
+                                                  style: boldText),
+                                              SizedBox(height: 4),
                                               Text(
                                                   (bill.termsAndConditions ??
                                                           "-")
@@ -263,37 +315,27 @@ Future<Document> generateBillPDF(Bill bill) async {
                                           textAlign: TextAlign.center)),
                                 ]),
                                 ...items
-                                    .map(
-                                      (e) => TableRow(children: [
-                                        Container(
-                                            padding: const EdgeInsets.all(2),
-                                            child: Text(e.numeration,
-                                                textAlign: TextAlign.center)),
-                                        Container(
-                                            padding: const EdgeInsets.all(2),
-                                            child: Text(e.description,
-                                                textAlign: TextAlign.center)),
-                                        Container(
-                                            padding: const EdgeInsets.all(2),
-                                            child: Text(
-                                                e.quantity.toStringAsFixed(0),
-                                                textAlign: TextAlign.center)),
-                                        Container(
-                                            padding: const EdgeInsets.all(2),
-                                            child: Text(e.prs ?? "",
-                                                textAlign: TextAlign.center)),
-                                        Container(
-                                            padding: const EdgeInsets.all(2),
-                                            child: Text(
-                                                moneyFormat.format(e.unitPrice),
-                                                textAlign: TextAlign.right)),
-                                        Container(
-                                            padding: const EdgeInsets.all(2),
-                                            child: Text(
-                                                moneyFormat.format(e.total),
-                                                textAlign: TextAlign.right)),
-                                      ]),
-                                    )
+                                    .map((e) => TableRow(children: [
+                                          Container(
+                                              padding: const EdgeInsets.all(2),
+                                              child: Text(e.numeration,
+                                                  textAlign: TextAlign.center)),
+                                          Container(
+                                              padding: const EdgeInsets.all(2),
+                                              child: Text(e.description,
+                                                  textAlign: TextAlign.center)),
+                                          Container(
+                                              padding: const EdgeInsets.all(2),
+                                              child: Text(
+                                                  e.quantity.toStringAsFixed(0),
+                                                  textAlign: TextAlign.center)),
+                                          Container(
+                                              padding: const EdgeInsets.all(2),
+                                              child: Text(e.prs ?? "",
+                                                  textAlign: TextAlign.center)),
+                                          moneyCell(e.unitPrice),
+                                          moneyCell(e.total),
+                                        ]))
                                     .toList(),
                               ]),
                           isFinal
@@ -315,18 +357,13 @@ Future<Document> generateBillPDF(Bill bill) async {
                                         SizedBox(),
                                         SizedBox(),
                                         Container(
-                                            decoration: BoxDecoration(
-                                                border: Border.all()),
+                                            decoration: finalDataColumnsLeft,
                                             padding: const EdgeInsets.all(2),
                                             child: Text("Valor FOB",
                                                 style: boldText)),
                                         Container(
-                                            decoration: BoxDecoration(
-                                                border: Border.all()),
-                                            padding: const EdgeInsets.all(2),
-                                            child: Text(
-                                                moneyFormat.format(bill.total),
-                                                textAlign: TextAlign.right)),
+                                            decoration: finalDataColumnsRight,
+                                            child: moneyCell(bill.total))
                                       ]),
                                       TableRow(children: [
                                         SizedBox(),
@@ -334,18 +371,12 @@ Future<Document> generateBillPDF(Bill bill) async {
                                         SizedBox(),
                                         SizedBox(),
                                         Container(
-                                            decoration: BoxDecoration(
-                                                border: Border.all()),
+                                            decoration: finalDataColumnsLeft,
                                             padding: const EdgeInsets.all(2),
                                             child: Text("Flete")),
                                         Container(
-                                            decoration: BoxDecoration(
-                                                border: Border.all()),
-                                            padding: const EdgeInsets.all(2),
-                                            child: Text(
-                                                moneyFormat
-                                                    .format(bill.freight),
-                                                textAlign: TextAlign.right)),
+                                            decoration: finalDataColumnsRight,
+                                            child: moneyCell(bill.freight))
                                       ]),
                                       TableRow(children: [
                                         SizedBox(),
@@ -353,17 +384,12 @@ Future<Document> generateBillPDF(Bill bill) async {
                                         SizedBox(),
                                         SizedBox(),
                                         Container(
-                                            decoration: BoxDecoration(
-                                                border: Border.all()),
+                                            decoration: finalDataColumnsLeft,
                                             padding: const EdgeInsets.all(2),
                                             child: Text("Seguro")),
                                         Container(
-                                            decoration: BoxDecoration(
-                                                border: Border.all()),
-                                            padding: const EdgeInsets.all(2),
-                                            child: Text(
-                                                "\$ ${moneyFormatWithoutSimbol.format(secure)}",
-                                                textAlign: TextAlign.right)),
+                                            decoration: finalDataColumnsRight,
+                                            child: moneyCell(secure))
                                       ]),
                                       TableRow(children: [
                                         SizedBox(),
@@ -371,20 +397,15 @@ Future<Document> generateBillPDF(Bill bill) async {
                                         SizedBox(),
                                         SizedBox(),
                                         Container(
-                                            decoration: BoxDecoration(
-                                                border: Border.all()),
+                                            decoration: finalDataColumnsLeft,
                                             padding: const EdgeInsets.all(2),
                                             child:
                                                 Text("Total", style: boldText)),
                                         Container(
-                                            decoration: BoxDecoration(
-                                                border: Border.all()),
-                                            padding: const EdgeInsets.all(2),
-                                            child: Text(
-                                                moneyFormat.format(bill.total +
-                                                    secure +
-                                                    bill.freight),
-                                                textAlign: TextAlign.right)),
+                                            decoration: finalDataColumnsRight,
+                                            child: moneyCell(bill.total +
+                                                secure +
+                                                bill.freight))
                                       ]),
                                     ])
                               : Container(

@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:gen_pdf/models/bill.dart';
+import 'package:gen_pdf/utils/calculations.dart';
 import 'package:gen_pdf/utils/formatter.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
@@ -57,7 +58,8 @@ Future<Document> generateExplanatoryNotePDF(Bill bill) async {
                                           bill.billNumber,
                                           bill.consignerName,
                                           bill.total,
-                                          bill.total,
+                                          getSecure(bill.total),
+                                          bill.freight,
                                           bill.date!),
                                       textAlign: TextAlign.justify)),
                               SizedBox(height: 18),
@@ -91,5 +93,5 @@ Future<Document> generateExplanatoryNotePDF(Bill bill) async {
 }
 
 String letterBody(String billNumber, String customerName, double total,
-        double marineFreigth, DateTime billDateTime) =>
-    "Por la presente MAKAN GLOBAL SHIPPING. Certifica: Los productos detallados en la FACTURA No.$billNumber de fecha: ${DateFormat.yMMMMd().format(billDateTime)} consignados a nombre de ${customerName.toUpperCase()}. por un valor de USD ${moneyFormat.format(total)} Se emite bajo el INCOTERM CIF que incluye el costo del producto, flete marítimo y seguro. El mismo que tuvo una VARIACIÓN en el precio del FLETE MARÍTIMO, situación que se presenta por las variaciones que tienen las navieras en sus precios de última hora, lo cual hacemos constar en este documento y en la FACTURA comercial No.$billNumber emitida como COMPLEMENTO A FLETE MARÍTIMO, por un valor de USD ${moneyFormat.format(marineFreigth)} haciendo un total CIF USD ${moneyFormat.format(marineFreigth)}.";
+        double secure, double marineFreigth, DateTime billDateTime) =>
+    "Por la presente MAKAN GLOBAL SHIPPING. Certifica: Los productos detallados en la FACTURA No.$billNumber de fecha: ${DateFormat.yMMMMd().format(billDateTime)} consignados a nombre de ${customerName.toUpperCase()}. por un valor de USD ${moneyFormat.format(total + secure)} Se emite bajo el INCOTERM CIF que incluye el costo del producto, flete marítimo y seguro. El mismo que tuvo una VARIACIÓN en el precio del FLETE MARÍTIMO, situación que se presenta por las variaciones que tienen las navieras en sus precios de última hora, lo cual hacemos constar en este documento y en la FACTURA comercial No.$billNumber emitida como COMPLEMENTO A FLETE MARÍTIMO, por un valor de USD ${moneyFormat.format(marineFreigth)} haciendo un total CIF USD ${moneyFormat.format(marineFreigth + total + secure)}.";
