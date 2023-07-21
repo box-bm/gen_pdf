@@ -36,9 +36,21 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   msix: ^3.15.0
 
+msix_config:
+  display_name: Generador de facturas
+  app_installer:
+    publish_folder_path: c:\Users\brand\OneDrive\Escritorio
+    hours_between_update_checks: 0
+    automatic_background_task: true
+    update_blocks_activation: true
+    show_prompt: true
+    force_update_from_any_version: false
+  msix_version: 1.0.3.0
+  certificate_path: C:\Users\brand\keys\CERTIFICATE.pfx
+  certificate_password: BgcMg2802
+
 flutter:
   uses-material-design: true
   assets:
     - assets/img/logo.png
-    - assets/img/urraca_logo.png
     - assets/img/signature.png

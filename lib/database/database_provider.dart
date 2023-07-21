@@ -1,44 +1,43 @@
-import 'package:flutter/foundation.dart';
 import 'package:gen_pdf/database/table.dart';
 import 'package:gen_pdf/models/bill.dart';
 import 'package:gen_pdf/models/bill_item.dart';
 import 'package:gen_pdf/models/consigner.dart';
 import 'package:gen_pdf/models/exporter.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as p;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 List<Table> tables = [Exporter(), Consigner(), Bill(), BillItem()];
 
 class DatabaseProvider {
-  static const String _databaseName = 'systempdf.db';
+  static final dbProvider = DatabaseProvider();
+  static const String databaseName = 'systempdf.db';
 
-  Database? _database;
+  Database? database;
 
   Future<String> getDatabaseLocation() async {
-    if (kDebugMode) {
-      return join('./', _databaseName);
-    }
-    return join(await getDatabasesPath(), _databaseName);
+    return p.join('.', databaseName);
   }
 
   Future<Database> get db async {
-    if (_database != null) {
-      return _database!;
+    if (database != null) {
+      return database!;
     }
-    _database = await createDatabase();
-    return _database!;
+    database = await createDatabase();
+    return database!;
   }
 
   Future<void> dropDatabase() async {
     await deleteDatabase(await getDatabaseLocation());
   }
 
+  Future<void> deleteData() async {}
+
   Future<Database> opendb() async {
     var database = await openDatabase(
       await getDatabaseLocation(),
       version: 1,
     );
-    _database = database;
+    this.database = database;
     return database;
   }
 
@@ -52,7 +51,7 @@ class DatabaseProvider {
           },
         ));
 
-    _database = database;
+    this.database = database;
     return database;
   }
 

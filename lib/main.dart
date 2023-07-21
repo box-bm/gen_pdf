@@ -11,6 +11,7 @@ void main() async {
 
   if (isDesktop) {
     sqfliteFfiInit();
+
     await WindowManager.instance.ensureInitialized();
     windowManager.waitUntilReadyToShow().then((_) async {
       await windowManager.setTitleBarStyle(
