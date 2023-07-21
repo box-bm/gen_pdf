@@ -5,7 +5,6 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   printing
   screen_retriever
-  system_theme
   window_manager
 )
 

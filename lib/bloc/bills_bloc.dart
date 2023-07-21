@@ -270,18 +270,16 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
   Future prinAllDocuments(String id, String folder) async {
     Bill bill = await getAllBillDetails(id);
 
-    await Future.value([
-      generateBillPDF(bill)
-          .then((value) => saveFiles(value, "Factura-$id", folder)),
-      generateQuotationPDF(bill)
-          .then((value) => saveFiles(value, "Cotización-$id", folder)),
-      generateConfirmationPDF(bill)
-          .then((value) => saveFiles(value, "Confirmación-$id", folder)),
-      generateAgreementPDF(bill)
-          .then((value) => saveFiles(value, "Contrato-$id", folder)),
-      generateExplanatoryNotePDF(bill)
-          .then((value) => saveFiles(value, "Nota-Explicatoria-$id", folder)),
-    ]);
+    await generateBillPDF(bill)
+        .then((value) => saveFiles(value, "Factura-$id", folder));
+    await generateQuotationPDF(bill)
+        .then((value) => saveFiles(value, "Cotización-$id", folder));
+    await generateConfirmationPDF(bill)
+        .then((value) => saveFiles(value, "Confirmación-$id", folder));
+    await generateAgreementPDF(bill)
+        .then((value) => saveFiles(value, "Contrato-$id", folder));
+    await generateExplanatoryNotePDF(bill)
+        .then((value) => saveFiles(value, "Nota-Explicatoria-$id", folder));
   }
 
   Future<Bill> getAllBillDetails(String id) async {
