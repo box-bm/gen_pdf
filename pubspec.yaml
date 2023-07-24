@@ -38,14 +38,16 @@ dev_dependencies:
 
 msix_config:
   display_name: Generador de facturas
+  publisher_display_name: Brandon Manzo
+  capabilities: systemManagement,appDiagnostics
   app_installer:
-    publish_folder_path: c:\Users\brand\OneDrive\Escritorio
+    publish_folder_path: C:\Users\brand\OneDrive\Escritorio\instalador
     hours_between_update_checks: 0
-    automatic_background_task: true
-    update_blocks_activation: true
-    show_prompt: true
+    automatic_background_task: false
+    update_blocks_activation: false
+    show_prompt: false
     force_update_from_any_version: false
-  msix_version: 1.0.3.0
+  msix_version: 1.0.0.1
   build_windows: false
   certificate_path: C:\Users\brand\keys\CERTIFICATE.pfx
   certificate_password: BgcMg2802
