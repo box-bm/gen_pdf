@@ -4,6 +4,7 @@ import 'package:gen_pdf/common.dart';
 import 'package:gen_pdf/models/bill.dart';
 import 'package:gen_pdf/screens/home/bills.dart';
 import 'package:gen_pdf/screens/new_bill.dart';
+import 'package:gen_pdf/utils/calculations.dart';
 import 'package:gen_pdf/utils/formatter.dart';
 
 class BillCard extends StatelessWidget {
@@ -38,13 +39,31 @@ class BillCard extends StatelessWidget {
                   Text("#${bill.billNumber}"),
                   Text(
                     bill.consignerName,
+                    overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
                         .titleMedium
                         ?.copyWith(height: 0),
                   ),
                   Text(
-                    "Total: ${moneyFormat.format(bill.total)}",
+                    "Sub Total: ${moneyFormat.format(bill.total)}",
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(height: 0),
+                  ),
+                  Text(
+                    "Flete: ${moneyFormat.format(bill.freight)}, Seguro: ${moneyFormat.format(getSecure(bill.total + bill.freight))}",
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(height: 0),
+                  ),
+                  Text(
+                    "Total: ${moneyFormat.format(getSecure(bill.total + bill.freight) + bill.total + bill.freight)}",
+                    overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall
@@ -52,6 +71,7 @@ class BillCard extends StatelessWidget {
                   ),
                   Text(
                     "BL: ${bill.bl}",
+                    overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall
@@ -59,6 +79,7 @@ class BillCard extends StatelessWidget {
                   ),
                   Text(
                     "Contenedor: ${bill.containerNumber}",
+                    overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall
@@ -66,6 +87,7 @@ class BillCard extends StatelessWidget {
                   ),
                   Text(
                     "Fecha: ${dateFormat.format(bill.date!)}",
+                    overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],

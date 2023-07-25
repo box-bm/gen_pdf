@@ -13,14 +13,21 @@ class Consigners extends StatelessWidget {
         listener: (context, state) {
           if (state is DeletingConsigner) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Eliminando exportadores"),
+              SnackBar(
+                backgroundColor:
+                    Theme.of(context).colorScheme.secondaryContainer,
+                content: Text(state.quantity == 1
+                    ? "Eliminando cliente"
+                    : "Eliminando clientes"),
               ),
             );
           } else if (state is DeletedConsigner) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Exportador/es eliminados"),
+              SnackBar(
+                backgroundColor: Theme.of(context).colorScheme.errorContainer,
+                content: Text(state.quantity == 1
+                    ? "Cliente eliminado"
+                    : "Se han eliminado ${state.quantity} clientes"),
               ),
             );
           }
@@ -62,6 +69,7 @@ class Consigners extends StatelessWidget {
                         children: [
                           Text(
                             state.consigners.elementAt(index).name,
+                            overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium

@@ -13,14 +13,18 @@ class Exporters extends StatelessWidget {
       listener: (context, state) {
         if (state is DeletingExporter) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Eliminando exportadores"),
+            SnackBar(
+              content: Text(state.quantity == 1
+                  ? "Eliminando exportador"
+                  : "Eliminando exportadores"),
             ),
           );
         } else if (state is DeletedExporter) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Exportador/es eliminados"),
+            SnackBar(
+              content: Text(state.quantity == 1
+                  ? "Exportador eliminado"
+                  : "Se han eliminado ${state.quantity} exportadores"),
             ),
           );
         }
@@ -62,6 +66,7 @@ class Exporters extends StatelessWidget {
                       children: [
                         Text(
                           state.exporters.elementAt(index).name,
+                          overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium

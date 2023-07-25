@@ -42,15 +42,15 @@ class ExporterBloc extends Bloc<ExporterEvent, ExporterState> {
     });
     on<DeleteExporter>((event, emit) async {
       await exporterRepository.deleteExporter(event.id);
-      emit(DeletedExporter(searchValue: state.searchValue));
+      emit(DeletedExporter(1, searchValue: state.searchValue));
       add(const GetAllExporters());
     });
     on<DeleteExporters>((event, emit) async {
-      emit(DeletingExporter(searchValue: state.searchValue));
+      emit(DeletingExporter(event.ids.length, searchValue: state.searchValue));
       for (var id in event.ids) {
         await exporterRepository.deleteExporter(id);
       }
-      emit(DeletedExporter(searchValue: state.searchValue));
+      emit(DeletedExporter(event.ids.length, searchValue: state.searchValue));
       add(const GetAllExporters());
     });
   }

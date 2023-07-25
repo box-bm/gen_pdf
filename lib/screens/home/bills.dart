@@ -22,6 +22,13 @@ class Bills extends StatelessWidget {
                 ));
           }
 
+          if (state is ErrorGeneratingDocuments) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                backgroundColor:
+                    Theme.of(context).colorScheme.secondaryContainer,
+                content: Text(state.error)));
+          }
+
           if (state is EndGenerateDocument) {
             context.read<SelectedsCubit>().clearSelection();
             ScaffoldMessenger.of(context).showSnackBar(

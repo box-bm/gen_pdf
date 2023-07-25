@@ -48,6 +48,12 @@ class EndGenerateDocument extends BillsState {
   const EndGenerateDocument({required super.searchValue, super.bills});
 }
 
+class ErrorGeneratingDocuments extends BillsState {
+  final String error;
+  const ErrorGeneratingDocuments(this.error,
+      {required super.searchValue, super.bills});
+}
+
 class FindedNewBillNumber extends BillsState {
   final int? newBillNumber;
   final DateTime? dateTime;

@@ -42,15 +42,15 @@ class ConsignerBloc extends Bloc<ConsignerEvent, ConsignerState> {
     });
     on<DeleteConsigner>((event, emit) async {
       await consignerRepository.deleteConsigner(event.id);
-      emit(DeletingConsigner(searchValue: state.searchValue));
+      emit(DeletingConsigner(1, searchValue: state.searchValue));
       add(const GetAllConsigners());
     });
     on<DeleteConsigners>((event, emit) async {
-      emit(DeletingConsigner(searchValue: state.searchValue));
+      emit(DeletingConsigner(event.ids.length, searchValue: state.searchValue));
       for (var id in event.ids) {
         await consignerRepository.deleteConsigner(id);
       }
-      emit(DeletedConsigner(searchValue: state.searchValue));
+      emit(DeletedConsigner(event.ids.length, searchValue: state.searchValue));
       add(const GetAllConsigners());
     });
   }

@@ -30,9 +30,11 @@ class ErrorLoadingconsigners extends ConsignerState {
 }
 
 class DeletingConsigner extends ConsignerState {
-  const DeletingConsigner({required super.searchValue});
+  final int quantity;
+  const DeletingConsigner(this.quantity, {required super.searchValue});
 }
 
 class DeletedConsigner extends ConsignerState {
-  const DeletedConsigner({required super.searchValue});
+  final int quantity;
+  const DeletedConsigner(this.quantity, {required super.searchValue});
 }

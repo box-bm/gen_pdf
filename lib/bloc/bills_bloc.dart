@@ -165,6 +165,9 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       var folder = await chooseFolderToSaveFiles();
 
       if (folder == null) {
+        emit(ErrorGeneratingDocuments("Se ha cancelado la operación",
+            searchValue: state.searchValue, bills: state.bills));
+        emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
         return;
       }
       await prinAllDocuments(event.id, folder);
@@ -178,6 +181,9 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       var path = await chooseFolderToSaveFile(defaultName: "Factura");
 
       if (path == null) {
+        emit(ErrorGeneratingDocuments("Se ha cancelado la operación",
+            searchValue: state.searchValue, bills: state.bills));
+        emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
         return;
       }
       var bill = await getAllBillDetails(event.id);
@@ -193,6 +199,9 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       var path = await chooseFolderToSaveFile(defaultName: "Cotización");
 
       if (path == null) {
+        emit(ErrorGeneratingDocuments("Se ha cancelado la operación",
+            searchValue: state.searchValue, bills: state.bills));
+        emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
         return;
       }
       var bill = await getAllBillDetails(event.id);
@@ -208,8 +217,12 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       var path = await chooseFolderToSaveFile(defaultName: "Confirmación");
 
       if (path == null) {
+        emit(ErrorGeneratingDocuments("Se ha cancelado la operación",
+            searchValue: state.searchValue, bills: state.bills));
+        emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
         return;
       }
+
       var bill = await getAllBillDetails(event.id);
       var document = await generateConfirmationPDF(bill);
       await saveFilesWithPath(document, path);
@@ -223,8 +236,12 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       var path = await chooseFolderToSaveFile(defaultName: "Contrato");
 
       if (path == null) {
+        emit(ErrorGeneratingDocuments("Se ha cancelado la operación",
+            searchValue: state.searchValue, bills: state.bills));
+        emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
         return;
       }
+
       var bill = await getAllBillDetails(event.id);
       var document = await generateAgreementPDF(bill);
       await saveFilesWithPath(document, path);
@@ -238,8 +255,12 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       var path = await chooseFolderToSaveFile(defaultName: "Nota-Explicatoria");
 
       if (path == null) {
+        emit(ErrorGeneratingDocuments("Se ha cancelado la operación",
+            searchValue: state.searchValue, bills: state.bills));
+        emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
         return;
       }
+
       var bill = await getAllBillDetails(event.id);
       var document = await generateExplanatoryNotePDF(bill);
       await saveFilesWithPath(document, path);
@@ -253,14 +274,20 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       var folder = await FileManager().chooseDirectoryPath(
           dialogTitle: "Seleccione la ubicacion para guardar");
 
-      if (folder != null) {
-        List<Future> savedBills = [];
-
-        for (var id in event.ids) {
-          savedBills.add(prinAllDocuments(id, folder));
-        }
-        await Future.wait(savedBills);
+      if (folder == null) {
+        emit(ErrorGeneratingDocuments("Se ha cancelado la operación",
+            searchValue: state.searchValue, bills: state.bills));
+        emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
+        return;
       }
+
+      List<Future> savedBills = [];
+
+      for (var id in event.ids) {
+        savedBills.add(prinAllDocuments(id, folder));
+      }
+      await Future.wait(savedBills);
+
       emit(EndGenerateDocument(
           searchValue: state.searchValue, bills: state.bills));
       emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));

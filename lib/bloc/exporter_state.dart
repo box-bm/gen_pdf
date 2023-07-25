@@ -30,9 +30,11 @@ class ErrorLoadingExporters extends ExporterState {
 }
 
 class DeletingExporter extends ExporterState {
-  const DeletingExporter({required super.searchValue});
+  final int quantity;
+  const DeletingExporter(this.quantity, {required super.searchValue});
 }
 
 class DeletedExporter extends ExporterState {
-  const DeletedExporter({required super.searchValue});
+  final int quantity;
+  const DeletedExporter(this.quantity, {required super.searchValue});
 }
