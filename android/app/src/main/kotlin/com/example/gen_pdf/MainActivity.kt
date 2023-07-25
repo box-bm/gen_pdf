@@ -1,4 +1,4 @@
-package com.example.gen_pdf
+package com.reactivesoftware.gen_pdf
 
 import io.flutter.embedding.android.FlutterActivity
 
