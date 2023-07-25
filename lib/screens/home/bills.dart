@@ -23,10 +23,8 @@ class Bills extends StatelessWidget {
           }
 
           if (state is ErrorGeneratingDocuments) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                backgroundColor:
-                    Theme.of(context).colorScheme.secondaryContainer,
-                content: Text(state.error)));
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.error)));
           }
 
           if (state is EndGenerateDocument) {

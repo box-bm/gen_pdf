@@ -14,8 +14,6 @@ class Consigners extends StatelessWidget {
           if (state is DeletingConsigner) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                backgroundColor:
-                    Theme.of(context).colorScheme.secondaryContainer,
                 content: Text(state.quantity == 1
                     ? "Eliminando cliente"
                     : "Eliminando clientes"),
@@ -24,7 +22,6 @@ class Consigners extends StatelessWidget {
           } else if (state is DeletedConsigner) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                backgroundColor: Theme.of(context).colorScheme.errorContainer,
                 content: Text(state.quantity == 1
                     ? "Cliente eliminado"
                     : "Se han eliminado ${state.quantity} clientes"),
