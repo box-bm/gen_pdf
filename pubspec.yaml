@@ -38,6 +38,8 @@ dev_dependencies:
 
 msix_config:
   display_name: Generador de facturas
+  identity_name: com.reactivesoftware.gen_pdf
+  languages: es-gt, en-us
   publisher_display_name: Brandon Manzo
   capabilities: systemManagement,appDiagnostics
   app_installer:
