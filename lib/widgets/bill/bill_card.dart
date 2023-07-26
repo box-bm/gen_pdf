@@ -21,7 +21,8 @@ class BillCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        borderOnForeground: true,
+        borderOnForeground: false,
+        elevation: 1,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           child: Row(
@@ -54,7 +55,7 @@ class BillCard extends StatelessWidget {
                         ?.copyWith(height: 0),
                   ),
                   Text(
-                    "Flete: ${moneyFormat.format(bill.freight)}, Seguro: ${moneyFormat.format(getSecure(bill.total + bill.freight))}",
+                    "Flete: ${moneyFormat.format(bill.freight)}, Seguro: ${moneyFormat.format(getSecure(bill.total))}",
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
@@ -62,7 +63,7 @@ class BillCard extends StatelessWidget {
                         ?.copyWith(height: 0),
                   ),
                   Text(
-                    "Total: ${moneyFormat.format(getSecure(bill.total + bill.freight) + bill.total + bill.freight)}",
+                    "Total: ${moneyFormat.format(getSecure(bill.total) + bill.total + bill.freight)}",
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
