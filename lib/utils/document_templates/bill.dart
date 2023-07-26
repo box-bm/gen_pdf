@@ -154,7 +154,7 @@ Future<Document> generateBillPDF(Bill bill) async {
                                         children: [
                                           Container(
                                               padding: const EdgeInsets.all(2),
-                                              child: Text("Direccion",
+                                              child: Text("Dirección",
                                                   style: boldText)),
                                           Container(
                                               padding: const EdgeInsets.all(2),
@@ -174,7 +174,7 @@ Future<Document> generateBillPDF(Bill bill) async {
                                                   child: RichText(
                                                       text: TextSpan(children: [
                                                     TextSpan(
-                                                        text: "Direccion: ",
+                                                        text: "Dirección: ",
                                                         style: boldText),
                                                     TextSpan(
                                                         text: bill
@@ -291,11 +291,11 @@ Future<Document> generateBillPDF(Bill bill) async {
                                 TableRow(children: [
                                   Container(
                                       padding: const EdgeInsets.all(2),
-                                      child: Text('Numeracion',
+                                      child: Text('Numeración',
                                           textAlign: TextAlign.center)),
                                   Container(
                                       padding: const EdgeInsets.all(2),
-                                      child: Text('Descripcion',
+                                      child: Text('Descripción',
                                           textAlign: TextAlign.center)),
                                   Container(
                                       padding: const EdgeInsets.all(2),
@@ -411,7 +411,7 @@ Future<Document> generateBillPDF(Bill bill) async {
                               : Container(
                                   padding: const EdgeInsets.only(top: 10),
                                   child: Text(
-                                      "**Continua en la siguiente página**"
+                                      "**Continúa en la siguiente página**"
                                           .toUpperCase(),
                                       style: boldText,
                                       textAlign: TextAlign.right))

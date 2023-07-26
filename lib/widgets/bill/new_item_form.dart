@@ -28,7 +28,7 @@ class _NewItemFormState extends State<NewItemForm> {
               const SizedBox(height: 15),
               FormBuilderTextField(
                 name: "numeration",
-                decoration: const InputDecoration(labelText: "Numeracion"),
+                decoration: const InputDecoration(labelText: "Numeración"),
                 validator: FormBuilderValidators.compose([
                   FormBuilderValidators.required(),
                   FormBuilderValidators.numeric()
@@ -37,7 +37,7 @@ class _NewItemFormState extends State<NewItemForm> {
               const SizedBox(height: 10),
               FormBuilderTextField(
                 name: "description",
-                decoration: const InputDecoration(labelText: "Descripcion"),
+                decoration: const InputDecoration(labelText: "Descripción"),
                 validator: FormBuilderValidators.compose([
                   FormBuilderValidators.required(),
                 ]),

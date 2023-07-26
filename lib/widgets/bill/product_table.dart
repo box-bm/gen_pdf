@@ -114,7 +114,7 @@ class ProductTable extends StatelessWidget {
                         TableRow(children: [
                           Container(
                             padding: const EdgeInsets.all(6),
-                            child: Text("Numeracion",
+                            child: Text("Numeración",
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium
@@ -123,7 +123,7 @@ class ProductTable extends StatelessWidget {
                           ),
                           Container(
                             padding: const EdgeInsets.all(6),
-                            child: Text("Descripcion",
+                            child: Text("Descripción",
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium

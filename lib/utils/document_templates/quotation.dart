@@ -145,14 +145,14 @@ Future<Document> generateQuotationPDF(Bill bill) async {
                                         Container(
                                             color: PdfColors.black,
                                             padding: const EdgeInsets.all(2),
-                                            child: Text('Numeracion',
+                                            child: Text('Numeración',
                                                 style: const TextStyle(
                                                     color: PdfColors.white),
                                                 textAlign: TextAlign.center)),
                                         Container(
                                             color: PdfColors.black,
                                             padding: const EdgeInsets.all(2),
-                                            child: Text('Descripciones',
+                                            child: Text('Descripciónes',
                                                 style: const TextStyle(
                                                     color: PdfColors.white),
                                                 textAlign: TextAlign.center)),
@@ -320,7 +320,7 @@ Future<Document> generateQuotationPDF(Bill bill) async {
                                     : Container(
                                         padding: const EdgeInsets.only(top: 10),
                                         child: Text(
-                                            "**Continua en la siguiente página**"
+                                            "**Continúa en la siguiente página**"
                                                 .toUpperCase(),
                                             style: boldText,
                                             textAlign: TextAlign.right))

@@ -13,8 +13,8 @@ List<Widget> formInputs({
       placeholder: "Ingresa el nombre del cliente"),
   InputParams addressParams = const InputParams(
       name: "address",
-      label: "Direccion",
-      placeholder: "Ingresa el nombre de la direccion"),
+      label: "Dirección",
+      placeholder: "Ingresa el nombre de la Dirección"),
   InputParams nitParams = const InputParams(
       name: "nit", label: "NIT", placeholder: "Ingresa el NIT del cliente"),
 }) =>

@@ -120,7 +120,7 @@ Future<Document> generateConfirmationPDF(Bill bill) async {
                                     SizedBox(
                                         width: 102,
                                         child: Text(
-                                            "Descripcion:".toUpperCase(),
+                                            "Descripción:".toUpperCase(),
                                             style: boldText)),
                                     Expanded(
                                         child: Text(

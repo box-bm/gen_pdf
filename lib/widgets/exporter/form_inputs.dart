@@ -9,7 +9,7 @@ List<Widget> formInputs({
       label: "Nombre",
       placeholder: "Ingresa el nombre del exportador"),
   InputParams addressParams = const InputParams(
-      name: "address", label: "Direccion", placeholder: "Ingresa la direccion"),
+      name: "address", label: "Dirección", placeholder: "Ingresa la Dirección"),
 }) =>
     personForm(
       disabled: disabled,

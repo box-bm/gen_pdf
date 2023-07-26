@@ -100,8 +100,8 @@ class HeaderBillForm extends StatelessWidget {
                       placeholder: "Ingresa el nombre del exportador"),
                   addressParams: const InputParams(
                       name: 'exporterAddress',
-                      label: 'Direccion de Exportador',
-                      placeholder: "Ingresa la direccion del exportador"))
+                      label: 'Dirección de Exportador',
+                      placeholder: "Ingresa la Dirección del exportador"))
             ],
           );
         }),
@@ -158,8 +158,8 @@ class HeaderBillForm extends StatelessWidget {
                         placeholder: "Ingresa el nombre del cliente"),
                     addressParams: const InputParams(
                         name: 'consignerAddress',
-                        label: 'Direccion de Cliente',
-                        placeholder: "Ingresa la direccion del cliente"),
+                        label: 'Dirección de Cliente',
+                        placeholder: "Ingresa la Dirección del cliente"),
                     nitParams: const InputParams(
                         name: 'consignerNIT',
                         label: 'NIT de cliente',
