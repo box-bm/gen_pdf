@@ -55,6 +55,12 @@ class PreviewPDF extends BillsEvent {
   const PreviewPDF(this.id);
 }
 
+class GenerateGeneralDocument extends BillsEvent {
+  final String id;
+
+  const GenerateGeneralDocument(this.id);
+}
+
 class GenerateBillDocuments extends BillsEvent {
   final String id;
 

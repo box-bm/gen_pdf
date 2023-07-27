@@ -8,8 +8,8 @@ import 'package:pdf/widgets.dart';
 
 int rowsPerPage = 20;
 
-Future<Document> generateBillPDF(Bill bill) async {
-  final pdf = Document();
+Future<List<Page>> getBillTemplate(Bill bill) async {
+  List<Page> pages = [];
 
   var logo = MemoryImage(
     (await rootBundle.load('assets/img/logo.png')).buffer.asUint8List(),
@@ -31,17 +31,17 @@ Future<Document> generateBillPDF(Bill bill) async {
   var boldText = TextStyle(fontWeight: FontWeight.bold, font: Font.timesBold());
 
   double difference = (bill.items.length / rowsPerPage);
-  int pages = difference.ceil();
+  int numberOfPages = difference.ceil();
 
   double secure = getSecure(bill.total);
 
-  for (var i = 0; i < pages; i++) {
+  for (var i = 0; i < numberOfPages; i++) {
     var isFinal = difference - i < 1;
 
     var items = bill.items.sublist(i * rowsPerPage,
         isFinal ? bill.items.length : (i * rowsPerPage) + rowsPerPage);
 
-    pdf.addPage(Page(
+    var page = (Page(
         pageFormat: PdfPageFormat.letter,
         theme: ThemeData(
             defaultTextStyle: TextStyle(
@@ -427,7 +427,9 @@ Future<Document> generateBillPDF(Bill bill) async {
                     child: Text((i + 1).toString())))
           ]);
         }));
+
+    pages.add(page);
   }
 
-  return pdf;
+  return pages;
 }

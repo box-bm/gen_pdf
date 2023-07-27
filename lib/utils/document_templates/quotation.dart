@@ -9,8 +9,8 @@ import 'package:pdf/widgets.dart';
 
 int rowsPerPage = 20;
 
-Future<Document> generateQuotationPDF(Bill bill) async {
-  final pdf = Document();
+Future<List<Page>> getQuotationTemplate(Bill bill) async {
+  List<Page> pages = [];
 
   var logo = MemoryImage(
     (await rootBundle.load('assets/img/logo.png')).buffer.asUint8List(),
@@ -32,17 +32,17 @@ Future<Document> generateQuotationPDF(Bill bill) async {
   var boldText = TextStyle(fontWeight: FontWeight.bold, font: Font.timesBold());
 
   double difference = (bill.items.length / rowsPerPage);
-  int pages = difference.ceil();
+  int pagesnumbers = difference.ceil();
 
   double secure = getSecure(bill.total);
 
-  for (var i = 0; i < pages; i++) {
+  for (var i = 0; i < pagesnumbers; i++) {
     var isFinal = difference - i < 1;
 
     var items = bill.items.sublist(i * rowsPerPage,
         isFinal ? bill.items.length : (i * rowsPerPage) + rowsPerPage);
 
-    pdf.addPage(Page(
+    var page = (Page(
         pageFormat: PdfPageFormat.letter,
         margin: const EdgeInsets.fromLTRB(30, 30, 30, 20),
         theme: ThemeData(
@@ -354,7 +354,8 @@ Future<Document> generateQuotationPDF(Bill bill) async {
                     opacity: 0.1, child: Image(logo, height: 200, width: 200))),
           ]);
         }));
+    pages.add(page);
   }
 
-  return pdf;
+  return pages;
 }

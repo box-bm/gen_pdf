@@ -124,6 +124,9 @@ List<PrintOption> getBillOptions(BuildContext context, String id) => [
       PrintOption(Icons.print, "Guardar todo", () {
         context.read<BillsBloc>().add(GenerateBillDocuments(id));
       }),
+      PrintOption(Icons.request_page, "Generar Documento General", () {
+        context.read<BillsBloc>().add(GenerateGeneralDocument(id));
+      }),
       PrintOption(Icons.document_scanner, "Generar Factura", () {
         context.read<BillsBloc>().add(GenerateBill(id));
       }),

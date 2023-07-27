@@ -13,6 +13,7 @@ import 'package:gen_pdf/utils/document_templates/explanatory_note.dart';
 import 'package:gen_pdf/utils/document_templates/quotation.dart';
 import 'package:gen_pdf/utils/file_picker.dart';
 import 'package:gen_pdf/utils/document_templates/bill.dart';
+import 'package:gen_pdf/utils/generate_pdf.dart';
 import 'package:pdf/widgets.dart';
 
 part 'bills_event.dart';
@@ -154,8 +155,9 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
     on<PreviewPDF>((event, emit) async {
       Bill bill = await getAllBillDetails(event.id);
 
-      var doc = await generateBillPDF(bill);
-      emit(PrintReady(doc, event.id,
+      var document = await generateGeneralDocument(bill);
+
+      emit(PrintReady(document, event.id,
           searchValue: state.searchValue, bills: state.bills));
       emit(BillsLoaded(searchValue: state.searchValue, bills: state.bills));
     });
@@ -176,6 +178,24 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
     });
 
+    on<GenerateGeneralDocument>((event, emit) async {
+      var path = await chooseFolderToSaveFile(defaultName: "Factura");
+
+      if (path == null) {
+        emit(ErrorGeneratingDocuments("Se ha cancelado la operación",
+            searchValue: state.searchValue, bills: state.bills));
+        emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
+        return;
+      }
+      var bill = await getAllBillDetails(event.id);
+      var document = await generateGeneralDocument(bill);
+
+      await saveFilesWithPath(document, path);
+      emit(EndGenerateDocument(
+          searchValue: state.searchValue, bills: state.bills));
+      emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
+    });
+
     // Generar la factura
     on<GenerateBill>((event, emit) async {
       var path = await chooseFolderToSaveFile(defaultName: "Factura");
@@ -187,7 +207,9 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
         return;
       }
       var bill = await getAllBillDetails(event.id);
-      var document = await generateBillPDF(bill);
+      var pages = await getBillTemplate(bill);
+      var document = GeneratePDF(pages).generate();
+
       await saveFilesWithPath(document, path);
       emit(EndGenerateDocument(
           searchValue: state.searchValue, bills: state.bills));
@@ -205,8 +227,10 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
         return;
       }
       var bill = await getAllBillDetails(event.id);
-      var document = await generateQuotationPDF(bill);
+      var pages = await getQuotationTemplate(bill);
+      var document = GeneratePDF(pages).generate();
       await saveFilesWithPath(document, path);
+
       emit(EndGenerateDocument(
           searchValue: state.searchValue, bills: state.bills));
       emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
@@ -224,7 +248,9 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       }
 
       var bill = await getAllBillDetails(event.id);
-      var document = await generateConfirmationPDF(bill);
+      var pages = await getConfirmationTemplate(bill);
+      var document = GeneratePDF([pages]).generate();
+
       await saveFilesWithPath(document, path);
       emit(EndGenerateDocument(
           searchValue: state.searchValue, bills: state.bills));
@@ -243,7 +269,9 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       }
 
       var bill = await getAllBillDetails(event.id);
-      var document = await generateAgreementPDF(bill);
+      var page = await getAgreementTemplate(bill);
+      var document = GeneratePDF([page]).generate();
+
       await saveFilesWithPath(document, path);
       emit(EndGenerateDocument(
           searchValue: state.searchValue, bills: state.bills));
@@ -262,7 +290,9 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       }
 
       var bill = await getAllBillDetails(event.id);
-      var document = await generateExplanatoryNotePDF(bill);
+      var page = await getExplanatoryNoteTemplate(bill);
+      var document = GeneratePDF([page]).generate();
+
       await saveFilesWithPath(document, path);
       emit(EndGenerateDocument(
           searchValue: state.searchValue, bills: state.bills));
@@ -297,16 +327,33 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
   Future prinAllDocuments(String id, String folder) async {
     Bill bill = await getAllBillDetails(id);
 
-    await generateBillPDF(bill)
-        .then((value) => saveFiles(value, "Factura-$id", folder));
-    await generateQuotationPDF(bill)
-        .then((value) => saveFiles(value, "Cotización-$id", folder));
-    await generateConfirmationPDF(bill)
-        .then((value) => saveFiles(value, "Confirmación-$id", folder));
-    await generateAgreementPDF(bill)
-        .then((value) => saveFiles(value, "Contrato-$id", folder));
-    await generateExplanatoryNotePDF(bill)
-        .then((value) => saveFiles(value, "Nota-Explicatoria-$id", folder));
+    await getBillTemplate(bill).then((page) =>
+        saveFiles(GeneratePDF(page).generate(), "Factura-$id", folder));
+    await getQuotationTemplate(bill).then((page) =>
+        saveFiles(GeneratePDF(page).generate(), "Cotización-$id", folder));
+    await getConfirmationTemplate(bill).then((page) =>
+        saveFiles(GeneratePDF([page]).generate(), "Confirmación-$id", folder));
+    await getAgreementTemplate(bill).then((page) =>
+        saveFiles(GeneratePDF([page]).generate(), "Contrato-$id", folder));
+    await getExplanatoryNoteTemplate(bill).then((page) => saveFiles(
+        GeneratePDF([page]).generate(), "Nota-Explicatoria-$id", folder));
+  }
+
+  Future<Document> generateGeneralDocument(Bill bill) async {
+    List<Page> pages = [];
+    var billPages = await getBillTemplate(bill);
+    var agreementPage = await getAgreementTemplate(bill);
+    var confirmationPage = await getConfirmationTemplate(bill);
+    var explanatoryPage = await getExplanatoryNoteTemplate(bill);
+    var quotationPages = await getQuotationTemplate(bill);
+
+    pages.addAll(billPages);
+    pages.add(agreementPage);
+    pages.add(confirmationPage);
+    pages.add(explanatoryPage);
+    pages.addAll(quotationPages);
+
+    return GeneratePDF(pages).generate();
   }
 
   Future<Bill> getAllBillDetails(String id) async {

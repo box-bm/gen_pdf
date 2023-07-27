@@ -6,9 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
-Future<Document> generateConfirmationPDF(Bill bill) async {
-  final pdf = Document();
-
+Future<Page> getConfirmationTemplate(Bill bill) async {
   var logo = MemoryImage(
     (await rootBundle.load('assets/img/logo.png')).buffer.asUint8List(),
   );
@@ -19,7 +17,7 @@ Future<Document> generateConfirmationPDF(Bill bill) async {
   var contentBorder = Border.all();
   var boldText = TextStyle(fontWeight: FontWeight.bold);
 
-  pdf.addPage(Page(
+  var page = Page(
       pageFormat: PdfPageFormat.letter,
       margin: const EdgeInsets.fromLTRB(30, 30, 30, 20),
       theme: ThemeData(defaultTextStyle: const TextStyle(fontSize: 10)),
@@ -258,7 +256,7 @@ Future<Document> generateConfirmationPDF(Bill bill) async {
               child: Opacity(
                   opacity: 0.1, child: Image(logo, height: 200, width: 200))),
         ]);
-      }));
+      });
 
-  return pdf;
+  return page;
 }

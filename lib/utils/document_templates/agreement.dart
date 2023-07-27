@@ -4,9 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
-Future<Document> generateAgreementPDF(Bill bill) async {
-  final pdf = Document();
-
+Future<Page> getAgreementTemplate(Bill bill) async {
   var signature = MemoryImage(
     (await rootBundle.load('assets/img/signature.png')).buffer.asUint8List(),
   );
@@ -16,7 +14,7 @@ Future<Document> generateAgreementPDF(Bill bill) async {
 
   var boldText = TextStyle(fontWeight: FontWeight.bold);
 
-  pdf.addPage(Page(
+  var page = Page(
       pageFormat: PdfPageFormat.letter,
       margin: const EdgeInsets.fromLTRB(30, 30, 30, 20),
       theme: ThemeData(
@@ -145,7 +143,7 @@ Future<Document> generateAgreementPDF(Bill bill) async {
               child: Opacity(
                   opacity: 0.1, child: Image(logo, width: 350, height: 250))),
         ]);
-      }));
+      });
 
-  return pdf;
+  return page;
 }
