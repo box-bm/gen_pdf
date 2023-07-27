@@ -349,9 +349,9 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
 
     pages.addAll(billPages);
     pages.add(agreementPage);
+    pages.addAll(quotationPages);
     pages.add(confirmationPage);
     pages.add(explanatoryPage);
-    pages.addAll(quotationPages);
 
     return GeneratePDF(pages).generate();
   }
