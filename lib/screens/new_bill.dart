@@ -66,7 +66,7 @@ class _NewBillState extends State<NewBill> {
               _formkey.currentState?.fields['billNumber']?.didChange(state
                           .dateTime !=
                       null
-                  ? "502-${DateFormat("MM-dd").format(state.dateTime!)}-${state.newBillNumber?.suffixNumber()}"
+                  ? "502${DateFormat("MMdd").format(state.dateTime!)}${state.newBillNumber?.suffixNumber()}"
                   : null);
             }
             if (state is BillSaved) {

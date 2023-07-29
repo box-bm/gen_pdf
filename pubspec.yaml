@@ -38,10 +38,10 @@ dev_dependencies:
 
 msix_config:
   display_name: Generador de facturas
-  identity_name: com.reactivesoftware.gen_pdf
+  identity_name: com.reactivesoftware.genpdf
   languages: es-gt, en-us
   publisher_display_name: Brandon Manzo
-  capabilities: systemManagement,appDiagnostics
+  capabilities: systemManagement,appDiagnostics,runFullTrust,allowElevation,broadFileSystemAccess
   app_installer:
     publish_folder_path: C:\Users\brand\OneDrive\Escritorio\instalador
     hours_between_update_checks: 0
