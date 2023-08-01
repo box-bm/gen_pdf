@@ -267,8 +267,19 @@ Future<List<Page>> getBillTemplate(Bill bill) async {
                                                   style: boldText),
                                               SizedBox(height: 4),
                                               Text(
-                                                  (bill.termsAndConditions ??
-                                                          "-")
+                                                  "*factory outlet"
+                                                      .toUpperCase(),
+                                                  style: Theme.of(context)
+                                                      .defaultTextStyle
+                                                      .copyWith(fontSize: 10)),
+                                              Text(
+                                                  "**CIF to puerto quetzal"
+                                                      .toUpperCase(),
+                                                  style: Theme.of(context)
+                                                      .defaultTextStyle
+                                                      .copyWith(fontSize: 10)),
+                                              Text(
+                                                  "***90 days of credit"
                                                       .toUpperCase(),
                                                   style: Theme.of(context)
                                                       .defaultTextStyle

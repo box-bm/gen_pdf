@@ -108,7 +108,7 @@ Future<List<Page>> getQuotationTemplate(Bill bill) async {
                                       Container(
                                           width: 80,
                                           padding: const EdgeInsets.all(1),
-                                          child: Text("${i + 1}-$pages",
+                                          child: Text("${i + 1}-$pagesnumbers",
                                               textAlign: TextAlign.center))
                                     ]),
                                 SizedBox(height: 20),
@@ -346,7 +346,24 @@ Future<List<Page>> getQuotationTemplate(Bill bill) async {
                                       const TextStyle(color: PdfColors.white))),
                           Container(
                               padding: const EdgeInsets.all(2),
-                              child: Text(bill.termsAndConditions ?? ""))
+                              child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Text("*factory outlet".toUpperCase(),
+                                        style: Theme.of(context)
+                                            .defaultTextStyle
+                                            .copyWith(fontSize: 10)),
+                                    Text(
+                                        "**CIF to puerto quetzal".toUpperCase(),
+                                        style: Theme.of(context)
+                                            .defaultTextStyle
+                                            .copyWith(fontSize: 10)),
+                                    Text("***90 days of credit".toUpperCase(),
+                                        style: Theme.of(context)
+                                            .defaultTextStyle
+                                            .copyWith(fontSize: 10)),
+                                  ]))
                         ]))),
             Watermark(
                 fit: BoxFit.scaleDown,

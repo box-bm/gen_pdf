@@ -5,9 +5,6 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
 Future<Page> getAgreementTemplate(Bill bill) async {
-  var signature = MemoryImage(
-    (await rootBundle.load('assets/img/signature.png')).buffer.asUint8List(),
-  );
   var logo = MemoryImage(
     (await rootBundle.load('assets/img/logo.png')).buffer.asUint8List(),
   );
@@ -65,7 +62,7 @@ Future<Page> getAgreementTemplate(Bill bill) async {
                             style: boldText, textAlign: TextAlign.center),
                         SizedBox(height: 20),
                         Text(
-                            "CONTRATO DE VENTA en el que la empresa MAKAN GLOBAL SHIPPING. (el vendedor) vende diversas mercancías a la empresa ${bill.consignerName.toUpperCase()}. (el comprador) En Delaware, Estados Unidos de América, EL VENDEDOR y EL COMPRADOR, acuerdan conjuntamente llevar a cabo este contrato de acuerdo con las siguientes cláusulas, ACUERDO DE COMPRA DE MERCANCÍA MISCELÁNEA."),
+                            "CONTRATO DE VENTA en el que la empresa MAKAN GLOBAL SHIPPING. (el vendedor) Vende diversas mercancías a la empresa ${bill.consignerName.toUpperCase()}. (el comprador) Calle Elvira Méndez, edifico Interseco, piso B. Panamá, panamá. EL VENDEDOR y EL COMPRADOR, acuerdan conjuntamente llevar a cabo este contrato de acuerdo con las siguientes cláusulas, ACUERDO DE COMPRA DE MERCANCÍA MISCELÁNEA."),
                         SizedBox(height: 8),
                         Text(
                             "PRIMERO: Ambas empresas están debidamente representadas, tienen plenos derechos y tienen el poder de celebrar contratos comerciales."),
@@ -79,10 +76,10 @@ Future<Page> getAgreementTemplate(Bill bill) async {
                         Text(
                             "4. Tanto la venta como el precio no dependen de ninguna condición o contraprestación impuesta por el Vendedor al Comprador."),
                         Text(
-                            "5. El precio acordado es gratuito y no está condicionado a que el vendedor se devuelva directa o indirectamente a cualquier parte de los ingresos de la reventa o a cualquier transferencia o uso posterior de los productos por parte del Comprador; no hay ningún tipo de pago de regalías, regalías o uso de mercancía."),
+                            "5. El precio es libre y sin condiciones a que el vendedor se devuelva directa o indirectamente a cualquier parte de los ingresos de la reventa o a cualquier transferencia o uso posterior de los productos por parte del Comprador; no hay ningún tipo de pago de regalías, regalías o uso de mercancía."),
                         Text(
                             "6. Ambas partes del contrato, comprador y vendedor, son entidades legales totalmente independientes y ninguno de sus empleados, administradores o propietarios tiene ningún vínculo, excepto el que está vinculado por la presente."),
-                        Text("7. No hay descuentos para el pago rápido."),
+                        Text("7. No hay descuentos para el pronto pago."),
                         Text("8. Condiciones de entrega y pago:"),
                         Container(
                             margin: const EdgeInsets.only(left: 36),
@@ -95,7 +92,7 @@ Future<Page> getAgreementTemplate(Bill bill) async {
                         Text(
                             "9. Las discrepancias en la recepción de la mercancía enviada y facturada correrán a cargo del comprador."),
                         Text(
-                            "10. El vendedor se encargará de cubrir los costos de exportación, de acuerdo con el CIF incoterm."),
+                            "10. El vendedor se encargará de cubrir los costos de exportación, de acuerdo con el incoterm CIF."),
                         SizedBox(height: 8),
                         Text(
                             "SEGUNDO: Se establece el siguiente mecanismo de compra-venta: Cualquier controversia derivada de este contrato se transmitirá a través del Procedimiento de Arbitraje en la Ley del Centro de Conciliación y Arbitraje de la Comisión de Resolución de Conflictos de la Cámara de Industria de Guatemala -CRECIG-, Comité Nacional de la Cámara de Comercio Internacional ICC Guatemala. Este arbitraje será por ley, para lo cual se contratarán los servicios del Árbitro de Equidad Luis Geovani Gómez Oliva, que utilizará los Mecanismos de Resolución Alternativa de Disputas-MASC-."),
@@ -116,10 +113,7 @@ Future<Page> getAgreementTemplate(Bill bill) async {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.stretch,
                                       children: [
-                                        Center(
-                                            child: SizedBox(
-                                                height: 80,
-                                                child: Image(signature))),
+                                        Center(child: SizedBox(height: 80)),
                                         Divider(height: 4),
                                         Text("(Los vendedores)",
                                             textAlign: TextAlign.center),
@@ -131,6 +125,7 @@ Future<Page> getAgreementTemplate(Bill bill) async {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.stretch,
                                       children: [
+                                        SizedBox(height: 80),
                                         Divider(height: 4),
                                         Text("(Agente de compra)",
                                             textAlign: TextAlign.center),

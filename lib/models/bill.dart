@@ -18,8 +18,9 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   String consignerAddress;
   String? consignerNIT;
   String containerNumber;
-  String? termsAndConditions;
   String bl;
+  String seller;
+  String buyer;
   List<BillItem> items;
   double total;
   double freight;
@@ -37,8 +38,9 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     this.consignerAddress = "",
     this.consignerNIT,
     this.containerNumber = "",
-    this.termsAndConditions,
     this.bl = "",
+    this.seller = "",
+    this.buyer = "",
     this.items = const [],
     this.total = 0,
     this.freight = 0,
@@ -58,8 +60,9 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       consignerAddress: values['consignerAddress'],
       consignerNIT: values['consignerNIT'],
       containerNumber: values['containerNumber'],
-      termsAndConditions: values['termsAndConditions'],
       bl: values['bl'],
+      seller: values['seller'],
+      buyer: values['buyer'],
       total: values['total'],
       freight: double.parse(values['freight'].toString()),
     );
@@ -78,8 +81,9 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     required this.consignerAddress,
     required this.consignerNIT,
     required this.containerNumber,
-    this.termsAndConditions,
     required this.bl,
+    required this.seller,
+    required this.buyer,
     this.items = const [],
     this.total = 0,
     this.freight = 0,
@@ -98,8 +102,9 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     String? consignerAddress,
     String? consignerNIT,
     String? containerNumber,
-    String? termsAndConditions,
     String? bl,
+    String? seller,
+    String? buyer,
     List<BillItem>? items,
     double? total,
     double? freight,
@@ -118,8 +123,9 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       consignerAddress: consignerAddress ?? this.consignerAddress,
       consignerNIT: consignerNIT ?? this.consignerNIT,
       containerNumber: containerNumber ?? this.containerNumber,
-      termsAndConditions: termsAndConditions ?? this.termsAndConditions,
       bl: bl ?? this.bl,
+      seller: seller ?? this.seller,
+      buyer: buyer ?? this.buyer,
       total: total ?? this.total,
       freight: freight ?? this.freight,
     );
@@ -142,8 +148,9 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
         consignerAddress: map['consignerAddress'],
         consignerNIT: map['consignerNIT'],
         containerNumber: map['containerNumber'],
-        termsAndConditions: map['termsAndConditions'],
         bl: map['bl'],
+        seller: map['seller'],
+        buyer: map['buyer'],
         total: double.parse(map['total'].toString()),
         freight: double.parse(map['freight'].toString()));
   }
@@ -163,8 +170,9 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       "consignerAddress": consignerAddress,
       "consignerNIT": consignerNIT,
       "containerNumber": containerNumber,
-      "termsAndConditions": termsAndConditions,
       "bl": bl,
+      "seller": seller,
+      "buyer": buyer,
       "total": total,
       "freight": freight,
     };
@@ -184,8 +192,9 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       "consignerAddress": consignerAddress,
       "consignerNIT": consignerNIT,
       "containerNumber": containerNumber,
-      "termsAndConditions": termsAndConditions,
       "bl": bl,
+      "seller": seller,
+      "buyer": buyer,
       "total": total,
       "freight": freight.toStringAsFixed(2),
       "items": items.map((e) => e.toMap()).toList()
@@ -260,11 +269,17 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
           notNull: true,
         ),
         Column(
-          name: 'termsAndConditions',
+          name: 'bl',
           columnType: SQLiteDataType.text,
+          notNull: true,
         ),
         Column(
-          name: 'bl',
+          name: 'seller',
+          columnType: SQLiteDataType.text,
+          notNull: true,
+        ),
+        Column(
+          name: 'buyer',
           columnType: SQLiteDataType.text,
           notNull: true,
         ),
