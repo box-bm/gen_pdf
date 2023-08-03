@@ -1,4 +1,6 @@
+import 'package:gen_pdf/database/downgrade/v2.dart';
 import 'package:gen_pdf/database/table.dart';
+import 'package:gen_pdf/database/upgrade/v2.dart';
 import 'package:gen_pdf/models/bill.dart';
 import 'package:gen_pdf/models/bill_item.dart';
 import 'package:gen_pdf/models/consigner.dart';
@@ -45,9 +47,19 @@ class DatabaseProvider {
     var factory = databaseFactoryFfi;
     var database = await factory.openDatabase(await getDatabaseLocation(),
         options: OpenDatabaseOptions(
-          version: 1,
+          version: 2,
           onCreate: (db, version) {
             createTables(db);
+          },
+          onDowngrade: (db, oldVersion, newVersion) async {
+            if (oldVersion == 2 && newVersion == 1) {
+              await db.execute(downgradeV2);
+            }
+          },
+          onUpgrade: (db, oldVersion, newVersion) async {
+            if (oldVersion == 1 && newVersion == 2) {
+              await db.execute(upgradeV2);
+            }
           },
         ));
 
