@@ -32,7 +32,7 @@ Future<Page> getExplanatoryNoteTemplate(Bill bill) async {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Text(
-                                  "NNOTA EXPLICATIVA DE LA NEGOCIACIÓN"
+                                  "NOTA EXPLICATIVA DE LA NEGOCIACIÓN"
                                       .toUpperCase(),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(

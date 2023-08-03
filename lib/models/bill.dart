@@ -64,6 +64,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       containerNumber: values['containerNumber'],
       bl: values['bl'],
       seller: values['seller'],
+      sellerPosition: values['sellerPosition'],
       buyer: values['buyer'],
       total: values['total'],
       freight: double.parse(values['freight'].toString()),
@@ -284,17 +285,14 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
         Column(
           name: 'seller',
           columnType: SQLiteDataType.text,
-          notNull: true,
         ),
         Column(
           name: 'sellerPosition',
           columnType: SQLiteDataType.text,
-          notNull: true,
         ),
         Column(
           name: 'buyer',
           columnType: SQLiteDataType.text,
-          notNull: true,
         ),
         Column(
           name: 'total',

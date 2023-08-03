@@ -52,12 +52,16 @@ class DatabaseProvider {
           },
           onDowngrade: (db, oldVersion, newVersion) async {
             if (oldVersion == 2 && newVersion == 1) {
-              await db.execute(downgradeV2);
+              for (var query in downgradeV2) {
+                await db.execute(query);
+              }
             }
           },
           onUpgrade: (db, oldVersion, newVersion) async {
             if (oldVersion == 1 && newVersion == 2) {
-              await db.execute(upgradeV2);
+              for (var query in upgradeV2) {
+                await db.execute(query);
+              }
             }
           },
         ));
