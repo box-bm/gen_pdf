@@ -1,9 +1,7 @@
 String get downgradeV2 =>
     """
-ALTER TABLE Bills
-DROP COLUMN seller TEXT;
-ALTER TABLE Bills
+ALTER TABLE bills
+ADD termsAndConditions,
+DROP COLUMN seller TEXT,
 DROP COLUMN buyer TEXT;
-ALTER TABLE Bills
-ADD termsAndConditions;
 """;

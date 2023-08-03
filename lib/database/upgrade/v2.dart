@@ -1,9 +1,7 @@
 String get upgradeV2 =>
     """
-ALTER TABLE Bills
-ADD seller TEXT;
-ALTER TABLE Bills
-ADD buyer TEXT;
-ALTER TABLE Bills
+ALTER TABLE bills
+ADD seller TEXT,
+ADD buyer TEXT,
 DROP COLUMN termsAndConditions;
 """;
