@@ -95,7 +95,7 @@ Future<Page> getAgreementTemplate(Bill bill) async {
                             "10. El vendedor se encargará de cubrir los costos de exportación, de acuerdo con el incoterm CIF."),
                         SizedBox(height: 8),
                         Text(
-                            "SEGUNDO: Se establece el siguiente mecanismo de compra-venta: Cualquier controversia derivada de este contrato se transmitirá a través del Procedimiento de Arbitraje en la Ley del Centro de Conciliación y Arbitraje de la Comisión de Resolución de Conflictos de la Cámara de Industria de Guatemala -CRECIG-, Comité Nacional de la Cámara de Comercio Internacional ICC Guatemala. Este arbitraje será por ley, para lo cual se contratarán los servicios del Árbitro de Equidad Luis Geovani Gómez Oliva, que utilizará los Mecanismos de Resolución Alternativa de Disputas-MASC-."),
+                            "SEGUNDO: Se establece el siguiente mecanismo de compra-venta: Cualquier controversia derivada de este contrato se transmitirá a través del Procedimiento."),
                         SizedBox(height: 8),
                         Text(
                             "TERCERO: A este documento, adjunto los documentos originales, emitidos por MAKAN GLOBAL SHIPPING. que consisten en: Cotización de los productos; número ${bill.billNumber}, número de confirmación de compra ${bill.billNumber} del que se atestigua su legitimidad."),
@@ -115,7 +115,7 @@ Future<Page> getAgreementTemplate(Bill bill) async {
                                       children: [
                                         Center(child: SizedBox(height: 80)),
                                         Divider(height: 4),
-                                        Text("(Los vendedores)",
+                                        Text(bill.seller ?? "",
                                             textAlign: TextAlign.center),
                                       ])),
                               SizedBox(
@@ -127,7 +127,7 @@ Future<Page> getAgreementTemplate(Bill bill) async {
                                       children: [
                                         SizedBox(height: 80),
                                         Divider(height: 4),
-                                        Text("(Agente de compra)",
+                                        Text(bill.buyer ?? "",
                                             textAlign: TextAlign.center),
                                       ]))
                             ]),

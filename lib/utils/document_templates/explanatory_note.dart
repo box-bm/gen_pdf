@@ -7,9 +7,6 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
 Future<Page> getExplanatoryNoteTemplate(Bill bill) async {
-  var signature = MemoryImage(
-    (await rootBundle.load('assets/img/signature.png')).buffer.asUint8List(),
-  );
   var logo = MemoryImage(
     (await rootBundle.load('assets/img/logo.png')).buffer.asUint8List(),
   );
@@ -35,7 +32,7 @@ Future<Page> getExplanatoryNoteTemplate(Bill bill) async {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Text(
-                                  "NOTA ACLARATORIA DE COMPLEMENTO AL FLETE MARÍTIMO"
+                                  "NNOTA EXPLICATIVA DE LA NEGOCIACIÓN"
                                       .toUpperCase(),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
@@ -43,41 +40,18 @@ Future<Page> getExplanatoryNoteTemplate(Bill bill) async {
                                       fontBold: Font.timesBold(),
                                       font: Font.times(),
                                       fontSize: 14)),
-                              SizedBox(height: 28),
+                              SizedBox(height: 40),
                               Text(
-                                  "Guatemala, ${DateFormat.yMMMMd().format(bill.date!)}"),
-                              SizedBox(height: 18),
-                              Text("Queridos señores:"),
-                              SizedBox(height: 18),
-                              Container(
-                                  width: double.infinity,
-                                  child: Text(
-                                      letterBody(
-                                          bill.billNumber,
-                                          bill.consignerName,
-                                          bill.total,
-                                          getSecure(bill.total),
-                                          bill.freight,
-                                          bill.date!),
-                                      textAlign: TextAlign.justify)),
-                              SizedBox(height: 18),
+                                  "Delaware, ${DateFormat.yMMMMd().format(bill.date!)}"),
+                              SizedBox(height: 40),
+                              Text("Estimados señores:"),
+                              SizedBox(height: 20),
+                              Text(
+                                  "Certificados URRACA INTERNATIONAL SHIPPING, LLC.: Los productos detallados en la FACTURA N° ${bill.billNumber} de fecha: ${DateFormat.yMMMMd().format(bill.date!)}, consignados a favor de ${bill.consignerName} por valor de USD ${moneyFormat.format(bill.total + getSecure(bill.total) + bill.freight)} Se emite bajo el INCOTERM CIF que incluye el costo producto, flete marítimo y seguro, por lo que se detallan las características de la negociación: A) La FACTURA N° ${bill.billNumber} tiene un crédito pagadero a 90 días B) La entrega en el punto de destino será en PUERTO QUETZAL, ubicado en el departamento de ESCUINTLA en el país de GUATEMALA C) URRACA INTERNATIONAL SHIPPING, LLC Designa y paga el transporte:"),
+                              SizedBox(height: 40),
                               Text(
                                   "Gracias por su consideración, saludos cordiales."),
                               Spacer(),
-                              Container(
-                                  height: 90,
-                                  child: Center(child: Image(signature))),
-                              Text("Rogelio A. Mansilla",
-                                  textAlign: TextAlign.center),
-                              Text("CEO & Manager",
-                                  textAlign: TextAlign.center),
-                              Spacer(),
-                              Text("1013 center RD. Suite 403-A",
-                                  textAlign: TextAlign.center),
-                              Text("Wilmington, DE 19805",
-                                  textAlign: TextAlign.center),
-                              Text("Ph.: (617) 901-0751",
-                                  textAlign: TextAlign.center),
                             ])))
               ])),
           Watermark(
@@ -89,7 +63,3 @@ Future<Page> getExplanatoryNoteTemplate(Bill bill) async {
 
   return page;
 }
-
-String letterBody(String billNumber, String customerName, double total,
-        double secure, double marineFreigth, DateTime billDateTime) =>
-    "Por la presente MAKAN GLOBAL SHIPPING. Certifica: Los productos detallados en la FACTURA No.$billNumber de fecha: ${DateFormat.yMMMMd().format(billDateTime)} consignados a nombre de ${customerName.toUpperCase()}. por un valor de USD ${moneyFormat.format(total + secure)} Se emite bajo el INCOTERM CIF que incluye el costo del producto, flete marítimo y seguro. El mismo que tuvo una VARIACIÓN en el precio del FLETE MARÍTIMO, situación que se presenta por las variaciones que tienen las navieras en sus precios de última hora, lo cual hacemos constar en este documento y en la FACTURA comercial No.$billNumber emitida como COMPLEMENTO A FLETE MARÍTIMO, por un valor de USD ${moneyFormat.format(marineFreigth)} haciendo un total CIF USD ${moneyFormat.format(marineFreigth + total + secure)}.";

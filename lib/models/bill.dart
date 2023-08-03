@@ -19,8 +19,9 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   String? consignerNIT;
   String containerNumber;
   String bl;
-  String seller;
-  String buyer;
+  String? seller;
+  String? sellerPosition;
+  String? buyer;
   List<BillItem> items;
   double total;
   double freight;
@@ -40,6 +41,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     this.containerNumber = "",
     this.bl = "",
     this.seller = "",
+    this.sellerPosition = "",
     this.buyer = "",
     this.items = const [],
     this.total = 0,
@@ -83,6 +85,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     required this.containerNumber,
     required this.bl,
     required this.seller,
+    required this.sellerPosition,
     required this.buyer,
     this.items = const [],
     this.total = 0,
@@ -104,6 +107,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     String? containerNumber,
     String? bl,
     String? seller,
+    String? sellerPosition,
     String? buyer,
     List<BillItem>? items,
     double? total,
@@ -125,6 +129,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       containerNumber: containerNumber ?? this.containerNumber,
       bl: bl ?? this.bl,
       seller: seller ?? this.seller,
+      sellerPosition: sellerPosition ?? this.sellerPosition,
       buyer: buyer ?? this.buyer,
       total: total ?? this.total,
       freight: freight ?? this.freight,
@@ -150,6 +155,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
         containerNumber: map['containerNumber'],
         bl: map['bl'],
         seller: map['seller'],
+        sellerPosition: map['sellerPosition'],
         buyer: map['buyer'],
         total: double.parse(map['total'].toString()),
         freight: double.parse(map['freight'].toString()));
@@ -172,6 +178,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       "containerNumber": containerNumber,
       "bl": bl,
       "seller": seller,
+      "sellerPosition": sellerPosition,
       "buyer": buyer,
       "total": total,
       "freight": freight,
@@ -194,6 +201,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       "containerNumber": containerNumber,
       "bl": bl,
       "seller": seller,
+      "sellerPosition": sellerPosition,
       "buyer": buyer,
       "total": total,
       "freight": freight.toStringAsFixed(2),
@@ -275,6 +283,11 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
         ),
         Column(
           name: 'seller',
+          columnType: SQLiteDataType.text,
+          notNull: true,
+        ),
+        Column(
+          name: 'sellerPosition',
           columnType: SQLiteDataType.text,
           notNull: true,
         ),

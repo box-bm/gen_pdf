@@ -1,7 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:gen_pdf/models/bill.dart';
-import 'package:gen_pdf/utils/calculations.dart';
-import 'package:gen_pdf/utils/formatter.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
@@ -9,9 +7,6 @@ import 'package:pdf/widgets.dart';
 Future<Page> getConfirmationTemplate(Bill bill) async {
   var logo = MemoryImage(
     (await rootBundle.load('assets/img/logo.png')).buffer.asUint8List(),
-  );
-  var signature = MemoryImage(
-    (await rootBundle.load('assets/img/signature.png')).buffer.asUint8List(),
   );
 
   var contentBorder = Border.all();
@@ -34,24 +29,9 @@ Future<Page> getConfirmationTemplate(Bill bill) async {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Text("Confirmación de compra".toUpperCase(),
+                              Text("Confirmación de venta".toUpperCase(),
                                   textAlign: TextAlign.right,
                                   style: boldText.copyWith(fontSize: 14)),
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    SizedBox(
-                                        width: 70,
-                                        child: Text("Fecha".toUpperCase(),
-                                            textAlign: TextAlign.left)),
-                                    SizedBox(
-                                        width: 80,
-                                        child: Text(
-                                            DateFormat.yMMMd().format(bill.date!
-                                                .add(
-                                                    const Duration(days: -15))),
-                                            textAlign: TextAlign.center))
-                                  ]),
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
@@ -67,188 +47,57 @@ Future<Page> getConfirmationTemplate(Bill bill) async {
                                         child: Text(bill.billNumber,
                                             textAlign: TextAlign.center))
                                   ]),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    SizedBox(
+                                        width: 70,
+                                        child: Text("Fecha".toUpperCase(),
+                                            textAlign: TextAlign.left)),
+                                    SizedBox(
+                                        width: 80,
+                                        child: Text(
+                                            DateFormat.yMMMd().format(bill.date!
+                                                .add(
+                                                    const Duration(days: -15))),
+                                            textAlign: TextAlign.center))
+                                  ]),
                               SizedBox(height: 20),
-                              Row(children: [
-                                Container(
-                                    margin: const EdgeInsets.only(bottom: 2),
-                                    padding: const EdgeInsets.all(2),
-                                    decoration: const BoxDecoration(
-                                        color: PdfColors.black),
-                                    child: Text("Comprador:".toUpperCase(),
-                                        style: const TextStyle(
-                                            color: PdfColors.white)))
-                              ]),
-                              Text(bill.consignerName.toUpperCase()),
-                              SizedBox(
-                                  width: 180,
-                                  child: Text(
-                                      bill.consignerAddress.toUpperCase())),
-                              SizedBox(height: 18),
-                              SizedBox(
-                                  width: 150,
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        Text("Queridos señores:".toUpperCase(),
-                                            textAlign: TextAlign.left),
-                                        Text(
-                                            "Confirmamos venderle los siguientes productos en términos y condiciones estipulados a continuación."
-                                                .toUpperCase(),
-                                            textAlign: TextAlign.left)
-                                      ])),
-                              SizedBox(height: 18),
-                              Row(children: [
-                                SizedBox(
-                                    width: 102,
-                                    child: Text("Cotizacion No.:".toUpperCase(),
-                                        style: boldText)),
-                                Text(bill.billNumber),
-                                SizedBox(width: 8),
-                                Text("Total:".toUpperCase(), style: boldText),
-                                SizedBox(width: 2),
-                                Text(moneyFormat.format(bill.total +
-                                    bill.freight +
-                                    getSecure(bill.total)))
-                              ]),
-                              SizedBox(height: 4),
-                              Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                        width: 102,
-                                        child: Text(
-                                            "Descripción:".toUpperCase(),
-                                            style: boldText)),
-                                    Expanded(
-                                        child: Text(
-                                            "COMO SE DESCRIBE EN LA COTIZACION"
-                                                .toUpperCase()))
-                                  ]),
-                              SizedBox(height: 4),
-                              Row(children: [
-                                SizedBox(
-                                    width: 102,
-                                    child: Text("Embalaje:".toUpperCase(),
-                                        style: boldText)),
-                                Text("CTNS")
-                              ]),
-                              SizedBox(height: 4),
-                              Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                        width: 102,
-                                        child: Text("seguro:".toUpperCase(),
-                                            style: boldText)),
-                                    Expanded(
-                                        child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            children: [
-                                          Text(
-                                              "COBERTURA TODO RIESGO SOBRE EL 165% DEL VALOR DE LA MERCANCÍA,"),
-                                          Text(
-                                              "QUE SERÁ CUBIERTO POR EL VENDEDOR HASTA EL PUERTO DE DESTINO."),
-                                        ]))
-                                  ]),
-                              SizedBox(height: 4),
-                              Row(children: [
-                                SizedBox(
-                                    width: 102,
-                                    child: Text("Envío:".toUpperCase(),
-                                        style: boldText)),
-                                Text("China".toUpperCase()),
-                                SizedBox(width: 50),
-                                Text("DESTINO: PUERTO QUETZAL GUATEMALA.")
-                              ]),
-                              SizedBox(height: 4),
-                              Row(children: [
-                                SizedBox(
-                                    width: 102,
-                                    child: Text("Pago:".toUpperCase(),
-                                        style: boldText)),
-                                Text(
-                                    "CRÉDITO A 90 DÍAS A PARTIR DE LA FECHA DE LA FACTURA")
-                              ]),
-                              SizedBox(height: 4),
-                              Row(children: [
-                                SizedBox(
-                                    width: 102,
-                                    child: Text("Notificar:".toUpperCase(),
-                                        style: boldText)),
-                                Text(
-                                    "${bill.consignerName.toUpperCase()} COMO CONSIGNATARIO EN EL DOCUMENTO DE TRANSPORTE")
-                              ]),
+                              Text("Estimado/a ${bill.buyer}"),
                               SizedBox(height: 18),
                               Text(
-                                  "POR 100% CONFIRMADA E IRREVOCABLE L/C DISPONIBLE POR GIRA AL SIGG 30 DÍAS ANTES DEL MES PERMANECE VÁLIDO PARA NEGOCIACIÓN EN CHINA HASTA EL DÍA 15 DESPUÉS DE LA ÚLTIMA FECHA DE ENVÍO Y PERMITE ENVÍOS PARCIALES Y TRANSBORDO."),
+                                  "Nos complace confirmar la venta de mercadería internacional a su empresa, ${bill.consignerName}. A continuación, se detallan los términos y condiciones de la transacción:",
+                                  textAlign: TextAlign.left),
                               SizedBox(height: 18),
-                              Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                        width: 102,
-                                        child: Text(
-                                            "shipping samp:".toUpperCase(),
-                                            style: boldText)),
-                                    SizedBox(width: 20),
-                                    Expanded(
-                                        child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            children: [
-                                          Text(
-                                              "JUEGOS DE MUESTRA DE ENVÍO A ENVIAR ANTES DEL ENVÍO"),
-                                          Text(
-                                              "1. EL VENDEDOR SE RESERVA EL DERECHO DE CANCELAR ESTA VENTA O PARTE DE VED DE ACUERDO CON LOS TÉRMINOS ESTIPULADOS EN ESTA CONFIMACIÓN DE VENTA."),
-                                          Text(
-                                              "2. DIFERENCIAS RAZONABLES EN LOS DISEÑOS Y DEBEN PERMITIRSE."),
-                                          Text(
-                                              "3. LOS COMPRADORES DEBEN INDICAR SIEMPRE EL NÚMERO DE ESTA CONFIRMACIÓN DE VENTA EN LA L/C."),
-                                        ]))
-                                  ]),
+                              Text("Detalles de la Venta:"),
+                              Text("Número de Referencia: ${bill.billNumber}"),
                               SizedBox(height: 18),
                               Text(
-                                  "POR FAVOR FIRME Y DEVUELVA UNA COPIA PARA EL ARCHIVO."),
-                              Text("FIRMADO Y CONFIRMADO POR:"),
-                              SizedBox(height: 20),
-                              Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SizedBox(
-                                        width: 150,
-                                        child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            children: [
-                                              Center(
-                                                  child: SizedBox(
-                                                      height: 80,
-                                                      child: Image(signature))),
-                                              Divider(height: 4),
-                                              Text("Mr. Rogelio Mansilla",
-                                                  textAlign: TextAlign.center),
-                                              Text("(Los vendedores)",
-                                                  textAlign: TextAlign.center),
-                                            ])),
-                                    SizedBox(
-                                        width: 150,
-                                        child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            children: [
-                                              Divider(height: 4),
-                                              Text("Mr. Guillermo Asencio",
-                                                  textAlign: TextAlign.center),
-                                              Text("(Agente de compra)",
-                                                  textAlign: TextAlign.center),
-                                            ]))
-                                  ])
+                                  "Descripción de los Productos: Como se describen en la contización."),
+                              SizedBox(height: 18),
+                              Text("Condiciones de Pago:"),
+                              Text("Método de Pago: Credito"),
+                              Text(
+                                  "Plazo de Pago: 90 Días a partir de la fecha de la emision de la factura"),
+                              SizedBox(height: 18),
+                              Text(
+                                  "Seguro: Cobertura todo riesgo sobre el 110% del valor de la mercadería, que será cubierto por nosotros Makan Global Shipping hasta el puerto de destino."),
+                              SizedBox(height: 18),
+                              Text("Condiciones de Entrega"),
+                              Text("Incoterm: CIF"),
+                              Text("Envío: China"),
+                              Text("Destino: Puerto Quetzal Guatemala"),
+                              SizedBox(height: 18),
+                              Text(
+                                  "Es importante destacar que esta confirmación de venta está sujeta a la firma de un contrato formal entre ambas partes, que incluirá los términos y condiciones específicos de la transacción."),
+                              SizedBox(height: 18),
+                              Text(
+                                  "Agradecemos su confianza y quedamos a su disposición para cualquier consulta o requerimiento adicional. Por favor, no dude en ponerse en contacto con nosotros a través de los datos proporcionados anteriormente"),
+                              SizedBox(height: 18),
+                              Text("Atentamente,"),
+                              SizedBox(height: 24),
+                              Text(bill.seller ?? ""),
+                              Text(bill.sellerPosition ?? ""),
                             ])))
               ])),
           Watermark(

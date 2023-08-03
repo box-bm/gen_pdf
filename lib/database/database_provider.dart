@@ -35,10 +35,9 @@ class DatabaseProvider {
   Future<void> deleteData() async {}
 
   Future<Database> opendb() async {
-    var database = await openDatabase(
-      await getDatabaseLocation(),
-      version: 1,
-    );
+    var factory = databaseFactoryFfi;
+    var database = await factory.openDatabase(await getDatabaseLocation(),
+        options: OpenDatabaseOptions(version: 2));
     this.database = database;
     return database;
   }
