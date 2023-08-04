@@ -223,8 +223,17 @@ class HeaderBillForm extends StatelessWidget {
         FormBuilderTextField(
           name: 'buyer',
           decoration: const InputDecoration(
-              hintText: "Ingrese el numero del comprador (firma)",
+              hintText: "Ingrese el nombre del comprador (firma)",
               labelText: "Nombre de Comprador (para firma)"),
+          validator:
+              FormBuilderValidators.compose([FormBuilderValidators.required()]),
+        ),
+        const SizedBox(height: 10),
+        FormBuilderTextField(
+          name: 'buyerPosition',
+          decoration: const InputDecoration(
+              hintText: "Ingrese el rol/cargo del comprador",
+              labelText: "Rol/Cargo de Comprador (para firma)"),
           validator:
               FormBuilderValidators.compose([FormBuilderValidators.required()]),
         ),

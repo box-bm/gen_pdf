@@ -12,7 +12,7 @@ List<Table> tables = [Exporter(), Consigner(), Bill(), BillItem()];
 
 class DatabaseProvider {
   static final dbProvider = DatabaseProvider();
-  static const String databaseName = 'gen_pdf.db';
+  static const String databaseName = 'gen_pdfv2.db';
 
   Database? database;
 

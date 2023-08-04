@@ -95,9 +95,32 @@ Future<Page> getConfirmationTemplate(Bill bill) async {
                                   "Agradecemos su confianza y quedamos a su disposición para cualquier consulta o requerimiento adicional. Por favor, no dude en ponerse en contacto con nosotros a través de los datos proporcionados anteriormente"),
                               SizedBox(height: 18),
                               Text("Atentamente,"),
-                              SizedBox(height: 24),
-                              Text(bill.seller ?? ""),
-                              Text(bill.sellerPosition ?? ""),
+                              SizedBox(height: 50),
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                        width: 200,
+                                        child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Divider(),
+                                              Text(bill.seller ?? ""),
+                                              Text(bill.sellerPosition ?? ""),
+                                            ])),
+                                    Container(
+                                        width: 200,
+                                        child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Divider(),
+                                              Text(bill.buyer ?? ""),
+                                              Text(bill.buyerPosition ?? ""),
+                                            ])),
+                                  ]),
                             ])))
               ])),
           Watermark(

@@ -22,6 +22,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
   String? seller;
   String? sellerPosition;
   String? buyer;
+  String? buyerPosition;
   List<BillItem> items;
   double total;
   double freight;
@@ -43,6 +44,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     this.seller = "",
     this.sellerPosition = "",
     this.buyer = "",
+    this.buyerPosition = "",
     this.items = const [],
     this.total = 0,
     this.freight = 0,
@@ -66,6 +68,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       seller: values['seller'],
       sellerPosition: values['sellerPosition'],
       buyer: values['buyer'],
+      buyerPosition: values['buyerPosition'],
       total: values['total'],
       freight: double.parse(values['freight'].toString()),
     );
@@ -88,6 +91,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     required this.seller,
     required this.sellerPosition,
     required this.buyer,
+    required this.buyerPosition,
     this.items = const [],
     this.total = 0,
     this.freight = 0,
@@ -110,6 +114,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
     String? seller,
     String? sellerPosition,
     String? buyer,
+    String? buyerPosition,
     List<BillItem>? items,
     double? total,
     double? freight,
@@ -132,6 +137,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       seller: seller ?? this.seller,
       sellerPosition: sellerPosition ?? this.sellerPosition,
       buyer: buyer ?? this.buyer,
+      buyerPosition: buyerPosition ?? this.buyerPosition,
       total: total ?? this.total,
       freight: freight ?? this.freight,
     );
@@ -158,6 +164,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
         seller: map['seller'],
         sellerPosition: map['sellerPosition'],
         buyer: map['buyer'],
+        buyerPosition: map['buyerPosition'],
         total: double.parse(map['total'].toString()),
         freight: double.parse(map['freight'].toString()));
   }
@@ -181,6 +188,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       "seller": seller,
       "sellerPosition": sellerPosition,
       "buyer": buyer,
+      "buyerPosition": buyerPosition,
       "total": total,
       "freight": freight,
     };
@@ -204,6 +212,7 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
       "seller": seller,
       "sellerPosition": sellerPosition,
       "buyer": buyer,
+      "buyerPosition": buyerPosition,
       "total": total,
       "freight": freight.toStringAsFixed(2),
       "items": items.map((e) => e.toMap()).toList()
@@ -292,6 +301,10 @@ class Bill extends Table<Bill> implements TableInterface<Bill> {
         ),
         Column(
           name: 'buyer',
+          columnType: SQLiteDataType.text,
+        ),
+        Column(
+          name: 'buyerPosition',
           columnType: SQLiteDataType.text,
         ),
         Column(
