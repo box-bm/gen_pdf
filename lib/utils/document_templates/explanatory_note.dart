@@ -41,8 +41,7 @@ Future<Page> getExplanatoryNoteTemplate(Bill bill) async {
                                       font: Font.times(),
                                       fontSize: 14)),
                               SizedBox(height: 40),
-                              Text(
-                                  "Delaware, ${DateFormat.yMMMMd().format(bill.date!)}"),
+                              Text(DateFormat.yMMMMd().format(bill.date!)),
                               SizedBox(height: 40),
                               Text("Estimados señores:"),
                               SizedBox(height: 20),
