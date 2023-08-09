@@ -52,6 +52,7 @@ class _AppState extends State<App> with WindowListener {
           GlobalCupertinoLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
+        locale: const Locale('es', 'GT'),
         supportedLocales: FormBuilderLocalizations.supportedLocales,
         routes: routes,
         initialRoute: Home.route,
