@@ -42,3 +42,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# installer
+/installers/dmg_creator/gen_pdf.dmg
