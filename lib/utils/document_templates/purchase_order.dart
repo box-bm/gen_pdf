@@ -9,7 +9,7 @@ import 'package:pdf/widgets.dart';
 
 int rowsPerPage = 20;
 
-Future<List<Page>> getConfirmationTemplate(Bill bill) async {
+Future<List<Page>> getPurchaseOrderTemplate(Bill bill) async {
   List<Page> pages = [];
 
   var logo = MemoryImage(
@@ -52,7 +52,7 @@ Future<List<Page>> getConfirmationTemplate(Bill bill) async {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                Text("Confirmación de precios".toUpperCase(),
+                                Text("Orden de compra".toUpperCase(),
                                     textAlign: TextAlign.right,
                                     style: boldText.copyWith(fontSize: 20)),
                                 Row(
@@ -68,7 +68,7 @@ Future<List<Page>> getConfirmationTemplate(Bill bill) async {
                                               DateFormat.yMMMd().format(
                                                   Jiffy.parseFromDateTime(
                                                           bill.date!)
-                                                      .add(months: -1)
+                                                      .add(months: -1, days: 5)
                                                       .dateTime),
                                               textAlign: TextAlign.center))
                                     ]),
@@ -113,6 +113,93 @@ Future<List<Page>> getConfirmationTemplate(Bill bill) async {
                                 isFinal ? signatures(bill) : SizedBox(),
                               ])))
                 ])),
+            Align(
+                alignment: const Alignment(1, 0.85),
+                child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    height: 80,
+                    width: 280,
+                    decoration: BoxDecoration(border: contentBorder),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Container(
+                              width: 200,
+                              height: 12,
+                              decoration:
+                                  const BoxDecoration(color: PdfColors.black)),
+                          Container(
+                              padding: const EdgeInsets.all(2),
+                              child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    RichText(
+                                        text: TextSpan(
+                                            style: const TextStyle(
+                                                color: PdfColors.black),
+                                            children: [
+                                          TextSpan(
+                                              text: "Confirmacion de precio: "
+                                                  .toUpperCase(),
+                                              style: Theme.of(context)
+                                                  .defaultTextStyle
+                                                  .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                          TextSpan(
+                                              text: bill.billNumber
+                                                  .toUpperCase()),
+                                          TextSpan(
+                                              text: " Fecha: ".toUpperCase(),
+                                              style: Theme.of(context)
+                                                  .defaultTextStyle
+                                                  .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                          TextSpan(
+                                              text: DateFormat.yMMMEd()
+                                                  .format(bill.date!)
+                                                  .toUpperCase()),
+                                        ])),
+                                    RichText(
+                                        text: TextSpan(children: [
+                                      TextSpan(
+                                          text: "Seguro: ".toUpperCase(),
+                                          style: Theme.of(context)
+                                              .defaultTextStyle
+                                              .copyWith(
+                                                  fontWeight: FontWeight.bold)),
+                                      const TextSpan(
+                                          text:
+                                              "TODA COBERTURA DE RIESGOS SOBRE EL 110% DEL VALOR DE LOS BIENES, QUE SERÁ CUBIERTO POR EL VENDEDOR HASTA EL PUERTO DE DESTINO"),
+                                    ])),
+                                    RichText(
+                                        text: TextSpan(children: [
+                                      TextSpan(
+                                          text: "Pago: ".toUpperCase(),
+                                          style: Theme.of(context)
+                                              .defaultTextStyle
+                                              .copyWith(
+                                                  fontWeight: FontWeight.bold)),
+                                      const TextSpan(
+                                          text:
+                                              "CRÉDITO A 90 DÍAS DESDE LA FECHA DE FACTURA"),
+                                    ])),
+                                    RichText(
+                                        text: TextSpan(children: [
+                                      TextSpan(
+                                          text: "Noficiar a: ".toUpperCase(),
+                                          style: Theme.of(context)
+                                              .defaultTextStyle
+                                              .copyWith(
+                                                  fontWeight: FontWeight.bold)),
+                                      TextSpan(
+                                          text:
+                                              bill.consignerName.toUpperCase()),
+                                    ])),
+                                  ]))
+                        ]))),
             Align(
                 alignment: const Alignment(-1, -0.4),
                 child: Container(

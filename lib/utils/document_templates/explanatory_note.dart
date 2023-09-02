@@ -1,12 +1,15 @@
 import 'package:flutter/services.dart';
 import 'package:gen_pdf/models/bill.dart';
 import 'package:gen_pdf/utils/calculations.dart';
+import 'package:gen_pdf/utils/document_templates/generics/header.dart';
 import 'package:gen_pdf/utils/formatter.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
 Future<Page> getExplanatoryNoteTemplate(Bill bill) async {
+  var header = await headerMakan();
+
   var logo = MemoryImage(
     (await rootBundle.load('assets/img/logo.png')).buffer.asUint8List(),
   );
@@ -23,7 +26,7 @@ Future<Page> getExplanatoryNoteTemplate(Bill bill) async {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                Container(height: 100, child: Image(logo)),
+                header,
                 SizedBox(height: 90),
                 Expanded(
                     child: Container(

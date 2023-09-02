@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:gen_pdf/models/bill.dart';
+import 'package:gen_pdf/utils/document_templates/generics/signatures.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
@@ -103,34 +104,7 @@ Future<Page> getAgreementTemplate(Bill bill) async {
                         Text(
                             "Las partes declaran que aceptan todos y cada uno de los términos y condiciones establecidos en este contrato, con la emisión de la factura en el frente y el envío de la mercancía o el envío."),
                         Spacer(),
-                        Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                  width: 150,
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        Center(child: SizedBox(height: 80)),
-                                        Divider(height: 4),
-                                        Text(bill.seller ?? "",
-                                            textAlign: TextAlign.center),
-                                      ])),
-                              SizedBox(
-                                  width: 150,
-                                  child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        SizedBox(height: 80),
-                                        Divider(height: 4),
-                                        Text(bill.buyer ?? "",
-                                            textAlign: TextAlign.center),
-                                      ]))
-                            ]),
+                        signatures(bill),
                         Spacer(),
                       ]))),
           Watermark(
