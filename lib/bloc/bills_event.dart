@@ -73,16 +73,22 @@ class GenerateBill extends BillsEvent {
   const GenerateBill(this.id);
 }
 
-class GeneratePrice extends BillsEvent {
+class GenerateQuotation extends BillsEvent {
   final String id;
 
-  const GeneratePrice(this.id);
+  const GenerateQuotation(this.id);
 }
 
-class GenerateConfirmation extends BillsEvent {
+class GeneratePurchaseOrder extends BillsEvent {
   final String id;
 
-  const GenerateConfirmation(this.id);
+  const GeneratePurchaseOrder(this.id);
+}
+
+class GeneratePriceConfirmation extends BillsEvent {
+  final String id;
+
+  const GeneratePriceConfirmation(this.id);
 }
 
 class GenerateAgreement extends BillsEvent {

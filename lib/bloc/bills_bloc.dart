@@ -11,6 +11,7 @@ import 'package:gen_pdf/utils/document_templates/agreement.dart';
 import 'package:gen_pdf/utils/document_templates/confirmation.dart';
 import 'package:gen_pdf/utils/document_templates/explanatory_note.dart';
 import 'package:gen_pdf/utils/document_templates/quotation.dart';
+import 'package:gen_pdf/utils/document_templates/purchase_order.dart';
 import 'package:gen_pdf/utils/file_picker.dart';
 import 'package:gen_pdf/utils/document_templates/bill.dart';
 import 'package:gen_pdf/utils/generate_pdf.dart';
@@ -217,7 +218,7 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
     });
 
     // Generar cotizacion
-    on<GeneratePrice>((event, emit) async {
+    on<GenerateQuotation>((event, emit) async {
       var path = await chooseFolderToSaveFile(defaultName: "Cotización");
 
       if (path == null) {
@@ -236,9 +237,30 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
       emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
     });
 
-    // Generar confirmación
-    on<GenerateConfirmation>((event, emit) async {
-      var path = await chooseFolderToSaveFile(defaultName: "Confirmación");
+    // Generar orden de compra
+    on<GeneratePurchaseOrder>((event, emit) async {
+      var path = await chooseFolderToSaveFile(defaultName: "Orden de compra");
+
+      if (path == null) {
+        emit(ErrorGeneratingDocuments("Se ha cancelado la operación",
+            searchValue: state.searchValue, bills: state.bills));
+        emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
+        return;
+      }
+
+      var bill = await getAllBillDetails(event.id);
+      var pages = await getPurchaseOrderTemplate(bill);
+      var document = GeneratePDF(pages).generate();
+
+      await saveFilesWithPath(document, path);
+      emit(EndGenerateDocument(
+          searchValue: state.searchValue, bills: state.bills));
+      emit(BillsLoaded(bills: state.bills, searchValue: state.searchValue));
+    });
+
+    // Generar confirmacion
+    on<GeneratePriceConfirmation>((event, emit) async {
+      var path = await chooseFolderToSaveFile(defaultName: "Orden de compra");
 
       if (path == null) {
         emit(ErrorGeneratingDocuments("Se ha cancelado la operación",
@@ -249,7 +271,7 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
 
       var bill = await getAllBillDetails(event.id);
       var pages = await getConfirmationTemplate(bill);
-      var document = GeneratePDF([pages]).generate();
+      var document = GeneratePDF(pages).generate();
 
       await saveFilesWithPath(document, path);
       emit(EndGenerateDocument(
@@ -329,10 +351,12 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
 
     await getBillTemplate(bill).then((page) =>
         saveFiles(GeneratePDF(page).generate(), "Factura-$id", folder));
-    await getQuotationTemplate(bill).then((page) =>
-        saveFiles(GeneratePDF(page).generate(), "Cotización-$id", folder));
-    await getConfirmationTemplate(bill).then((page) =>
-        saveFiles(GeneratePDF([page]).generate(), "Confirmación-$id", folder));
+    await getConfirmationTemplate(bill).then((pages) => saveFiles(
+        GeneratePDF(pages).generate(), "Confirmacion-precios-$id", folder));
+    await getPurchaseOrderTemplate(bill).then((pages) =>
+        saveFiles(GeneratePDF(pages).generate(), "Orden-deCompra-$id", folder));
+    await getConfirmationTemplate(bill).then((pages) =>
+        saveFiles(GeneratePDF(pages).generate(), "Confirmación-$id", folder));
     await getAgreementTemplate(bill).then((page) =>
         saveFiles(GeneratePDF([page]).generate(), "Contrato-$id", folder));
     await getExplanatoryNoteTemplate(bill).then((page) => saveFiles(
@@ -343,14 +367,16 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
     List<Page> pages = [];
     var billPages = await getBillTemplate(bill);
     var agreementPage = await getAgreementTemplate(bill);
-    var confirmationPage = await getConfirmationTemplate(bill);
     var explanatoryPage = await getExplanatoryNoteTemplate(bill);
     var quotationPages = await getQuotationTemplate(bill);
+    var purchacePage = await getPurchaseOrderTemplate(bill);
+    var priceConfirmationPage = await getConfirmationTemplate(bill);
 
     pages.addAll(billPages);
     pages.add(agreementPage);
     pages.addAll(quotationPages);
-    pages.add(confirmationPage);
+    pages.addAll(priceConfirmationPage);
+    pages.addAll(purchacePage);
     pages.add(explanatoryPage);
 
     return GeneratePDF(pages).generate();

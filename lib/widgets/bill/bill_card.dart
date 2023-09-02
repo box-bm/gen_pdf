@@ -131,10 +131,13 @@ List<PrintOption> getBillOptions(BuildContext context, String id) => [
         context.read<BillsBloc>().add(GenerateBill(id));
       }),
       PrintOption(Icons.attach_money, "Generar Cotizacion", () {
-        context.read<BillsBloc>().add(GeneratePrice(id));
+        context.read<BillsBloc>().add(GenerateQuotation(id));
       }),
-      PrintOption(Icons.checklist, "Generar Confirmación", () {
-        context.read<BillsBloc>().add(GenerateConfirmation(id));
+      PrintOption(Icons.attach_money, "Generar Confirmacion de precios", () {
+        context.read<BillsBloc>().add(GeneratePriceConfirmation(id));
+      }),
+      PrintOption(Icons.attach_money, "Generar Orden de compra", () {
+        context.read<BillsBloc>().add(GeneratePurchaseOrder(id));
       }),
       PrintOption(Icons.note_alt_sharp, "Generar Contrato", () {
         context.read<BillsBloc>().add(GenerateAgreement(id));
