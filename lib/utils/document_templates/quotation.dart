@@ -38,6 +38,21 @@ Future<List<Page>> getQuotationTemplate(Bill bill) async {
                 fontSize: 10)),
         build: (Context context) {
           return Stack(children: [
+            Align(
+                alignment: Alignment.topLeft,
+                child: Container(
+                    margin: const EdgeInsets.only(left: 30, top: 62),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("         MAKAN GLOBAL SHIPPING".toUpperCase(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16)),
+                          Text("Calle Elvira Méndez No. 10 último piso",
+                              style: TextStyle(font: Font.helvetica())),
+                          Text("Panamá, República de Panamá",
+                              style: TextStyle(font: Font.helvetica()))
+                        ]))),
             Expanded(
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -119,49 +134,54 @@ Future<List<Page>> getQuotationTemplate(Bill bill) async {
                                     freight: bill.freight,
                                     total: bill.total,
                                     isFinal: isFinal),
-                                Spacer(),
-                                isFinal ? signatures(bill) : SizedBox(),
+                                Spacer()
                               ])))
                 ])),
-            Align(
-                alignment: const Alignment(-1, -0.52),
-                child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    constraints: const BoxConstraints(
-                        maxWidth: 200, minHeight: 50, maxHeight: 60),
-                    decoration: BoxDecoration(border: contentBorder),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Container(
-                              width: 200,
-                              padding: const EdgeInsets.all(2),
-                              decoration:
-                                  const BoxDecoration(color: PdfColors.black),
-                              child: Text("Terminos y condiciones",
-                                  style:
-                                      const TextStyle(color: PdfColors.white))),
-                          Container(
-                              padding: const EdgeInsets.all(2),
-                              child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    Text("*factory outlet".toUpperCase(),
-                                        style: Theme.of(context)
-                                            .defaultTextStyle
-                                            .copyWith(fontSize: 10)),
-                                    Text(
-                                        "**CIF to puerto quetzal".toUpperCase(),
-                                        style: Theme.of(context)
-                                            .defaultTextStyle
-                                            .copyWith(fontSize: 10)),
-                                    Text("***90 days of credit".toUpperCase(),
-                                        style: Theme.of(context)
-                                            .defaultTextStyle
-                                            .copyWith(fontSize: 10)),
-                                  ]))
-                        ]))),
+            isFinal
+                ? Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Container(
+                        margin: const EdgeInsets.only(
+                            right: 20, left: 20, bottom: 60),
+                        constraints: const BoxConstraints(
+                            maxWidth: 200, minHeight: 50, maxHeight: 60),
+                        decoration: BoxDecoration(border: contentBorder),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Container(
+                                  width: 200,
+                                  padding: const EdgeInsets.all(2),
+                                  decoration: const BoxDecoration(
+                                      color: PdfColors.black),
+                                  child: Text("Terminos y condiciones",
+                                      style: const TextStyle(
+                                          color: PdfColors.white))),
+                              Container(
+                                  padding: const EdgeInsets.all(2),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        Text("*factory outlet".toUpperCase(),
+                                            style: Theme.of(context)
+                                                .defaultTextStyle
+                                                .copyWith(fontSize: 10)),
+                                        Text(
+                                            "**CIF to puerto quetzal"
+                                                .toUpperCase(),
+                                            style: Theme.of(context)
+                                                .defaultTextStyle
+                                                .copyWith(fontSize: 10)),
+                                        Text(
+                                            "***90 days of credit"
+                                                .toUpperCase(),
+                                            style: Theme.of(context)
+                                                .defaultTextStyle
+                                                .copyWith(fontSize: 10)),
+                                      ]))
+                            ])))
+                : SizedBox(),
             Watermark(
                 fit: BoxFit.scaleDown,
                 child: Opacity(
