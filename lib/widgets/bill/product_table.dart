@@ -17,6 +17,28 @@ class ProductTable extends StatelessWidget {
     field?.didChange(items);
   }
 
+  void editElement(String id, String key, String value) {
+    var field = formKey.currentState?.fields['items'];
+    List<Map<String, dynamic>> items = field?.value;
+
+    dynamic currentValue = value;
+    if ('quantity' == key) {
+      currentValue = int.tryParse(value) ?? 0;
+    }
+    if ('unitPrice' == key) {
+      currentValue = double.tryParse(value) ?? 0.0;
+    }
+
+    items.firstWhere((element) => element["id"] == id)[key] = currentValue;
+
+    var editedItem = items.firstWhere((element) => element["id"] == id);
+    items.firstWhere((element) => element["id"] == id)['total'] =
+        (double.tryParse(editedItem['unitPrice'].toString()) ?? 0) *
+            (double.tryParse(editedItem['quantity'].toString()) ?? 0);
+
+    field?.didChange(items);
+  }
+
   @override
   Widget build(BuildContext context) {
     return FormBuilderField(
@@ -180,21 +202,44 @@ class ProductTable extends StatelessWidget {
                                     textAlign: TextAlign.center)),
                             Container(
                                 padding: const EdgeInsets.all(6),
-                                child: Text(item.description,
-                                    textAlign: TextAlign.center)),
+                                child: FormBuilderTextField(
+                                  name: "description-${item.id}",
+                                  initialValue: item.description,
+                                  onChanged: (value) {
+                                    editElement(
+                                        item.id, 'description', value ?? "");
+                                  },
+                                )),
                             Container(
                                 padding: const EdgeInsets.all(6),
-                                child: Text(item.quantity.toString(),
-                                    textAlign: TextAlign.center)),
+                                child: FormBuilderTextField(
+                                  name: "quantity-${item.id}",
+                                  initialValue: item.quantity.toString(),
+                                  onChanged: (value) {
+                                    editElement(
+                                        item.id, 'quantity', value ?? "");
+                                  },
+                                )),
                             Container(
                                 padding: const EdgeInsets.all(6),
-                                child: Text(item.prs ?? "",
-                                    textAlign: TextAlign.center)),
+                                child: FormBuilderTextField(
+                                  name: "prs-${item.id}",
+                                  initialValue: item.prs,
+                                  onChanged: (value) {
+                                    editElement(item.id, 'prs', value ?? "");
+                                  },
+                                )),
                             Container(
                                 padding: const EdgeInsets.all(6),
-                                child: Text(
-                                  moneyFormat.format(item.unitPrice),
-                                  textAlign: TextAlign.end,
+                                child: FormBuilderTextField(
+                                  decoration:
+                                      const InputDecoration(prefixText: "\$"),
+                                  name: "unitPrice-${item.id}",
+                                  initialValue: item.unitPrice.toString(),
+                                  onChanged: (value) {
+                                    editElement(
+                                        item.id, 'unitPrice', value ?? "");
+                                  },
                                 )),
                             Container(
                                 padding: const EdgeInsets.all(4),
