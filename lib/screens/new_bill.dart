@@ -24,7 +24,6 @@ class _NewBillState extends State<NewBill> {
   void initState() {
     context.read<ExporterBloc>().add(const GetAllExporters());
     context.read<ConsignerBloc>().add(const GetAllConsigners());
-    // context.read<BillsBloc>().add(const GetAllConsigners());
     _formkey.currentState?.initState();
     super.initState();
   }

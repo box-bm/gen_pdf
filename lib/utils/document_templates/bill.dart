@@ -278,7 +278,12 @@ Future<List<Page>> getBillTemplate(Bill bill) async {
                                     .map((e) => TableRow(children: [
                                           Container(
                                               padding: const EdgeInsets.all(2),
-                                              child: Text(e.numeration,
+                                              child: Text(
+                                                  (items.indexWhere((element) =>
+                                                              element.id ==
+                                                              e.id) +
+                                                          1)
+                                                      .toString(),
                                                   textAlign: TextAlign.center)),
                                           Container(
                                               padding: const EdgeInsets.all(2),

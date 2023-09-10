@@ -8,7 +8,6 @@ import 'package:uuid/uuid.dart';
 class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
   String id;
   String billId;
-  String numeration;
   String description;
   int quantity;
   String? prs;
@@ -18,7 +17,6 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
   BillItem({
     this.id = "",
     this.billId = "",
-    this.numeration = "",
     this.description = "",
     this.quantity = 0,
     this.prs = "",
@@ -30,7 +28,6 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
     return BillItem(
       id: const Uuid().v4(),
       billId: values["billId"] ?? "",
-      numeration: values["numeration"],
       description: values["description"],
       quantity: int.parse(values["quantity"]),
       prs: values["prs"],
@@ -42,7 +39,6 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
   BillItem.create({
     required this.billId,
     required this.id,
-    required this.numeration,
     required this.description,
     required this.quantity,
     required this.prs,
@@ -52,7 +48,6 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
 
   @override
   BillItem copyWith({
-    String? numeration,
     String? billId,
     String? description,
     int? quantity,
@@ -63,7 +58,6 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
     return BillItem.create(
       id: id,
       billId: billId ?? this.billId,
-      numeration: numeration ?? this.numeration,
       description: description ?? this.description,
       quantity: quantity ?? this.quantity,
       prs: prs ?? this.prs ?? "",
@@ -77,10 +71,9 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
     return BillItem.create(
       id: map['id'],
       billId: map["billId"],
-      numeration: map['numeration'],
       description: map['description'],
       quantity: map['quantity'],
-      prs: map['prs'],
+      prs: map['prs'] ?? "",
       unitPrice: map['unitPrice'],
       total: map['total'],
     );
@@ -91,7 +84,6 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
     return {
       "id": id,
       "billId": billId,
-      "numeration": numeration,
       "description": description,
       "quantity": quantity,
       "prs": prs,
@@ -104,8 +96,6 @@ class BillItem extends Table<BillItem> implements TableInterface<BillItem> {
   List<Column> get columns => [
         Column(name: "id", columnType: SQLiteDataType.text, primaryKey: true),
         Column(name: "billId", columnType: SQLiteDataType.text),
-        Column(
-            name: "numeration", columnType: SQLiteDataType.text, notNull: true),
         Column(
             name: "description",
             columnType: SQLiteDataType.text,

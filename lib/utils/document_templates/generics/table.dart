@@ -87,7 +87,11 @@ Widget pricingTable({
                 (e) => TableRow(children: [
                   Container(
                       padding: const EdgeInsets.all(2),
-                      child: Text(e.numeration, textAlign: TextAlign.center)),
+                      child: Text(
+                          (items.indexWhere((element) => element.id == e.id) +
+                                  1)
+                              .toString(),
+                          textAlign: TextAlign.center)),
                   Container(
                       padding: const EdgeInsets.all(2),
                       child: Text(e.description, textAlign: TextAlign.center)),

@@ -25,13 +25,6 @@ class _NewItemFormState extends State<NewItemForm> {
             children: [
               Text("Nuevo elemento",
                   style: Theme.of(context).textTheme.titleMedium),
-              const SizedBox(height: 15),
-              FormBuilderTextField(
-                name: "numeration",
-                decoration: const InputDecoration(labelText: "Numeración"),
-                validator: FormBuilderValidators.compose(
-                    [FormBuilderValidators.required()]),
-              ),
               const SizedBox(height: 10),
               FormBuilderTextField(
                 name: "description",

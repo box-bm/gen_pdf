@@ -172,7 +172,11 @@ class ProductTable extends StatelessWidget {
                           return TableRow(children: [
                             Container(
                                 padding: const EdgeInsets.all(6),
-                                child: Text(item.numeration,
+                                child: Text(
+                                    (items.indexWhere(
+                                                (element) => element == e) +
+                                            1)
+                                        .toString(),
                                     textAlign: TextAlign.center)),
                             Container(
                                 padding: const EdgeInsets.all(6),
