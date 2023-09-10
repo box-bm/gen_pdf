@@ -224,68 +224,17 @@ Future<List<Page>> getBillTemplate(Bill bill) async {
                               ])),
                           Container(
                               decoration: BoxDecoration(border: contentBorder),
-                              child: Row(children: [
-                                Expanded(
-                                    child: Container(
-                                        constraints:
-                                            const BoxConstraints(minHeight: 70),
-                                        padding: const EdgeInsets.all(4),
-                                        child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            children: [
-                                              Text("No. Total de piezas",
-                                                  style: boldText),
-                                              SizedBox(height: 4),
-                                              Center(
-                                                  child: Text(
-                                                      bill.items
-                                                          .map(
-                                                              (e) => e.quantity)
-                                                          .reduce((value,
-                                                                  element) =>
-                                                              value + element)
-                                                          .toString(),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: Theme.of(context)
-                                                          .header2))
-                                            ]))),
-                                Expanded(
-                                    child: Container(
-                                        constraints:
-                                            const BoxConstraints(minHeight: 70),
-                                        decoration: const BoxDecoration(
-                                            border: Border.symmetric(
-                                                vertical: BorderSide())),
-                                        padding: const EdgeInsets.all(4),
-                                        child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            children: [
-                                              Text("Terminos y condiciones",
-                                                  style: boldText),
-                                              SizedBox(height: 4),
-                                              Text(
-                                                  "*factory outlet"
-                                                      .toUpperCase(),
-                                                  style: Theme.of(context)
-                                                      .defaultTextStyle
-                                                      .copyWith(fontSize: 10)),
-                                              Text(
-                                                  "**CIF to puerto quetzal"
-                                                      .toUpperCase(),
-                                                  style: Theme.of(context)
-                                                      .defaultTextStyle
-                                                      .copyWith(fontSize: 10)),
-                                              Text(
-                                                  "***90 days of credit"
-                                                      .toUpperCase(),
-                                                  style: Theme.of(context)
-                                                      .defaultTextStyle
-                                                      .copyWith(fontSize: 10)),
-                                            ]))),
-                              ])),
+                              constraints: const BoxConstraints(minHeight: 34),
+                              padding: const EdgeInsets.all(4),
+                              child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                        "Términos y condiciones * SALDOS DE FABRICA** CIF A PUERTO QUETZAL***90 DIAS CREDITO ",
+                                        style: boldText),
+                                  ])),
                           Table(
                               border: TableBorder.all(),
                               defaultVerticalAlignment:
@@ -410,8 +359,8 @@ Future<List<Page>> getBillTemplate(Bill bill) async {
                                         Container(
                                             decoration: finalDataColumnsLeft,
                                             padding: const EdgeInsets.all(2),
-                                            child:
-                                                Text("Total", style: boldText)),
+                                            child: Text("Total CIF",
+                                                style: boldText)),
                                         Container(
                                             decoration: finalDataColumnsRight,
                                             child: moneyCell(bill.total +
