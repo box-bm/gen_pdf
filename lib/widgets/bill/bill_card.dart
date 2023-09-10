@@ -124,25 +124,22 @@ List<PrintOption> getBillOptions(BuildContext context, String id) => [
       PrintOption(Icons.print, "Guardar todo", () {
         context.read<BillsBloc>().add(GenerateBillDocuments(id));
       }),
-      PrintOption(Icons.request_page, "Generar Documento General", () {
+      PrintOption(Icons.request_page, "Documento general", () {
         context.read<BillsBloc>().add(GenerateGeneralDocument(id));
       }),
-      PrintOption(Icons.document_scanner, "Generar Factura", () {
-        context.read<BillsBloc>().add(GenerateBill(id));
-      }),
-      PrintOption(Icons.attach_money, "Generar Cotizacion", () {
-        context.read<BillsBloc>().add(GenerateQuotation(id));
-      }),
-      PrintOption(Icons.attach_money, "Generar Confirmacion de precios", () {
-        context.read<BillsBloc>().add(GeneratePriceConfirmation(id));
-      }),
-      PrintOption(Icons.attach_money, "Generar Orden de compra", () {
-        context.read<BillsBloc>().add(GeneratePurchaseOrder(id));
-      }),
-      PrintOption(Icons.note_alt_sharp, "Generar Contrato", () {
+      PrintOption(Icons.note_alt_sharp, "Contrato de venta", () {
         context.read<BillsBloc>().add(GenerateAgreement(id));
       }),
-      PrintOption(Icons.note, "Generar nota expl.", () {
+      PrintOption(Icons.attach_money, "Orden de compra", () {
+        context.read<BillsBloc>().add(GeneratePurchaseOrder(id));
+      }),
+      PrintOption(Icons.document_scanner, "Factura", () {
+        context.read<BillsBloc>().add(GenerateBill(id));
+      }),
+      PrintOption(Icons.attach_money, "Cotizacion", () {
+        context.read<BillsBloc>().add(GenerateQuotation(id));
+      }),
+      PrintOption(Icons.note, "Nota explicatoria", () {
         context.read<BillsBloc>().add(GenerateExplanatoryNote(id));
       }),
     ];

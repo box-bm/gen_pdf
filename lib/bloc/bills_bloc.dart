@@ -349,34 +349,30 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
   Future prinAllDocuments(String id, String folder) async {
     Bill bill = await getAllBillDetails(id);
 
+    await getAgreementTemplate(bill).then((page) => saveFiles(
+        GeneratePDF([page]).generate(), "Contrato-de-venta-$id", folder));
+    await getPurchaseOrderTemplate(bill).then((pages) => saveFiles(
+        GeneratePDF(pages).generate(), "Orden-de-compra-$id", folder));
     await getBillTemplate(bill).then((page) =>
         saveFiles(GeneratePDF(page).generate(), "Factura-$id", folder));
-    await getConfirmationTemplate(bill).then((pages) => saveFiles(
-        GeneratePDF(pages).generate(), "Confirmacion-precios-$id", folder));
-    await getPurchaseOrderTemplate(bill).then((pages) =>
-        saveFiles(GeneratePDF(pages).generate(), "Orden-deCompra-$id", folder));
-    await getConfirmationTemplate(bill).then((pages) =>
-        saveFiles(GeneratePDF(pages).generate(), "Confirmación-$id", folder));
-    await getAgreementTemplate(bill).then((page) =>
-        saveFiles(GeneratePDF([page]).generate(), "Contrato-$id", folder));
+    await getQuotationTemplate(bill).then((page) =>
+        saveFiles(GeneratePDF(page).generate(), "Cotización-$id", folder));
     await getExplanatoryNoteTemplate(bill).then((page) => saveFiles(
-        GeneratePDF([page]).generate(), "Nota-Explicatoria-$id", folder));
+        GeneratePDF([page]).generate(), "Nota-explicatoria-$id", folder));
   }
 
   Future<Document> generateGeneralDocument(Bill bill) async {
     List<Page> pages = [];
-    var billPages = await getBillTemplate(bill);
     var agreementPage = await getAgreementTemplate(bill);
-    var explanatoryPage = await getExplanatoryNoteTemplate(bill);
-    var quotationPages = await getQuotationTemplate(bill);
     var purchacePage = await getPurchaseOrderTemplate(bill);
-    var priceConfirmationPage = await getConfirmationTemplate(bill);
+    var billPages = await getBillTemplate(bill);
+    var quotationPages = await getQuotationTemplate(bill);
+    var explanatoryPage = await getExplanatoryNoteTemplate(bill);
 
-    pages.addAll(billPages);
     pages.add(agreementPage);
-    pages.addAll(quotationPages);
-    pages.addAll(priceConfirmationPage);
     pages.addAll(purchacePage);
+    pages.addAll(billPages);
+    pages.addAll(quotationPages);
     pages.add(explanatoryPage);
 
     return GeneratePDF(pages).generate();
