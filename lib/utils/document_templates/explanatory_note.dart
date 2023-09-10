@@ -8,7 +8,9 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
 Future<Page> getExplanatoryNoteTemplate(Bill bill) async {
-  var header = await headerMakan();
+  var header = await headerMakan(
+      textMargin: const EdgeInsets.only(left: -90),
+      mainAxisAlignment: MainAxisAlignment.center);
 
   var logo = MemoryImage(
     (await rootBundle.load('assets/img/logo.png')).buffer.asUint8List(),
@@ -22,6 +24,20 @@ Future<Page> getExplanatoryNoteTemplate(Bill bill) async {
               TextStyle(font: Font.helvetica(), lineSpacing: 6, fontSize: 10)),
       build: (Context context) {
         return Stack(children: [
+          Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                  width: 250,
+                  height: 80,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text("F"),
+                        Container(
+                            margin: const EdgeInsets.only(top: -10, left: 4),
+                            child: Divider()),
+                        Text(bill.seller ?? "", textAlign: TextAlign.center)
+                      ]))),
           Expanded(
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,

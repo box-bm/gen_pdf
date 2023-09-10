@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:gen_pdf/models/bill.dart';
-import 'package:gen_pdf/utils/document_templates/generics/signatures.dart';
 import 'package:gen_pdf/utils/document_templates/generics/table.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';

@@ -5,6 +5,7 @@ Future<Widget> headerMakan({
   CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
   MainAxisAlignment mainAxisAlignment = MainAxisAlignment.end,
   double height = 90,
+  EdgeInsets textMargin = EdgeInsets.zero,
 }) async {
   var logo = MemoryImage(
     (await rootBundle.load('assets/img/logo.png')).buffer.asUint8List(),
@@ -17,6 +18,7 @@ Future<Widget> headerMakan({
         child: Center(child: Image(logo, width: 80, height: height - 10))),
     Expanded(
         child: Container(
+            margin: textMargin,
             padding: const EdgeInsets.all(4),
             height: height,
             child: Column(
