@@ -22,8 +22,13 @@ var finalDataColumnsRight = const BoxDecoration(
         left: BorderSide()));
 var boldText = TextStyle(fontWeight: FontWeight.bold, font: Font.timesBold());
 
-Widget pricingTable(
-    List<BillItem> items, double freight, double total, bool isFinal) {
+Widget pricingTable({
+  required List<BillItem> items,
+  required double freight,
+  required double total,
+  bool isFinal = false,
+  bool fillTable = true,
+}) {
   double secure = getSecure(total);
 
   return Column(children: [
@@ -98,7 +103,7 @@ Widget pricingTable(
                 ]),
               )
               .toList(),
-          ...(items.length < rowsPerPage
+          ...(fillTable && items.length < rowsPerPage
               ? List.filled(rowsPerPage - items.length, null)
                   .map((e) => TableRow(children: [
                         SizedBox(height: 14),
@@ -170,7 +175,7 @@ Widget pricingTable(
                   Container(
                       decoration: finalDataColumnsLeft,
                       padding: const EdgeInsets.all(2),
-                      child: Text("Total", style: boldText)),
+                      child: Text("Total CIF", style: boldText)),
                   Container(
                       decoration: finalDataColumnsRight,
                       child: moneyCell(total + secure + freight))

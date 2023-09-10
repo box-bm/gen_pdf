@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:gen_pdf/models/bill.dart';
 import 'package:gen_pdf/utils/document_templates/generics/header.dart';
 import 'package:gen_pdf/utils/document_templates/generics/signatures.dart';
@@ -7,10 +6,6 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
 Future<Page> getAgreementTemplate(Bill bill) async {
-  var logo = MemoryImage(
-    (await rootBundle.load('assets/img/logo.png')).buffer.asUint8List(),
-  );
-
   var boldText = TextStyle(fontWeight: FontWeight.bold);
 
   var headerMakanW = await headerMakan(
@@ -110,11 +105,7 @@ Future<Page> getAgreementTemplate(Bill bill) async {
                             "Las partes declaran que aceptan todos y cada uno de los términos y condiciones establecidos en este contrato, con la emisión de la factura en el frente y el envío de la mercancía o el envío."),
                         Spacer(),
                         signatures(bill),
-                      ]))),
-          Watermark(
-              fit: BoxFit.scaleDown,
-              child: Opacity(
-                  opacity: 0.1, child: Image(logo, width: 350, height: 250))),
+                      ])))
         ]);
       });
 

@@ -115,7 +115,10 @@ Future<List<Page>> getQuotationTemplate(Bill bill) async {
                                         bill.consignerAddress.toUpperCase())),
                                 SizedBox(height: 18),
                                 pricingTable(
-                                    items, bill.freight, bill.total, isFinal),
+                                    items: items,
+                                    freight: bill.freight,
+                                    total: bill.total,
+                                    isFinal: isFinal),
                                 Spacer(),
                                 isFinal ? signatures(bill) : SizedBox(),
                               ])))
