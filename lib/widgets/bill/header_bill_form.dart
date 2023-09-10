@@ -202,6 +202,8 @@ class HeaderBillForm extends StatelessWidget {
           ]),
         ),
         const SizedBox(height: 10),
+        const Divider(),
+        const SizedBox(height: 10),
         FormBuilderTextField(
           name: 'seller',
           decoration: const InputDecoration(
@@ -219,6 +221,8 @@ class HeaderBillForm extends StatelessWidget {
           validator:
               FormBuilderValidators.compose([FormBuilderValidators.required()]),
         ),
+        const SizedBox(height: 10),
+        const Divider(),
         const SizedBox(height: 10),
         FormBuilderTextField(
           name: 'buyer',
