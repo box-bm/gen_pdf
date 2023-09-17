@@ -22,7 +22,7 @@ Future<List<Page>> getQuotationTemplate(Bill bill) async {
   int pagesnumbers = difference.ceil();
 
   for (var i = 0; i < pagesnumbers; i++) {
-    var isFinal = difference - i < 1;
+    var isFinal = difference - i < 1 || difference == 1;
 
     var items = bill.items.sublist(i * rowsPerPage,
         isFinal ? bill.items.length : (i * rowsPerPage) + rowsPerPage);
@@ -129,7 +129,8 @@ Future<List<Page>> getQuotationTemplate(Bill bill) async {
                                         bill.consignerAddress.toUpperCase())),
                                 SizedBox(height: 18),
                                 pricingTable(
-                                    items: items,
+                                    printingItems: items,
+                                    items: bill.items,
                                     freight: bill.freight,
                                     total: bill.total,
                                     isFinal: isFinal),

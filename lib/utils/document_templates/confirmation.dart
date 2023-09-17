@@ -108,7 +108,8 @@ Future<List<Page>> getConfirmationTemplate(Bill bill) async {
                                         bill.consignerAddress.toUpperCase())),
                                 SizedBox(height: 18),
                                 pricingTable(
-                                    items: items,
+                                    printingItems: items,
+                                    items: bill.items,
                                     freight: bill.freight,
                                     total: bill.total,
                                     isFinal: isFinal),

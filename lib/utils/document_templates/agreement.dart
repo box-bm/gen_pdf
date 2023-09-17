@@ -66,7 +66,7 @@ Future<Page> getAgreementTemplate(Bill bill) async {
                             style: boldText, textAlign: TextAlign.center),
                         SizedBox(height: 20),
                         Text(
-                            "CONTRATO DE VENTA en el que la empresa MAKAN GLOBAL SHIPPING. (el vendedor) Vende diversas mercancías a la empresa SERVYMAS, S.A. . (el comprador) Calle Elvira Méndez, edifico Interseco, piso B. Panamá, panamá. EL VENDEDOR y EL COMPRADOR, acuerdan conjuntamente llevar a cabo este contrato de acuerdo con las siguientes cláusulas, ACUERDO DE COMPRA DE MERCANCÍA MIS VARIAS."),
+                            "CONTRATO DE VENTA en el que la empresa MAKAN GLOBAL SHIPPING. (el vendedor) Vende diversas mercancías a la empresa SERVYMAS, S.A. . (el comprador) Calle Elvira Méndez No. 10 ultimo piso Panamá, Republica de Panamá. EL VENDEDOR y EL COMPRADOR, acuerdan conjuntamente llevar a cabo este contrato de acuerdo con las siguientes cláusulas, ACUERDO DE COMPRA DE MERCANCÍA MIS VARIAS."),
                         SizedBox(height: 8),
                         Text(
                             "PRIMERO: Ambas empresas están debidamente representadas, tienen plenos derechos y tienen el poder de celebrar contratos comerciales."),

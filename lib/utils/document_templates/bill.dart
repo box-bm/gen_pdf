@@ -6,7 +6,7 @@ import 'package:gen_pdf/utils/formatter.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
-int rowsPerPage = 20;
+int rowsPerPage = 15;
 
 Future<List<Page>> getBillTemplate(Bill bill) async {
   List<Page> pages = [];
@@ -36,7 +36,7 @@ Future<List<Page>> getBillTemplate(Bill bill) async {
   double secure = getSecure(bill.total);
 
   for (var i = 0; i < numberOfPages; i++) {
-    var isFinal = difference - i < 1;
+    var isFinal = difference - i <= 1;
 
     var items = bill.items.sublist(i * rowsPerPage,
         isFinal ? bill.items.length : (i * rowsPerPage) + rowsPerPage);
@@ -83,7 +83,7 @@ Future<List<Page>> getBillTemplate(Bill bill) async {
                                                   font: Font.timesBold(),
                                                   fontSize: 20)),
                                           Text(
-                                              "Calle Elvira Méndez, edificio Interseco, Piso B.Panamá, Panamá.")
+                                              "Calle Elvira Méndez No. 10 ultimo piso Panamá, Republica de Panamá")
                                         ])))
                           ]),
                           Row(children: [
@@ -279,9 +279,10 @@ Future<List<Page>> getBillTemplate(Bill bill) async {
                                           Container(
                                               padding: const EdgeInsets.all(2),
                                               child: Text(
-                                                  (items.indexWhere((element) =>
-                                                              element.id ==
-                                                              e.id) +
+                                                  (bill.items.indexWhere(
+                                                              (element) =>
+                                                                  element.id ==
+                                                                  e.id) +
                                                           1)
                                                       .toString(),
                                                   textAlign: TextAlign.center)),

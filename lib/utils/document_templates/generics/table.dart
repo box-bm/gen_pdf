@@ -5,8 +5,6 @@ import 'package:pdf/widgets.dart';
 
 import 'package:gen_pdf/utils/document_templates/money_cell.dart';
 
-int rowsPerPage = 20;
-
 var finalDataColumnsLeft = const BoxDecoration(
     border: Border(
         bottom: BorderSide(),
@@ -24,10 +22,12 @@ var boldText = TextStyle(fontWeight: FontWeight.bold, font: Font.timesBold());
 
 Widget pricingTable({
   required List<BillItem> items,
+  required List<BillItem> printingItems,
   required double freight,
   required double total,
   bool isFinal = false,
   bool fillTable = true,
+  int rowsPerPage = 20,
 }) {
   double secure = getSecure(total);
 
@@ -82,7 +82,7 @@ Widget pricingTable({
                     style: const TextStyle(color: PdfColors.white),
                     textAlign: TextAlign.center)),
           ]),
-          ...items
+          ...printingItems
               .map(
                 (e) => TableRow(children: [
                   Container(
@@ -107,8 +107,8 @@ Widget pricingTable({
                 ]),
               )
               .toList(),
-          ...(fillTable && items.length < rowsPerPage
-              ? List.filled(rowsPerPage - items.length, null)
+          ...(fillTable && printingItems.length < rowsPerPage
+              ? List.filled(rowsPerPage - printingItems.length, null)
                   .map((e) => TableRow(children: [
                         SizedBox(height: 14),
                         SizedBox(height: 14),

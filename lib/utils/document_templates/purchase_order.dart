@@ -7,7 +7,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
-int rowsPerPage = 20;
+int rowsPerPage = 16;
 
 Future<List<Page>> getPurchaseOrderTemplate(Bill bill) async {
   List<Page> pages = [];
@@ -16,7 +16,7 @@ Future<List<Page>> getPurchaseOrderTemplate(Bill bill) async {
   int pagesnumbers = difference.ceil();
 
   for (var i = 0; i < pagesnumbers; i++) {
-    var isFinal = difference - i < 1;
+    var isFinal = difference - i < 1 || difference == 1;
 
     var items = bill.items.sublist(i * rowsPerPage,
         isFinal ? bill.items.length : (i * rowsPerPage) + rowsPerPage);
@@ -59,26 +59,37 @@ Future<List<Page>> getPurchaseOrderTemplate(Bill bill) async {
                       textAlign: TextAlign.left),
                   Spacer(),
                   pricingTable(
-                      items: items,
+                      printingItems: items,
+                      items: bill.items,
                       freight: bill.freight,
                       total: bill.total,
                       isFinal: isFinal,
+                      rowsPerPage: rowsPerPage,
                       fillTable: false),
                   Spacer(),
-                  Text(
-                      "El monto total de la orden de compra, incluyendo envío y seguro (CIF), asciende a \$${(bill.total + getSecure(bill.total) + bill.freight).toStringAsFixed(2)}",
-                      textAlign: TextAlign.left),
-                  Spacer(flex: 2),
-                  Text("Atentamente,", textAlign: TextAlign.left),
-                  Spacer(),
-                  Container(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                        SizedBox(width: 200, child: Divider()),
-                        Text(bill.buyer ?? "")
-                      ])),
-                  SizedBox(height: 30)
+                  isFinal
+                      ? Expanded(
+                          flex: 4,
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Text(
+                                    "El monto total de la orden de compra, incluyendo envío y seguro (CIF), asciende a \$${(bill.total + getSecure(bill.total) + bill.freight).toStringAsFixed(2)}",
+                                    textAlign: TextAlign.left),
+                                Spacer(flex: 2),
+                                Text("Atentamente,", textAlign: TextAlign.left),
+                                Spacer(flex: 3),
+                                Container(
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                      SizedBox(width: 200, child: Divider()),
+                                      Text(bill.buyer ?? "")
+                                    ])),
+                                SizedBox(height: 20)
+                              ]))
+                      : SizedBox()
                 ])),
           ]);
         }));
